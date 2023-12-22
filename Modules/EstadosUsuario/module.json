@@ -1,0 +1,11 @@
+{
+    "name": "EstadosUsuario",
+    "alias": "estadosusuario",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\EstadosUsuario\\app\\Providers\\EstadosUsuarioServiceProvider"
+    ],
+    "files": []
+}
