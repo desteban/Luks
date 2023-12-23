@@ -12,7 +12,7 @@ class UsuarioSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $usuario = new User([
             'nombre' => 'Usuario',
             'apellido' => 'Pruebas',
             'nombreUsuario' => env('USER_USERNAME', 'myUser'),
@@ -20,5 +20,8 @@ class UsuarioSeeder extends Seeder
             'password' => env('USER_PASSWORD', 'password'),
             'estado' => 1,
         ]);
+
+        $usuario->save();
+        $usuario->assignRole('Administrador');
     }
 }

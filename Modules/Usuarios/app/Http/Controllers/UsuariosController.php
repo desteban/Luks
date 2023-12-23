@@ -5,9 +5,11 @@ namespace Modules\Usuarios\app\Http\Controllers;
 use App\Helpers\Respuesta;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Usuarios\app\Http\Requests\CrearUsuarioRequest;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UsuariosController extends Controller
@@ -41,9 +43,15 @@ class UsuariosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CrearUsuarioRequest $request): JsonResponse
     {
-        //
+        /**
+         * En este caso a utilizar un custom request podemos obtener los datos validados con el método validated
+         */
+        $usuario = new User($request->validated());
+        $usuario->password = $request->input('password');
+        $usuario->save();
+        return Respuesta::respuesta(201, 'Usuario creado con exito');
     }
 
     /**
@@ -57,7 +65,9 @@ class UsuariosController extends Controller
         $usuario = $query->first();
 
         if (empty($usuario)) {
-            return Respuesta::respuesta(404, 'Usuario no encontrado');
+            // return Respuesta::respuesta(404, 'Usuario no encontrado');
+            throw new \Exception("Error Processing Request", 1);
+
         }
 
         return Respuesta::respuesta(200, 'Usuario', $usuario);

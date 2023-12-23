@@ -13,6 +13,7 @@ class UsuariosDatabaseSeeder extends Seeder
     {
         $this->call([
             EstadosUsuarioSeeder::class,
+            RolesPermisosSeeder::class,
             UsuarioSeeder::class,
         ]);
     }
