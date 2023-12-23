@@ -13,10 +13,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Usuarios\app\Models\EstadoUsuario;
 use Modules\Usuarios\app\Models\TIG;
+use Spatie\Permission\Traits\HasPermissions;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids;
+    use HasApiTokens, HasFactory, Notifiable, HasUuids, HasRoles, HasPermissions;
 
     protected $primaryKey = 'id';
 
@@ -28,7 +30,6 @@ class User extends Authenticatable
         'apellido',
         'nombreUsuario',
         'correo',
-        'password',
         'estado',
     ];
 
