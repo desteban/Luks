@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\EstadosUsuario\database\seeders;
+namespace Modules\Usuarios\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\EstadosUsuario\app\Models\EstadoUsuario;
+use Modules\Usuarios\app\Models\EstadoUsuario;
 
 class EstadosUsuarioSeeder extends Seeder
 {

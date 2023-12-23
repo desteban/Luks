@@ -11,6 +11,9 @@ class UsuariosDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            EstadosUsuarioSeeder::class,
+            UsuarioSeeder::class,
+        ]);
     }
 }
