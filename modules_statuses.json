@@ -1,4 +1,5 @@
 {
     "Usuarios": true,
-    "EstadosUsuario": true
+    "EstadosUsuario": true,
+    "Ingresos": true
 }
