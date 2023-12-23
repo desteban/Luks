@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,6 +23,7 @@ class User extends Authenticatable
     protected $keyType = 'uuid';
 
     protected $fillable = [
+        'id',
         'nombre',
         'apellido',
         'nombreUsuario',
@@ -33,6 +35,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        // 'created_at',
+        // 'updated_at',
     ];
 
     protected $casts = [
@@ -48,5 +52,12 @@ class User extends Authenticatable
     public function TIGs(): HasMany
     {
         return $this->hasMany(TIG::class, 'idUsuario', 'id');
+    }
+
+    public function scopeSearch(Builder $query, string $search): Builder
+    {
+        // $buscar = str_replace(' ', '%', $search);
+        return $query->orWhere('correo', 'like', $search)
+            ->orWhere('nombreUsuario', 'like', $search);
     }
 }

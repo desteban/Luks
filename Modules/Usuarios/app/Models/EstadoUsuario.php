@@ -15,11 +15,11 @@ class EstadoUsuario extends Model
     protected $table = 'estados_usuario';
 
     protected $fillable = [
-        'id',
         'estado',
     ];
 
     protected $hidden = [
+        'id',
         'created_at',
         'updated_at',
     ];

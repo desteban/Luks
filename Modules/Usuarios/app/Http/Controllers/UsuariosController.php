@@ -2,10 +2,13 @@
 
 namespace Modules\Usuarios\app\Http\Controllers;
 
+use App\Helpers\Respuesta;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UsuariosController extends Controller
 {
@@ -14,7 +17,17 @@ class UsuariosController extends Controller
      */
     public function index()
     {
-        return view('usuarios::index');
+        $perPage = $_GET['per_page'] ?? 20;
+        $usuarios = QueryBuilder::for(User::class)
+            ->allowedFilters([
+                'nombreUsuario',
+                'correo',
+                'estado',
+            ])
+            ->with(['EstadoCuenta'])
+            ->paginate($perPage);
+
+        return Respuesta::respuesta(200, 'Listado de usuarios', $usuarios);
     }
 
     /**
@@ -36,9 +49,18 @@ class UsuariosController extends Controller
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function show(string $nombreUsuario)
     {
-        return view('usuarios::show');
+
+        $query = User::query();
+        $query->select()->where('nombreUsuario', '=', $nombreUsuario);
+        $usuario = $query->first();
+
+        if (empty($usuario)) {
+            return Respuesta::respuesta(404, 'Usuario no encontrado');
+        }
+
+        return Respuesta::respuesta(200, 'Usuario', $usuario);
     }
 
     /**
