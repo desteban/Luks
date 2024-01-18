@@ -19,7 +19,7 @@ model EstadoUsuario {
 model Usuario {
   id  String  @id @unique @default(uuid())
   nombre String
-  apellido  String
+  apellido  String?
   nombreUsuario String @unique
   estado EstadoUsuario @relation(fields: [estadoCuenta], references: [id])
   estadoCuenta Int
