@@ -1,0 +1,23 @@
+.contenedor {
+  width: 100vw;
+  height: 100vh;
+}
+
+.contenido {
+  padding: 1.5rem 1.25rem;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (width>768px) {
+  .contenedor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .contenido {
+    width: 50%;
+    height: auto;
+  }
+}

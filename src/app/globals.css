@@ -2,26 +2,264 @@
 @tailwind components;
 @tailwind utilities;
 
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+
+    --radius: 0.5rem;
+
+    --page-container-padding-x: 1rem;
+    --tamanio-pantalla: 100%;
+    --padding-top-main: 1.55rem;
+    --padding-bottom-main: 1.55rem;
+    --color-fondo: #fefefe;
+    --fondo-body: #f5f3f3;
+    --fondo-header: #506676;
+    --color-header: rgb(253, 253, 253);
+    --tamanio-header: 70px;
+    --color-link: rgb(31, 117, 255);
+  }
+
+  body {
+    background-color: var(--fondo-body);
+  }
+
+  .fondo {
+    background-color: var(--color-fondo);
+  }
+
+  form {
+    padding: 5px;
+  }
+
+  p {
+    max-width: 75ch;
+    line-height: 1.2rem;
+  }
+
+  h1 {
+    margin-right: 10px;
+    margin-left: 10px;
+    line-height: initial;
+    font-weight: 900;
+  }
+
+  h2 {
+    margin-right: 10px;
+    margin-left: 10px;
+    line-height: initial;
+  }
+
+  h3 {
+    margin-right: 10px;
+    margin-left: 10px;
+    line-height: initial;
+  }
+
+  h4 {
+    margin-right: 10px;
+    margin-left: 10px;
+    line-height: initial;
+  }
+
+  h5 {
+    margin-right: 10px;
+    margin-left: 10px;
+    line-height: initial;
+  }
+
+  h6 {
+    margin-right: 10px;
+    margin-left: 10px;
+    line-height: initial;
+  }
+
+  a {
+    color: var(--color-link);
+  }
+
+  /* input {
+    display: flex;
+    width: 100%;
+  } */
+
+  .centrado-general {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  header.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+    z-index: 2;
+    box-shadow: 6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
+      22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
+      100px 100px 80px rgba(0, 0, 0, 0.07);
+  }
+
+  .container-buttons {
+    background-color: white;
+    height: 50vh;
+    margin: 15%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 650px) {
+    :root {
+      --page-container-padding-x: 1.25rem;
+    }
+  }
+
+  @media screen and (min-width: 960px) {
+    * {
+      font-size: 20px;
+      line-height: 24px;
+    }
+    :root {
+      --page-container-padding-x: 2rem;
+      --tamanio-pantalla: 50.6818rem;
+      --padding-top-main: 2rem;
+      --padding-bottom-main: 3rem;
+    }
+
+    h2 {
+      font-size: 30px;
+    }
+
+    h3 {
+      font-size: 24px;
+    }
+  }
+
+  @media screen and (min-width: 1125px) {
+    :root {
+      --page-container-padding-x: 2.5rem;
+      /* --tamanio-pantalla: 50.6818rem; */
+      --tamanio-pantalla: 60rem;
+      --padding-top-main: 3rem;
+      --padding-bottom-main: 5rem;
+    }
+  }
+
+  /* ----------------------------------------------------------------- */
+  .campo-doble {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1.2rem;
+  }
+
+  .campo-doble > * {
+    width: 50%;
+  }
+
+  .campo-doble-adaptable {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.2rem;
+  }
+
+  .campo-doble-adaptable > * {
+    width: 100%;
+  }
+
+  .campo-triple {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.2rem;
+  }
+
+  .campo-triple > * {
+    width: 100%;
+  }
+
+  @media screen and (min-width: 768px) {
+    .campo-doble-adaptable {
+      flex-wrap: nowrap;
+    }
+
+    .campo-doble-adaptable > * {
+      width: 50%;
+    }
+
+    .campo-triple {
+      flex-wrap: nowrap;
+    }
+
+    .campo-triple > * {
+      width: 33%;
+    }
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base {
+  * {
+    @apply border-border;
   }
-} */
-/* 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
+  body {
+    @apply bg-background text-foreground;
+  }
+}
