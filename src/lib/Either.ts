@@ -9,8 +9,8 @@ export class Either {
     this.right = null;
   }
 
-  public Error(): Error | null {
-    return this.error ?? null;
+  public Error(): Error | false {
+    return this.error ?? false;
   }
 
   /**
@@ -30,10 +30,14 @@ export class Either {
   }
 
   /**
-   *
+   *Este método agrega una respuesta correcta siempre que no se tengan registrados errores
    * @param data Datos correctos de la tarea
    */
   public setRight(data: any): void {
+    if (this.errors()) {
+      return;
+    }
+
     this.right = data;
   }
 

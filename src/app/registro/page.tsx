@@ -1,5 +1,3 @@
-"use client";
-
 import Card from "@/components/Card/Card";
 import CardBody from "@/components/Card/CardBody";
 import Input from "@/components/Input/Inputs";
@@ -7,8 +5,7 @@ import estilos from "./estilos.module.css";
 import { Button } from "@/components/ui/button";
 import Password from "@/components/Input/Password";
 import Link from "next/link";
-import GoogleIcon from "../../../public/iconos/GoogleIcon";
-import { signIn } from "next-auth/react";
+import IniciarConGoogle from "@/components/Botones/IniciarConGoogle";
 
 // h-screen w-screen flex-md items-md-center justify-md-center
 export default function Page() {
@@ -71,12 +68,11 @@ export default function Page() {
             </Link>
 
             <div className={estilos.botones}>
-              <GoogleIcon
-                size={32}
-                className="cursor-pointer"
-                onClick={() => signIn("google")}
-              />
+              <IniciarConGoogle />
             </div>
+            <p className="text-right text-sm mt-4">
+              <Link href={"/"}>Regresar al inicio</Link>
+            </p>
           </CardBody>
         </div>
       </Card>

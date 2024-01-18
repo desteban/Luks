@@ -8,7 +8,6 @@ import { tipoInput } from "./Inputs";
 import { OjoCerrado } from "../../../public/iconos/OjoCerrado";
 
 interface props {
-  autoComplete?: "on" | "off";
   className?: string;
   disabled?: boolean;
   error?: string;
@@ -22,7 +21,6 @@ interface props {
 }
 
 export default function Password({
-  autoComplete = "on",
   className = "",
   disabled = false,
   error,
@@ -60,7 +58,7 @@ export default function Password({
           required={required}
           value={value}
           disabled={disabled}
-          autoComplete={autoComplete}
+          autoComplete={"OFF"}
           onChange={onChange}
           className={estilos["input-icono"]}
         />

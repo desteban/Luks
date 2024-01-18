@@ -5,12 +5,15 @@ const e = z.setErrorMap((error) => ({
 }));
 
 export const CrearUsuarioSchema = z.object({
+  id: z.string().uuid("El id debe ser un uuid"),
+  nombre: z.string(),
+  apellido: z.string().optional(),
   correo: z
     .string({ errorMap: z.getErrorMap() })
     .email("El correo es necesario"),
-  nombre: z.string(),
   password: z
-    .string()
+    .string({ errorMap: z.getErrorMap() })
     .min(8, { message: "La contraseña debe tener por lo menos 8 caracteres" })
-    .optional(),
+    .max(25, { message: "La contraseña debe tener como máximo 25 caracteres" }),
+  nombreUsuario: z.string({ errorMap: z.getErrorMap() }).optional(),
 });

@@ -1,81 +1,59 @@
-import { Either } from "@/lib/Either";
-import { UsuarioDuplicado, UsuarioNoEncontrado } from "@/lib/Errors";
 import { ErrorParseSchema } from "@/lib/Errors/ErrorParseSchema";
-import { CrearUsuarioSchema } from "@/schemas/CrearUsuario.Schema";
-import { EjecutarSchema } from "@/schemas/EjecutarSchema";
+import { UserDuplicated } from "@/lib/Errors/Usuarios/UserDuplicated";
+import ObtenerDatosRquest from "@/lib/ObtenerDatosRquest";
+import { CrearUsuarioSchema } from "@/Modules/Usuarios/Schemas/CrearUsuario.Schema";
+import { EjecutarSchema } from "@/lib/EjecutarSchema";
 import { NextResponse } from "next/server";
-import { CrearUsuarioService } from "./services/CrearUsuario.Service";
-
-type Usuario = {
-  nombre: string;
-  correo: string;
-};
-
-export async function GET(req: Request, res: NextResponse) {
-  const usuarios: [Usuario] = [{ nombre: "David", correo: "mail@mail.com" }];
-
-  let either = new Either();
-
-  try {
-    if (2 + 2 === 4) {
-      either.setError(new UsuarioDuplicado());
-      throw new UsuarioDuplicado();
-    }
-  } catch (error) {
-    // retornar un 404 si no se encuentra el usuario
-    if (error instanceof UsuarioNoEncontrado) {
-      return NextResponse.json(
-        { mensaje: "Usuario no encontrado" },
-        { status: 404 }
-      );
-    }
-
-    if (error instanceof UsuarioDuplicado) {
-      return NextResponse.json(
-        { mensaje: error.message },
-        { status: error.StatusHttp }
-      );
-    }
-  }
-
-  return NextResponse.json(usuarios, { status: 200 });
-}
+import { RespuestaJson, RespuestaJsonError } from "@/lib/RespuestaJson";
+import { ObtenerUsuarioMinimoService } from "@/Modules/Usuarios/Services/ObtenerUsuario";
+import { CrearUsuarioService } from "@/Modules/Usuarios/Services/CrearUsuario.Service";
+import { Usuario } from "@prisma/client";
 
 export async function POST(req: Request) {
   const schema = CrearUsuarioSchema;
-  const datosBody = await req.json();
-  const datosValidados = EjecutarSchema(schema, datosBody);
+  const datosBody = await ObtenerDatosRquest({ req });
+  const validador = EjecutarSchema(schema, datosBody);
 
-  if (datosValidados.errors()) {
-    const err = datosValidados.Error();
+  if (validador.errors() && validador.Error()) {
+    return MatchError(validador.Error() as Error);
+  }
 
-    //errores al validar los datos enviados por el usuario
-    if (err instanceof ErrorParseSchema) {
-      return NextResponse.json(
-        {
-          mensaje: err.message,
-          data: err.contenido,
-        },
-        { status: 400 }
-      );
-    }
+  let datosValidados = validador.Right();
+  const usuarioNuevo = await CrearUsuarioService(datosValidados);
 
+  if (usuarioNuevo.errors()) {
+    return MatchError(usuarioNuevo.Error() as Error);
+  }
+
+  delete usuarioNuevo.Right().id;
+  delete usuarioNuevo.Right().password;
+  return RespuestaJson({ data: usuarioNuevo.Right() });
+}
+
+function MatchError(error: Error) {
+  //errores al validar los datos enviados por el usuario
+  if (error instanceof ErrorParseSchema) {
     return NextResponse.json(
-      { mensaje: "Internal server error" },
-      { status: 500 }
+      {
+        mensaje: error.message,
+        data: error.contenido,
+      },
+      { status: 400 }
     );
   }
 
-  const usuario = await CrearUsuarioService(datosValidados.Right());
-
-  if (usuario.errors()) {
+  if (error instanceof UserDuplicated) {
     return NextResponse.json(
-      { mensaje: "Internal server error, error al crear un usuario" },
-      { status: 500 }
+      {
+        mensaje: error.message,
+        data: error.contenido,
+      },
+      { status: error.StatusHttp }
     );
   }
 
-  return NextResponse.json({
-    data: { mensaje: "Usuario registrado con éxito", data: usuario.Right() },
-  });
+  return NextResponse.json(
+    { mensaje: "Internal server error, algo pasó" },
+    { status: 500 }
+  );
 }
