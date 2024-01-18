@@ -1,0 +1,20 @@
+.is-required:before {
+  content: "*";
+  margin-right: 3px;
+  color: red;
+  font-weight: bold;
+}
+
+.icono {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.input-icono {
+  padding-right: 40px;
+}

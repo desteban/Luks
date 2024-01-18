@@ -1,8 +1,8 @@
-export function UserIcon({ className, onClick, size = 24 }: porpsIcons) {
+export default function OjoIcon({ className, onClick, size = 32 }: porpsIcons) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={`icon icon-tabler icon-tabler-user-circle ${className}`}
+      className={`icon icon-tabler icon-tabler-eye ${className}`}
       width={size}
       height={size}
       viewBox="0 0 24 24"
@@ -14,9 +14,8 @@ export function UserIcon({ className, onClick, size = 24 }: porpsIcons) {
       onClick={onClick}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-      <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-      <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
     </svg>
   );
 }

@@ -1,12 +1,24 @@
 .contenedor {
   width: 100vw;
   height: 100vh;
+  background-color: var(--color-fondo);
 }
 
 .contenido {
   padding: 1.5rem 1.25rem;
   width: 100%;
   height: 100%;
+}
+
+.botones {
+  margin-top: 1.25rem;
+  border-top: 2px solid;
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity));
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media screen and (width>768px) {

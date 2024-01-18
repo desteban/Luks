@@ -1,7 +1,15 @@
 import { ChangeEvent } from "react";
 import { Input as InputShadcn } from "@ui/input";
+import estilos from "./estilos.module.css";
 
-type tipoInput = "text" | "number" | "email" | "date" | "year" | "month";
+export type tipoInput =
+  | "text"
+  | "number"
+  | "email"
+  | "date"
+  | "year"
+  | "month"
+  | "password";
 
 interface props {
   autoComplete?: "on" | "off";
@@ -34,8 +42,12 @@ export default function Input({
 }: props) {
   return (
     <label className={`flex flex-col form-control gap-1 ${className}`}>
-      <div className="label">
-        <span className="label-text">{label}</span>
+      <div className="label cursor-pointer">
+        <span
+          className={`label-text ${required ? estilos["is-required"] : ""}`}
+        >
+          {label}
+        </span>
       </div>
 
       <InputShadcn

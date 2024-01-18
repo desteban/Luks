@@ -38,7 +38,7 @@
     --tamanio-pantalla: 100%;
     --padding-top-main: 1.55rem;
     --padding-bottom-main: 1.55rem;
-    --color-fondo: #fefefe;
+    --color-fondo: #f1efef;
     --fondo-body: #f5f3f3;
     --fondo-header: #506676;
     --color-header: rgb(253, 253, 253);
@@ -68,36 +68,42 @@
     margin-left: 10px;
     line-height: initial;
     font-weight: 900;
+    margin-bottom: 1.25rem;
   }
 
   h2 {
     margin-right: 10px;
     margin-left: 10px;
     line-height: initial;
+    margin-bottom: 1.25rem;
   }
 
   h3 {
     margin-right: 10px;
     margin-left: 10px;
     line-height: initial;
+    margin-bottom: 1.25rem;
   }
 
   h4 {
     margin-right: 10px;
     margin-left: 10px;
     line-height: initial;
+    margin-bottom: 1.25rem;
   }
 
   h5 {
     margin-right: 10px;
     margin-left: 10px;
     line-height: initial;
+    margin-bottom: 1.25rem;
   }
 
   h6 {
     margin-right: 10px;
     margin-left: 10px;
     line-height: initial;
+    margin-bottom: 1.25rem;
   }
 
   a {
