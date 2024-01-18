@@ -3,11 +3,26 @@ import { UserDuplicated } from "@/lib/Errors/Usuarios/UserDuplicated";
 import ObtenerDatosRquest from "@/lib/ObtenerDatosRquest";
 import { CrearUsuarioSchema } from "@/Modules/Usuarios/Schemas/CrearUsuario.Schema";
 import { EjecutarSchema } from "@/lib/EjecutarSchema";
-import { NextResponse } from "next/server";
-import { RespuestaJson, RespuestaJsonError } from "@/lib/RespuestaJson";
-import { ObtenerUsuarioMinimoService } from "@/Modules/Usuarios/Services/ObtenerUsuario";
+import { NextRequest, NextResponse } from "next/server";
+import { RespuestaJson } from "@/lib/RespuestaJson";
 import { CrearUsuarioService } from "@/Modules/Usuarios/Services/CrearUsuario.Service";
-import { Usuario } from "@prisma/client";
+import { ObtenerUsuariosService } from "@/Modules/Usuarios/Services/ObtenerUsuarios";
+
+export async function GET(req: NextRequest) {
+  const params = req.nextUrl.searchParams;
+  const porPagina: number = +(params.get("porPagina") ?? 30);
+  let pagina: number = +(params.get("pagina") ?? 0) - 1;
+
+  if (pagina < 0) {
+    pagina = 0;
+  }
+
+  const usuarios = await ObtenerUsuariosService({
+    porPagina: porPagina,
+    pagina,
+  });
+  return RespuestaJson({ data: usuarios });
+}
 
 export async function POST(req: Request) {
   const schema = CrearUsuarioSchema;
@@ -26,7 +41,7 @@ export async function POST(req: Request) {
   }
 
   delete usuarioNuevo.Right().id;
-  delete usuarioNuevo.Right().password;
+  // delete usuarioNuevo.Right().password;
   return RespuestaJson({ data: usuarioNuevo.Right() });
 }
 

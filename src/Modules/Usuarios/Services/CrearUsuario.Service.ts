@@ -3,6 +3,7 @@ import { UserDuplicated } from "@/lib/Errors/Usuarios/UserDuplicated";
 import { Usuario } from "@prisma/client";
 import { ObtenerUsuarioMinimoService } from "./ObtenerUsuario";
 import { prisma } from "@/lib/Prisma";
+import { SelectColumnasUsuario } from "../Schemas/SelectColumnas";
 
 interface props {
   id?: string;
@@ -23,7 +24,11 @@ export async function CrearUsuarioService(data: Usuario): Promise<Either> {
   datosUsuarioCrear.estadoCuenta = 1;
 
   if (usuarioExiste) {
-    if (usuarioExiste.id === data.id) {
+    if (
+      usuarioExiste.id === data.id &&
+      usuarioExiste.correo !== data.correo &&
+      usuarioExiste.nombreUsuario !== data.nombreUsuario
+    ) {
       delete datosUsuarioCrear.id;
       return await CrearUsuarioService({
         ...datosUsuarioCrear,
@@ -36,7 +41,10 @@ export async function CrearUsuarioService(data: Usuario): Promise<Either> {
     return either;
   }
 
-  const user = await prisma.usuario.create({ data });
+  const user = await prisma.usuario.create({
+    data,
+    select: SelectColumnasUsuario(),
+  });
   either.setRight(user);
   return either;
 }
