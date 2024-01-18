@@ -29,13 +29,15 @@ export function Nav() {
     }
 
     return (
-      <>
+      <div>
         <button
           onClick={() => signIn()}
-          className="bg-sky-400 px-3 py-4 rounded-md"
+          className="bg-sky-400 px-3 py-2 rounded-md"
         >
           Iniciar sesión
         </button>
+
+        <Link href={"/registro"}>Crea tu cuenta</Link>
 
         <button
           onClick={() => signIn("google")}
@@ -43,7 +45,7 @@ export function Nav() {
         >
           G
         </button>
-      </>
+      </div>
     );
   };
 

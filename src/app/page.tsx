@@ -1,6 +1,9 @@
+import { Nav } from "@/components/nav/Nav";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main>
+      <Nav />
       <h1>Inicio</h1>
     </main>
   );

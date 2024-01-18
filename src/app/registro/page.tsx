@@ -2,6 +2,7 @@ import Card from "@/components/Card/Card";
 import CardBody from "@/components/Card/CardBody";
 import Input from "@/components/Input/Inputs";
 import estilos from "./estilos.module.css";
+import { Button } from "@/components/ui/button";
 
 // h-screen w-screen flex-md items-md-center justify-md-center
 export default function Page() {
@@ -45,6 +46,8 @@ export default function Page() {
                 label="Nombre de usuario"
                 placeHolder="Nombre de usuario"
               />
+
+              <Button className="mt-6 w-full">Crear</Button>
             </form>
           </CardBody>
         </div>
