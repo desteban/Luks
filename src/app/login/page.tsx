@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <main className={estilos.contenedor}>
       <Card className={`${estilos.contenido} bg-gray-50`}>
-        <div className="">
+        <div className="w-full">
           <h1 className="text-center mb-5">Regístrate</h1>
 
           <CardBody>
@@ -45,7 +45,7 @@ export default function Page() {
             <div className={estilos.botones}>
               <IniciarConGoogle />
             </div>
-            <p className="text-right text-sm mt-4">
+            <p className="text-right text-sm mt-4 w-full min-w-full">
               <Link href={"/"}>Regresar al inicio</Link>
             </p>
           </CardBody>
