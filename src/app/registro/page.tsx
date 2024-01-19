@@ -13,7 +13,7 @@ export default function Page() {
     <main className={estilos.contenedor}>
       <Card className={`${estilos.contenido} bg-gray-50`}>
         <div className="">
-          <h1 className="text-center mb-5">Regístrate</h1>
+          <h1 className="text-center mb-5">Crear tu cuenta hoy</h1>
 
           <CardBody>
             <form className="mb-3">
