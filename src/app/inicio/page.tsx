@@ -1,26 +1,24 @@
-"use client";
-
-import ListadoUsuarios from "@/Services/ListadoUsuarios";
+import ListadoUsuarios, {
+  RootListadoUsuarios,
+} from "@/Services/ListadoUsuarios";
+import { Tabla } from "@/components/Tabla";
 import { Nav } from "@/components/nav/Nav";
-import { Usuario } from "@prisma/client";
-import { useEffect, useState } from "react";
 
-export default function Page() {
-  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+export async function getData(): Promise<RootListadoUsuarios> {
+  const respuesta = await ListadoUsuarios();
+  return respuesta;
+}
 
-  useEffect(() => {
-    async function Inicio() {
-      const respuesta = await ListadoUsuarios();
-      setUsuarios(respuesta.usuarios);
-    }
+export default async function Page() {
+  const data = await getData();
 
-    Inicio();
-  }, []);
   return (
     <main>
       <Nav />
       <h1>Inicio</h1>
-      <p>{JSON.stringify(usuarios)}</p>
+      {JSON.stringify(data)}
+
+      <Tabla />
     </main>
   );
 }

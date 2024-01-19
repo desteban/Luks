@@ -1,12 +1,23 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import {
+  SessionContextValue,
+  signIn,
+  signOut,
+  useSession,
+} from "next-auth/react";
 import Link from "next/link";
 import { UserIcon } from "../../../public/iconos/UserIcon";
+import { useEffect, useState } from "react";
+import { Session } from "next-auth";
 
 export function Nav() {
-  const { data: session } = useSession();
-  console.log("datos session", session);
+  const { data } = useSession();
+  const [session, setSession] = useState<Session | undefined>();
+
+  useEffect(() => {
+    setSession(data as Session);
+  }, [data]);
 
   const IniciarSession = () => {
     if (session) {
