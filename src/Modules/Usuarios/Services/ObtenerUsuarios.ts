@@ -21,3 +21,7 @@ export async function ObtenerUsuariosService({
     skip: pagina,
   });
 }
+
+export async function CantidadTotalUsuarios(): Promise<number> {
+  return await prisma.usuario.count();
+}

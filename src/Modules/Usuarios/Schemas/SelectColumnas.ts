@@ -12,13 +12,9 @@ export function SelectColumnasUsuario(
   columnas?: ColumnasUsuario
 ): ColumnasUsuario {
   return {
-    id: false,
     nombre: true,
     apellido: true,
     correo: true,
-    password: false,
-    createdAt: false,
-    updatedAt: false,
     ...columnas,
   };
 }

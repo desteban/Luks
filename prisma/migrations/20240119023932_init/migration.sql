@@ -10,7 +10,7 @@ CREATE TABLE "EstadoUsuario" (
 CREATE TABLE "Usuario" (
     "id" TEXT NOT NULL,
     "nombre" TEXT NOT NULL,
-    "apellido" TEXT NOT NULL,
+    "apellido" TEXT,
     "nombreUsuario" TEXT NOT NULL,
     "estadoCuenta" INTEGER NOT NULL,
     "correo" TEXT NOT NULL,

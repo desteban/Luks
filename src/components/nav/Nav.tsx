@@ -49,9 +49,17 @@ export function Nav() {
     );
   };
 
+  const HandleInicio = () => {
+    if (session) {
+      return <Link href="/inicio">Inicio</Link>;
+    }
+
+    return <Link href="/">Inicio</Link>;
+  };
+
   return (
     <nav className="bg-slate-900 flex justify-between px-24 py-3 text-white items-center">
-      <Link href="/">Inicio</Link>
+      <HandleInicio />
 
       <IniciarSession />
     </nav>

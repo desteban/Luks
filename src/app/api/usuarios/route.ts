@@ -6,22 +6,28 @@ import { EjecutarSchema } from "@/lib/EjecutarSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { RespuestaJson } from "@/lib/RespuestaJson";
 import { CrearUsuarioService } from "@/Modules/Usuarios/Services/CrearUsuario.Service";
-import { ObtenerUsuariosService } from "@/Modules/Usuarios/Services/ObtenerUsuarios";
+import {
+  CantidadTotalUsuarios,
+  ObtenerUsuariosService,
+} from "@/Modules/Usuarios/Services/ObtenerUsuarios";
+import { ObtenerParamsPaginacion } from "@/lib/Paginacion";
+import { getServerSession } from "next-auth";
 
 export async function GET(req: NextRequest) {
-  const params = req.nextUrl.searchParams;
-  const porPagina: number = +(params.get("porPagina") ?? 30);
-  let pagina: number = +(params.get("pagina") ?? 0) - 1;
+  const session = await getServerSession();
+  const datosPaginacion = ObtenerParamsPaginacion(req);
+  const total = await CantidadTotalUsuarios();
+  const usuarios = await ObtenerUsuariosService({ ...datosPaginacion });
 
-  if (pagina < 0) {
-    pagina = 0;
-  }
-
-  const usuarios = await ObtenerUsuariosService({
-    porPagina: porPagina,
-    pagina,
+  return RespuestaJson({
+    data: {
+      usuarios,
+      pagina: datosPaginacion.pagina + 1,
+      porPagina: datosPaginacion.porPagina,
+      totalPaginas: Math.round(total / datosPaginacion.porPagina) + 1,
+      session,
+    },
   });
-  return RespuestaJson({ data: usuarios });
 }
 
 export async function POST(req: Request) {
