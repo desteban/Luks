@@ -1,7 +1,7 @@
 import { Either } from '@/lib/Either'
 import { UserDuplicated } from '@/lib/Errors/Usuarios/UserDuplicated'
 import { Usuario } from '@prisma/client'
-import { ObtenerUsuarioMinimoService } from './ObtenerUsuario'
+import { ObtenerUsuarioMinimoService, UsuarioBusqueda } from './ObtenerUsuario'
 import { prisma } from '@/lib/Prisma'
 import { SelectColumnasUsuario } from '../Schemas/SelectColumnas'
 import { ErroresUsuarios } from '@/lib/Errors/Usuarios/ErroresUsuarios'
@@ -14,6 +14,7 @@ interface props {
 	estadoCuenta: number
 	correo: string
 	password: string
+	correoGoogle?: string
 	// createdAt: Date;
 	// updatedAt: Date;
 }
@@ -21,8 +22,8 @@ interface props {
 export async function CrearUsuarioService(data: Usuario): Promise<Either<ErroresUsuarios, Usuario>> {
 	let either = new Either<ErroresUsuarios, Usuario>()
 
-	const usuarioExiste = await ObtenerUsuarioMinimoService(data)
-	let datosUsuarioCrear: props = data
+	const usuarioExiste = await ObtenerUsuarioMinimoService(data as UsuarioBusqueda)
+	let datosUsuarioCrear: props = data as props
 	datosUsuarioCrear.estadoCuenta = 1
 
 	if (usuarioExiste) {

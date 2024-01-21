@@ -1,15 +1,16 @@
-import { Prisma, Usuario } from "@prisma/client";
-import { prisma } from "@/lib/Prisma";
+import { Prisma, Usuario } from '@prisma/client'
+import { prisma } from '@/lib/Prisma'
 
 interface props {
-  usuario: UsuarioBusqueda;
-  select?: Prisma.UsuarioSelect;
+	usuario: UsuarioBusqueda
+	select?: Prisma.UsuarioSelect
 }
 
-interface UsuarioBusqueda {
-  id?: string;
-  correo?: string;
-  nombreUsuario?: string;
+export interface UsuarioBusqueda {
+	id?: string
+	correo?: string
+	nombreUsuario?: string
+	correoGoogle?: string
 }
 
 /**
@@ -17,10 +18,8 @@ interface UsuarioBusqueda {
  * @param usuario Datos con los que buscar el usuario
  * @returns Usuario o null
  */
-export async function ObtenerUsuarioFullService(
-  usuario: UsuarioBusqueda
-): Promise<Usuario | null> {
-  return await ObtenerUsuarioCustomService({ usuario });
+export async function ObtenerUsuarioFullService(usuario: UsuarioBusqueda): Promise<Usuario | null> {
+	return await ObtenerUsuarioCustomService({ usuario })
 }
 
 /**
@@ -28,13 +27,11 @@ export async function ObtenerUsuarioFullService(
  * @param usuario objeto usuario con los datos a buscar
  * @returns Retorna {id, correo, nombreUsuario}
  */
-export async function ObtenerUsuarioMinimoService(
-  usuario: UsuarioBusqueda
-): Promise<Usuario | null> {
-  return ObtenerUsuarioCustomService({
-    usuario,
-    select: { id: true, correo: true, nombreUsuario: true },
-  });
+export async function ObtenerUsuarioMinimoService(usuario: UsuarioBusqueda): Promise<Usuario | null> {
+	return ObtenerUsuarioCustomService({
+		usuario,
+		select: { id: true, correo: true, nombreUsuario: true, correoGoogle: true },
+	})
 }
 
 /**
@@ -45,13 +42,13 @@ export async function ObtenerUsuarioMinimoService(
  * @returns El usuario o un null
  */
 export async function ObtenerUsuarioCustomService({
-  usuario: { correo, id, nombreUsuario },
-  select,
+	usuario: { correo, id, nombreUsuario, correoGoogle },
+	select,
 }: props): Promise<Usuario | null> {
-  return (
-    (await prisma?.usuario.findFirst({
-      where: { OR: [{ id }, { correo }, { nombreUsuario }] },
-      select,
-    })) ?? null
-  );
+	return (
+		(await prisma?.usuario.findFirst({
+			where: { OR: [{ id }, { correo }, { nombreUsuario }, { correoGoogle }] },
+			select,
+		})) ?? null
+	)
 }
