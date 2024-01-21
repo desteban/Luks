@@ -1,80 +1,49 @@
-import { ErrorParseSchema } from "@/lib/Errors/ErrorParseSchema";
-import { UserDuplicated } from "@/lib/Errors/Usuarios/UserDuplicated";
-import ObtenerDatosRquest from "@/lib/ObtenerDatosRquest";
-import { CrearUsuarioSchema } from "@/Modules/Usuarios/Schemas/CrearUsuario.Schema";
-import { EjecutarSchema } from "@/lib/EjecutarSchema";
-import { NextRequest, NextResponse } from "next/server";
-import { RespuestaJson } from "@/lib/RespuestaJson";
-import { CrearUsuarioService } from "@/Modules/Usuarios/Services/CrearUsuario.Service";
-import {
-  CantidadTotalUsuarios,
-  ObtenerUsuariosService,
-} from "@/Modules/Usuarios/Services/ObtenerUsuarios";
-import { ObtenerParamsPaginacion } from "@/lib/Paginacion";
-import { getServerSession } from "next-auth";
+import ObtenerDatosRquest from '@/lib/ObtenerDatosRquest'
+import { CrearUsuarioSchema } from '@/Modules/Usuarios/Schemas/CrearUsuario.Schema'
+import { EjecutarSchema } from '@/lib/EjecutarSchema'
+import { NextRequest } from 'next/server'
+import { RespuestaJson, RespuestaJsonError } from '@/lib/RespuestaJson'
+import { CrearUsuarioService } from '@/Modules/Usuarios/Services/CrearUsuario.Service'
+import { CantidadTotalUsuarios, ObtenerUsuariosService } from '@/Modules/Usuarios/Services/ObtenerUsuarios'
+import { ObtenerParamsPaginacion } from '@/lib/Paginacion'
+import SessionEnServidor from '@/lib/utils/SessionEnServidor'
+import { ErrorCustom } from '@/lib/Errors/ErrorCustom'
+import { UsuarioSinSession } from '@/lib/Errors'
 
 export async function GET(req: NextRequest) {
-  const session = await getServerSession();
-  const datosPaginacion = ObtenerParamsPaginacion(req);
-  const total = await CantidadTotalUsuarios();
-  const usuarios = await ObtenerUsuariosService({ ...datosPaginacion });
+	const session = await SessionEnServidor()
 
-  return RespuestaJson({
-    data: {
-      usuarios,
-      pagina: datosPaginacion.pagina + 1,
-      porPagina: datosPaginacion.porPagina,
-      totalPaginas: Math.round(total / datosPaginacion.porPagina) + 1,
-      session,
-    },
-  });
+	if (!session) {
+		return RespuestaJsonError(new UsuarioSinSession({}))
+	}
+
+	const datosPaginacion = ObtenerParamsPaginacion(req)
+	const total = await CantidadTotalUsuarios()
+	const usuarios = await ObtenerUsuariosService({ ...datosPaginacion })
+
+	return RespuestaJson({
+		data: {
+			usuarios,
+			pagina: datosPaginacion.pagina + 1,
+			porPagina: datosPaginacion.porPagina,
+			totalPaginas: Math.round(total / datosPaginacion.porPagina) + 1,
+		},
+	})
 }
 
 export async function POST(req: Request) {
-  const schema = CrearUsuarioSchema;
-  const datosBody = await ObtenerDatosRquest({ req });
-  const validador = EjecutarSchema(schema, datosBody);
+	const schema = CrearUsuarioSchema
+	const datosBody = await ObtenerDatosRquest({ req })
+	const datos = EjecutarSchema(schema, datosBody)
+	if (datos.errors()) {
+		return RespuestaJsonError(datos.Error() as ErrorCustom)
+	}
 
-  if (validador.errors() && validador.Error()) {
-    return MatchError(validador.Error() as Error);
-  }
+	const usuarioNuevo = await CrearUsuarioService(datos.Right())
+	if (usuarioNuevo.errors()) {
+		return RespuestaJsonError(usuarioNuevo.Error() as ErrorCustom)
+	}
 
-  let datosValidados = validador.Right();
-  const usuarioNuevo = await CrearUsuarioService(datosValidados);
-
-  if (usuarioNuevo.errors()) {
-    return MatchError(usuarioNuevo.Error() as Error);
-  }
-
-  delete usuarioNuevo.Right().id;
-  // delete usuarioNuevo.Right().password;
-  return RespuestaJson({ data: usuarioNuevo.Right() });
-}
-
-function MatchError(error: Error) {
-  //errores al validar los datos enviados por el usuario
-  if (error instanceof ErrorParseSchema) {
-    return NextResponse.json(
-      {
-        mensaje: error.message,
-        data: error.contenido,
-      },
-      { status: 400 }
-    );
-  }
-
-  if (error instanceof UserDuplicated) {
-    return NextResponse.json(
-      {
-        mensaje: error.message,
-        data: error.contenido,
-      },
-      { status: error.StatusHttp }
-    );
-  }
-
-  return NextResponse.json(
-    { mensaje: "Internal server error, algo pasó" },
-    { status: 500 }
-  );
+	delete usuarioNuevo.Right().id
+	return RespuestaJson({ data: usuarioNuevo.Right() })
 }

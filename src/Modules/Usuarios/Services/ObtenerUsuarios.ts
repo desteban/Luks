@@ -23,5 +23,5 @@ export async function ObtenerUsuariosService({
 }
 
 export async function CantidadTotalUsuarios(): Promise<number> {
-  return await prisma.usuario.count();
+  return (await prisma.usuario.count()) ?? 0;
 }

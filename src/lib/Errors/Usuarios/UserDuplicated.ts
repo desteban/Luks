@@ -1,17 +1,15 @@
-import { ErrorCustom } from "../ErrorCustom";
+import { ErrorCustom, PropsError } from "../ErrorCustom";
 
 export class UserDuplicated extends Error implements ErrorCustom {
   readonly StatusHttp: number = 409;
+  readonly contenido: any;
 
-  constructor(
-    readonly mensaje: string = "El usuario no es valido",
-    readonly contenido?: any
-  ) {
+  constructor({
+    contenido,
+    mensaje = "El usuario no cuenta con una sesión valida",
+  }: PropsError) {
     super(mensaje);
-    this.name = "Usuario duplicado";
-  }
-
-  getContenido() {
-    return this.contenido;
+    this.name = "UserDuplicated";
+    this.contenido = contenido;
   }
 }

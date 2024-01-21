@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { ErrorCustom } from "./Errors/ErrorCustom";
 
 interface props {
   config?: ResponseInit;
@@ -17,9 +18,9 @@ interface propsError {
   config?: ResponseInit;
 }
 
-export function RespuestaJsonError({
-  respuesta,
-  config = { status: 400 },
-}: propsError) {
-  return NextResponse.json(respuesta, config);
+export function RespuestaJsonError(error: ErrorCustom) {
+  return NextResponse.json(
+    { mensaje: error.message, data: error.contenido },
+    { status: error.StatusHttp }
+  );
 }

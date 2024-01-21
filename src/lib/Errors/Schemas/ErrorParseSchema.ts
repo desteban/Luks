@@ -1,15 +1,16 @@
 import { ErrorCustom, PropsError } from "../ErrorCustom";
 
-export class UserNotFound extends Error implements ErrorCustom {
-  readonly StatusHttp: number = 404;
+export class ErrorParseSchema extends Error implements ErrorCustom {
+  readonly StatusHttp: number = 400;
   readonly contenido: any;
 
   constructor({
     contenido,
     mensaje = "El usuario no cuenta con una sesion valida",
-  }: PropsError) {
+  }: // statusHttp = 400,
+  PropsError) {
     super(mensaje);
-    this.name = "UserNotFound";
+    this.name = "ErrorParseSchema";
     this.contenido = contenido;
   }
 }
