@@ -1,0 +1,38 @@
+.alerta {
+	border-radius: 4px;
+	display: flex;
+	margin: 1rem 0px;
+	padding: 0.3rem 1rem;
+	gap: 0.8rem;
+	align-items: center;
+}
+
+.error {
+	background-color: hsl(0, 80%, 96%);
+	color: rgb(95, 33, 32);
+}
+
+.error {
+	background-color: hsl(0, 80%, 96%);
+	color: rgb(95, 33, 32);
+}
+
+.info {
+	background-color: rgb(229, 246, 253);
+	color: rgb(1, 67, 97);
+}
+
+.success {
+	background-color: rgb(237, 247, 237);
+	color: rgb(30, 70, 32);
+}
+
+.alertaInput {
+	border-radius: 4px;
+	display: flex;
+	margin: 0px;
+	padding: 0.3rem 1rem;
+	font-size: 0.7rem;
+	color: rgb(244, 67, 54);
+	align-items: center;
+}

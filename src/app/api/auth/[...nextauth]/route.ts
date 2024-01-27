@@ -5,7 +5,6 @@ import { prisma } from '@/lib/Prisma'
 import { ObtenerUsuarioMinimoService } from '@/Modules/Usuarios/Services/ObtenerUsuario'
 import { Usuario } from '@prisma/client'
 import { CrearUsuarioService } from '@/Modules/Usuarios/Services/CrearUsuario.Service'
-import { redirect } from 'next/navigation'
 
 const handler = NextAuth({
 	providers: [
@@ -32,11 +31,11 @@ const handler = NextAuth({
 					where: { correo: credentials.email },
 				})
 
-				if (usuario) {
-					return { name: usuario.nombre, email: usuario.correo } as User
+				if (!usuario || usuario?.password !== credentials.password) {
+					return null
 				}
 
-				return null
+				return { name: usuario.nombre, email: usuario.correo } as User
 			},
 		}),
 		GoogleProvider({

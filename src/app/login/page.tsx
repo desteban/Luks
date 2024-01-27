@@ -1,3 +1,5 @@
+'use client'
+
 import Card from '@/components/Card/Card'
 import CardBody from '@/components/Card/CardBody'
 import Input from '@/components/Input/Inputs'
@@ -6,9 +8,30 @@ import { Button } from '@/components/ui/button'
 import Password from '@/components/Input/Password'
 import Link from 'next/link'
 import IniciarConGoogle from '@/components/Botones/IniciarConGoogle'
+import { FormEvent, useState } from 'react'
+import { signIn } from 'next-auth/react'
+import { Alerta } from '@/components/Alerta/Alerta'
 
-// h-screen w-screen flex-md items-md-center justify-md-center
-export default function Page() {
+type props = {
+	searchParams?: Record<'callbackUrl' | 'error', string>
+}
+
+export default function Page(props: props) {
+	// const email = useRef<string>('')
+	// const password = useRef<string>('')
+	const [email, setEmail] = useState<string>('')
+	const [password, setPassword] = useState<string>('')
+
+	const Submit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+		await signIn('credentials', {
+			email: email,
+			password: password,
+			redirect: true,
+			callbackUrl: '/inicio',
+		})
+	}
+
 	return (
 		<main className={estilos.contenedor}>
 			<Card className={`${estilos.contenido} bg-gray-50`}>
@@ -16,14 +39,27 @@ export default function Page() {
 					<h1 className="text-center mb-5">Regístrate</h1>
 
 					<CardBody>
-						<form className="mb-3">
+						{props.searchParams?.error ? (
+							<Alerta
+								tipo="error"
+								mostrar
+							>
+								Credenciales invalidas
+							</Alerta>
+						) : null}
+
+						<form
+							className="mb-3"
+							onSubmit={Submit}
+						>
 							<Input
-								id="correo"
-								name="correo"
+								id="email"
+								name="email"
 								label="Correo"
 								placeHolder="Correo"
 								className="mb-5"
-								required
+								value={email}
+								onChange={(e) => setEmail(e.currentTarget.value)}
 							/>
 
 							<Password
@@ -32,10 +68,16 @@ export default function Page() {
 								name="password"
 								placeHolder="Contraseña"
 								className="mb-2"
-								required
+								value={password}
+								onChange={(e) => setPassword(e.currentTarget.value)}
 							/>
 
-							<Button className="mt-4 w-full">Crear</Button>
+							<Button
+								className="mt-4 w-full"
+								type="submit"
+							>
+								Crear
+							</Button>
 						</form>
 
 						<Link
