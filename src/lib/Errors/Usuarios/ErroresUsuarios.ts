@@ -1,3 +1,4 @@
-import { UserDuplicated, UserNotFound } from "..";
+import ErrorHash from '@/lib/Encriptacion/ErrorHash'
+import { UserDuplicated, UserNotFound } from '..'
 
-export type ErroresUsuarios = UserDuplicated | UserNotFound;
+export type ErroresUsuarios = UserDuplicated | UserNotFound | ErrorHash
