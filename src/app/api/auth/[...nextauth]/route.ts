@@ -2,9 +2,10 @@ import NextAuth, { User } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { prisma } from '@/lib/Prisma'
-import { ObtenerUsuarioMinimoService } from '@/Modules/Usuarios/Services/ObtenerUsuario'
+import { ObtenerUsuarioMinimoService, UsuarioBusqueda } from '@/Modules/Usuarios/Services/ObtenerUsuario'
 import { Usuario } from '@prisma/client'
 import { CrearUsuarioService } from '@/Modules/Usuarios/Services/CrearUsuario.Service'
+import CompararHashUsuarioService from '@/Modules/Usuarios/Services/CompararHashUsuario'
 
 const handler = NextAuth({
 	providers: [
@@ -31,7 +32,12 @@ const handler = NextAuth({
 					where: { correo: credentials.email },
 				})
 
-				if (!usuario || usuario?.password !== credentials.password) {
+				if (!usuario) {
+					return null
+				}
+
+				let hashValido = await CompararHashUsuarioService(usuario, credentials.password)
+				if (!hashValido) {
 					return null
 				}
 
