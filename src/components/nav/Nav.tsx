@@ -104,22 +104,28 @@ export function Nav() {
 	}
 
 	return (
-		<header className={estilos.header}>
-			<div className={estilos['header-contenido']}>
-				<p className={estilos.nombre}>luks</p>
-				<MenuIcon
-					onClick={handleMenu}
-					className="cursor-pointer"
-				/>
-			</div>
+		<>
+			<header className={estilos.header}>
+				<div className={estilos['header-contenido']}>
+					<p className={estilos.nombre}>luks</p>
+					<MenuIcon
+						onClick={handleMenu}
+						className="cursor-pointer"
+					/>
+				</div>
 
-			<nav className={`${estilos.nav} ${mostrarMenu ? estilos['nav-open'] : ''}`}>
-				<Session />
+				<nav className={`${estilos.nav} ${mostrarMenu ? estilos['nav-open'] : ''}`}>
+					<Session />
 
-				<MenuMovil />
+					<MenuMovil onClick={handleMenu} />
 
-				<Salir />
-			</nav>
-		</header>
+					<Salir />
+				</nav>
+			</header>
+			<div
+				className={`${estilos['nav-overlay']} ${mostrarMenu ? estilos['nav-overlay-open'] : ''}`}
+				onClick={handleMenu}
+			></div>
+		</>
 	)
 }

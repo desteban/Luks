@@ -26,7 +26,8 @@
 			"@ui/*": ["./src/components/ui/*"],
 			"@/modules/*": ["./src/Modules/*"],
 			"@iconos/*": ["./public/iconos/*"],
-			"@public/*": ["./public/*"]
+			"@public/*": ["./public/*"],
+			"@ilustraciones/¨*": ["./public/ilustraciones/*"]
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

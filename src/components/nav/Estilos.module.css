@@ -3,11 +3,13 @@
 }
 
 .header {
+	position: relative;
 	min-height: 80px;
 	display: flex;
 	flex-direction: column;
 	color: white;
 	transition: all ease-in-out 0.3s;
+	z-index: 10;
 }
 
 .header-contenido {
@@ -36,4 +38,23 @@
 
 .nav-open {
 	max-height: 500px;
+}
+
+.nav-overlay {
+	content: '';
+	visibility: hidden;
+	position: fixed;
+	opacity: 0;
+	z-index: 9;
+	height: 110vh;
+	width: 110vw;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	transition: all ease-in-out 0.2s;
+}
+
+.nav-overlay-open {
+	visibility: visible;
+	opacity: 1;
 }
