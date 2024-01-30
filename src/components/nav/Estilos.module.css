@@ -27,3 +27,13 @@
 	background-color: rgb(216, 175, 8);
 	/* color: black; */
 }
+
+.nav {
+	max-height: 0px;
+	overflow: hidden;
+	transition: max-height 0.3s linear;
+}
+
+.nav-open {
+	max-height: 500px;
+}

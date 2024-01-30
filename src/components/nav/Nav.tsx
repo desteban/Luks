@@ -9,6 +9,7 @@ import { Button } from '../ui/button'
 import MenuIcon from '@iconos/MenuIcon'
 import SalirIcon from '@iconos/SalirIcon'
 import { UserIcon } from '@iconos/UserIcon'
+import MenuMovil from './Menus/MenuMovil'
 
 export function Nav() {
 	const { data } = useSession()
@@ -88,7 +89,7 @@ export function Nav() {
 		}
 
 		return (
-			<div className="bg-gray-200 text-black p-5 pt-2 border-t-2 border-zinc-400 flex flex-row-reverse">
+			<div className="bg-gray-200 text-black p-5 pt-2 pb-2 border-t-2 border-zinc-400 flex flex-row-reverse">
 				<Button
 					variant={'outline'}
 					onClick={CerrarSession}
@@ -112,16 +113,10 @@ export function Nav() {
 				/>
 			</div>
 
-			<nav className={`rounded-xl ${mostrarMenu ? '' : 'hidden'} mb-5`}>
+			<nav className={`${estilos.nav} ${mostrarMenu ? estilos['nav-open'] : ''}`}>
 				<Session />
 
-				<div className="bg-gray-200 text-black p-5">
-					<ul>
-						<li>Inicio</li>
-						<li>Ingreso</li>
-						<li>Gastos</li>
-					</ul>
-				</div>
+				<MenuMovil />
 
 				<Salir />
 			</nav>
