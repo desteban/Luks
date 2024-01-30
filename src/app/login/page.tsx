@@ -17,8 +17,6 @@ type props = {
 }
 
 export default function Page(props: props) {
-	// const email = useRef<string>('')
-	// const password = useRef<string>('')
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
 

@@ -81,8 +81,22 @@ export function Nav() {
 					</p>
 				</div>
 				<div className="flex justify-between items-center pb-3 w-full gap-2">
-					<Button className={`mt-4 w-full ${estilos.boton}`}>Ingresar</Button>
-					<Button className="mt-4 w-full bg-gray-400 text-black">Crear cuenta</Button>
+					<Button
+						className={`mt-4 w-full ${estilos.boton}`}
+						onClick={() => signIn()}
+					>
+						Ingresar
+					</Button>
+
+					<Button className="mt-4 w-full bg-gray-400 text-black">
+						<Link
+							className="text-black"
+							href={'/registro'}
+							title="Registro"
+						>
+							Crear cuenta
+						</Link>
+					</Button>
 				</div>
 			</div>
 		)
