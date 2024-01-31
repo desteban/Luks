@@ -1,4 +1,3 @@
-import ObtenerDatosRquest from '@/lib/ObtenerDatosRquest'
 import { CrearUsuarioSchema } from '@/Modules/Usuarios/Schemas/CrearUsuario.Schema'
 import { EjecutarSchema } from '@/lib/EjecutarSchema'
 import { NextRequest } from 'next/server'
@@ -8,7 +7,11 @@ import { CantidadTotalUsuarios, ObtenerUsuariosService } from '@/Modules/Usuario
 import { ObtenerParamsPaginacion } from '@/lib/Paginacion'
 import SessionEnServidor from '@/lib/utils/SessionEnServidor'
 import { ErrorCustom } from '@/lib/Errors/ErrorCustom'
-import { UsuarioSinSession } from '@/lib/Errors'
+import { UserNotFound, UsuarioSinSession } from '@/lib/Errors'
+import { ObtenerUsuarioFullService } from '@/Modules/Usuarios/Services/ObtenerUsuario'
+import EditarUsuarioService from '@/Modules/Usuarios/Services/EditarUsuario'
+import { ActuaizarUsuarioSchema } from '@/Modules/Usuarios/Schemas/ActualizarUsuario.Schema'
+import ObtenerDatosRequest from '@/lib/ObtenerDatosRequest'
 
 export async function GET(req: NextRequest) {
 	const session = await SessionEnServidor()
@@ -33,7 +36,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
 	const schema = CrearUsuarioSchema
-	const datosBody = await ObtenerDatosRquest({ req })
+	const datosBody = await ObtenerDatosRequest({ req })
 	const datos = EjecutarSchema(schema, datosBody)
 	if (datos.errors()) {
 		return RespuestaJsonError(datos.Error() as ErrorCustom)
@@ -45,5 +48,33 @@ export async function POST(req: Request) {
 	}
 
 	delete usuarioNuevo.Right().id
-	return RespuestaJson({ data: usuarioNuevo.Right() })
+	return RespuestaJson({ data: usuarioNuevo.Right(), config: { status: 201 } })
+}
+
+export async function PUT(req: Request) {
+	let session = await SessionEnServidor()
+	if (!session || !session.user?.email) {
+		return RespuestaJsonError(new UsuarioSinSession({}))
+	}
+
+	const datosBody = await ObtenerDatosRequest({ req })
+	const data = EjecutarSchema(ActuaizarUsuarioSchema, datosBody)
+	if (data.errors()) {
+		return RespuestaJsonError(data.Error() as ErrorCustom)
+	}
+
+	let usuario = await ObtenerUsuarioFullService({ correo: session.user.email })
+	if (!usuario) {
+		return RespuestaJsonError(new UserNotFound({}))
+	}
+
+	const usuarioActualizado = await EditarUsuarioService({ idUsuario: usuario.id, data: data.Right() })
+	if (usuarioActualizado.errors()) {
+		return RespuestaJsonError(usuarioActualizado.Error() as ErrorCustom)
+	}
+
+	return RespuestaJson({
+		data: { mensaje: 'Usuario editado', usuario: usuarioActualizado.Right() },
+		config: { status: 200 },
+	})
 }

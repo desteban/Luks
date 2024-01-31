@@ -2,6 +2,7 @@ export interface ColumnasUsuario {
 	id?: boolean
 	nombre?: boolean
 	apellido?: boolean
+	nombreUsuario?: boolean
 	correo?: boolean
 	correoGoogle?: boolean
 	password?: boolean
