@@ -1,11 +1,23 @@
 'use client'
 
+import ActualizarUsuarioPeticion from '@/Services/Usuarios/ActualizarUsuario'
 import UsuarioActualPeticion, { UsuarioActual } from '@/Services/Usuarios/UsuarioActual'
 import Input from '@/components/Input/Inputs'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState } from 'react'
+import { AgruparErrores } from '@/lib/AgruparErrores'
+import { ErrorCustom } from '@/lib/Errors/ErrorCustom'
+import { FormEvent, useEffect, useState } from 'react'
+
+interface Errores {
+	nombre?: string
+	apellido?: string
+	correo?: string
+	correoGoogle?: string
+	nombreUsuario?: string
+}
 
 export default function Opciones() {
+	const [errores, setErrores] = useState<Errores>({})
 	const [usuario, setUsuario] = useState<UsuarioActual>({
 		nombre: '',
 		correo: '',
@@ -33,11 +45,30 @@ export default function Opciones() {
 		setUsuario({ ...usuario, [name]: value })
 	}
 
+	const OnSubimit = async (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault()
+
+		const actualizar = await ActualizarUsuarioPeticion({ usuario })
+		if (actualizar.errors()) {
+			const { message, contenido = [] } = actualizar.Error() as ErrorCustom
+
+			if (contenido && Array.isArray(contenido)) {
+				const mensajesError = AgruparErrores(contenido)
+				console.log(mensajesError)
+			}
+
+			alert('Algo mal')
+		}
+	}
+
 	return (
 		<div>
 			{/* <pre>{JSON.stringify(usuario, null, 4)}</pre> */}
 			<h2>Información de la cuenta</h2>
-			<form className="mb-3">
+			<form
+				className="mb-3"
+				onSubmit={OnSubimit}
+			>
 				<div className="campo-doble-adaptable">
 					<Input
 						id="nombre"

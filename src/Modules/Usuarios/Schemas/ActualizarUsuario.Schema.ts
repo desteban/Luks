@@ -6,9 +6,9 @@ const e = z.setErrorMap((error) => ({
 
 export const ActuaizarUsuarioSchema = z.object({
 	nombre: z.string().optional(),
-	apellido: z.string().optional(),
+	apellido: z.string().nullable().optional(),
 	correo: z.string({ errorMap: z.getErrorMap() }).email('El correo es necesario').optional(),
-	nombreUsuario: z.string({ errorMap: z.getErrorMap() }).optional(),
+	nombreUsuario: z.string({ errorMap: z.getErrorMap() }).nullable().optional(),
 })
 
 export type ActuaizarUsuarioType = z.infer<typeof ActuaizarUsuarioSchema>
