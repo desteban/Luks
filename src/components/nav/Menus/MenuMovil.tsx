@@ -1,6 +1,7 @@
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import EnlaceMenu from './EnlaceMenu'
+import AjustesIcon from '@iconos/AjustesIcon'
 
 interface props {
 	onClick?: () => void
@@ -42,6 +43,17 @@ export default function MenuMovil({ onClick }: props) {
 							title="Gastos"
 						>
 							Gastos
+						</EnlaceMenu>
+					</li>
+
+					<li>
+						<EnlaceMenu
+							href="/perfil"
+							title="Cuenta"
+							className="flex gap-1 items-center"
+						>
+							<AjustesIcon />
+							Cuenta
 						</EnlaceMenu>
 					</li>
 				</ul>

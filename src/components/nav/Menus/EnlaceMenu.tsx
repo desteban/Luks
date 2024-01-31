@@ -2,17 +2,18 @@ import Link from 'next/link'
 import { ReactNode } from 'react'
 
 interface props {
-	href: string
 	children: ReactNode
+	className?: string
+	href: string
 	title?: string
 }
 
 export default function EnlaceMenu(props: props) {
-	const { children } = props
+	const { children, className } = props
 	return (
 		<Link
-			className="text-black font-semibold leading-8 -tracking-tight"
 			{...props}
+			className={`text-black font-semibold leading-8 -tracking-tight ${className ?? ''}`}
 		>
 			{children}
 		</Link>

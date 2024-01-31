@@ -1,0 +1,15 @@
+.contenedor {
+	min-height: 100dvh;
+}
+
+.contenido {
+	padding: 12px 5%;
+	max-width: 80ch;
+	margin: auto;
+}
+
+@media (992px <= width) {
+	.contenido {
+		padding: 12px 8%;
+	}
+}
