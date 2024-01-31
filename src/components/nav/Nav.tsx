@@ -10,6 +10,7 @@ import MenuIcon from '@iconos/MenuIcon'
 import SalirIcon from '@iconos/SalirIcon'
 import { UserIcon } from '@iconos/UserIcon'
 import MenuMovil from './Menus/MenuMovil'
+import DerechaIcon from '@iconos/DerechaIcon'
 
 export function Nav() {
 	const { data } = useSession()
@@ -31,24 +32,36 @@ export function Nav() {
 	const Session = () => {
 		if (session) {
 			return (
-				<div className="bg-slate-900 w-full pt-3 px-5 border-t-2 border-gray-50 flex flex-wrap gap-2 items-center pb-3">
-					{session.user?.image ? (
-						<img
-							src={session.user?.image ?? ''}
-							alt={`Imagen de ${session.user?.name}`}
-							className="rounded-full h-10"
-						/>
-					) : (
-						<UserIcon size={40} />
-					)}
+				<Link
+					href={'/perfil'}
+					title="Perfil"
+				>
+					<div
+						className="bg-slate-900 w-full pt-3 px-5 border-t-2 border-gray-50 flex flex-wrap gap-2 items-center pb-3"
+						onClick={handleMenu}
+					>
+						{session.user?.image ? (
+							<img
+								src={session.user?.image ?? ''}
+								alt={`Imagen de ${session.user?.name}`}
+								className="rounded-full h-10"
+							/>
+						) : (
+							<UserIcon size={40} />
+						)}
 
-					<div className="">
-						<h2 className="text-white mb-2 ml-0">Hola de regreso</h2>
-						<p>
-							<small>{session.user?.name}</small>
-						</p>
+						<div className="">
+							<h2 className="text-white mb-1 ml-0">Hola de regreso</h2>
+							<p className="m-0 text-white">
+								<small>{session.user?.name}</small>
+							</p>
+						</div>
+
+						<div className=" text-white">
+							<DerechaIcon />
+						</div>
 					</div>
-				</div>
+				</Link>
 			)
 		}
 

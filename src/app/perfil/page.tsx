@@ -5,54 +5,16 @@ import { Button } from '@/components/ui/button'
 import BanerUsuario from './BanerUsuario'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import Password from '@/components/Input/Password'
-
+import Link from 'next/link'
+import Opciones from './Opciones'
+import EscudoCandado from '@iconos/EscudoCandado'
+import { InfoUsuario } from '@iconos/InfoUsuario'
 export default async function Page() {
 	return (
 		<TemplateMenu>
 			<section aria-label="Datos personales">
 				<Card className="mb-4">
 					<BanerUsuario />
-				</Card>
-
-				<Card>
-					<h2>Información de la cuenta</h2>
-					<form className="mb-3">
-						<div className="campo-doble-adaptable">
-							<Input
-								id="nombre"
-								label="Nombre"
-								name="nombre"
-								placeHolder="Nombre"
-								required
-							/>
-
-							<Input
-								id="apellido"
-								label="Apellido"
-								placeHolder="Apellido"
-								name="apellido"
-							/>
-						</div>
-
-						<Input
-							id="correo"
-							name="correo"
-							label="Correo"
-							placeHolder="Correo"
-							className="mb-5"
-							required
-						/>
-
-						<Input
-							id="usuario"
-							name="usuario"
-							label="Nombre de usuario"
-							placeHolder="Nombre de usuario"
-							className="mb-5"
-						/>
-
-						<Button className="w-full">Crear</Button>
-					</form>
 				</Card>
 			</section>
 
@@ -67,51 +29,24 @@ export default async function Page() {
 						className="w-full"
 					>
 						<AccordionItem value="info">
-							<AccordionTrigger>Información de la cuenta</AccordionTrigger>
+							<AccordionTrigger>
+								<div className="flex items-center gap-3">
+									<InfoUsuario />
+									Información de la cuenta
+								</div>
+							</AccordionTrigger>
 							<AccordionContent>
-								<form className="mb-3">
-									<h2>Información de la cuenta</h2>
-									<div className="campo-doble-adaptable">
-										<Input
-											id="nombre"
-											label="Nombre"
-											name="nombre"
-											placeHolder="Nombre"
-											required
-										/>
-
-										<Input
-											id="apellido"
-											label="Apellido"
-											placeHolder="Apellido"
-											name="apellido"
-										/>
-									</div>
-
-									<Input
-										id="correo"
-										name="correo"
-										label="Correo"
-										placeHolder="Correo"
-										className="mb-5"
-										required
-									/>
-
-									<Input
-										id="usuario"
-										name="usuario"
-										label="Nombre de usuario"
-										placeHolder="Nombre de usuario"
-										className="mb-5"
-									/>
-
-									<Button className="w-full">Crear</Button>
-								</form>
+								<Opciones />
 							</AccordionContent>
 						</AccordionItem>
 
 						<AccordionItem value="seguridad">
-							<AccordionTrigger>Seguridad</AccordionTrigger>
+							<AccordionTrigger>
+								<div className="flex items-center gap-3">
+									<EscudoCandado />
+									Seguridad
+								</div>
+							</AccordionTrigger>
 							<AccordionContent>
 								<form>
 									<Password
@@ -140,6 +75,10 @@ export default async function Page() {
 										required
 										className="mb-7"
 									/>
+
+									<Link href="/recuperar">¿Olvidaste la contraseña?</Link>
+
+									<Button className="w-full mt-3">Actualizar</Button>
 								</form>
 							</AccordionContent>
 						</AccordionItem>

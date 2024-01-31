@@ -34,6 +34,13 @@ export async function ObtenerUsuarioMinimoService(usuario: UsuarioBusqueda): Pro
 	})
 }
 
+export async function ObtenerUsuarioService(usuario: UsuarioBusqueda): Promise<Usuario | null> {
+	return await ObtenerUsuarioCustomService({
+		usuario,
+		select: { nombre: true, apellido: true, correo: true, correoGoogle: true, nombreUsuario: true },
+	})
+}
+
 /**
  *Buscar el primer usuario que cumpla con los datos a buscar
  * @param props Datos necesarios para buscar el usuario:

@@ -1,8 +1,8 @@
-export default function SalirIcon({ className, onClick, size = 24 }: porpsIcons) {
+export function InfoUsuario({ className, onClick, size = 24 }: porpsIcons) {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			className={`icon icon-tabler icon-tabler-door-exit ${className}`}
+			className={`icon icon-tabler icon-tabler-user-exclamation ${className ?? ''}`}
 			width={size}
 			height={size}
 			viewBox="0 0 24 24"
@@ -18,10 +18,10 @@ export default function SalirIcon({ className, onClick, size = 24 }: porpsIcons)
 				d="M0 0h24v24H0z"
 				fill="none"
 			/>
-			<path d="M13 12v.01" />
-			<path d="M3 21h18" />
-			<path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5" />
-			<path d="M14 7h7m-3 -3l3 3l-3 3" />
+			<path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+			<path d="M6 21v-2a4 4 0 0 1 4 -4h4c.348 0 .686 .045 1.008 .128" />
+			<path d="M19 16v3" />
+			<path d="M19 22v.01" />
 		</svg>
 	)
 }
