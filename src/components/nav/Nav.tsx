@@ -11,6 +11,7 @@ import SalirIcon from '@iconos/SalirIcon'
 import { UserIcon } from '@iconos/UserIcon'
 import MenuMovil from './Menus/MenuMovil'
 import DerechaIcon from '@iconos/DerechaIcon'
+import LuksLogo from '@iconos/LuksLogo'
 
 export function Nav() {
 	const { data } = useSession()
@@ -120,7 +121,7 @@ export function Nav() {
 		<>
 			<header className={estilos.header}>
 				<div className={estilos['header-contenido']}>
-					<p className={estilos.nombre}>luks</p>
+					<LuksLogo size={40} />
 					<MenuIcon
 						onClick={handleMenu}
 						className="cursor-pointer"
