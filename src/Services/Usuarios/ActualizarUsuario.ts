@@ -57,11 +57,12 @@ export default async function ActualizarUsuarioPeticion({
 type CodigosHttp = 400 | 403 | 404 | 409
 
 function MatchError(status: number, json: { mensaje: string; data: string[] }): ErroresUsuarios {
+	const datos = { mensaje: json.mensaje, contenido: json.data }
 	const errores = {
-		400: new ErrorParseSchema({ mensaje: json.mensaje, contenido: json.data }),
-		403: new UsuarioSinSession({}),
-		404: new UserNotFound({}),
-		409: new ActualizarUsuarioError({}),
+		400: new ErrorParseSchema(datos),
+		403: new UsuarioSinSession(datos),
+		404: new UserNotFound(datos),
+		409: new ActualizarUsuarioError(datos),
 	}
 
 	return errores[status as CodigosHttp] ?? new ServerError({})

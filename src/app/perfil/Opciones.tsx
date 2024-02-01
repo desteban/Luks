@@ -2,6 +2,7 @@
 
 import ActualizarUsuarioPeticion from '@/Services/Usuarios/ActualizarUsuario'
 import UsuarioActualPeticion, { UsuarioActual } from '@/Services/Usuarios/UsuarioActual'
+import { Alerta, AlertaProps } from '@/components/Alerta/Alerta'
 import Input from '@/components/Input/Inputs'
 import { Button } from '@/components/ui/button'
 import { AgruparErrores } from '@/lib/AgruparErrores'
@@ -17,6 +18,7 @@ interface Errores {
 }
 
 export default function Opciones() {
+	const [alerta, setAlerta] = useState<AlertaProps>({ tipo: 'info' })
 	const [errores, setErrores] = useState<Errores>({})
 	const [usuario, setUsuario] = useState<UsuarioActual>({
 		nombre: '',
@@ -47,18 +49,28 @@ export default function Opciones() {
 
 	const OnSubimit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
+		setErrores({})
+		setAlerta({ tipo: 'info' })
 
 		const actualizar = await ActualizarUsuarioPeticion({ usuario })
+
 		if (actualizar.errors()) {
-			const { message, contenido = [] } = actualizar.Error() as ErrorCustom
+			const { message, contenido = [], StatusHttp, name } = actualizar.Error() as ErrorCustom
+
+			if (StatusHttp === 409 && Array.isArray(contenido)) {
+				contenido.map((key) => setErrores({ ...errores, [key]: 'No es valido' }))
+				return
+			}
 
 			if (contenido && Array.isArray(contenido)) {
 				const mensajesError = AgruparErrores(contenido)
-				console.log(mensajesError)
 			}
 
-			alert('Algo mal')
+			// alert('Algo mal')
 		}
+
+		console.log('Sin errores')
+		setAlerta({ tipo: 'success', texto: 'Se ha guardado la información correctamente.', mostrar: true })
 	}
 
 	return (
@@ -69,6 +81,8 @@ export default function Opciones() {
 				className="mb-3"
 				onSubmit={OnSubimit}
 			>
+				<Alerta {...alerta} />
+
 				<div className="campo-doble-adaptable">
 					<Input
 						id="nombre"
@@ -99,6 +113,7 @@ export default function Opciones() {
 					required
 					value={usuario.correo}
 					onChange={ChangeInput}
+					mensajeError={errores.correo}
 				/>
 
 				<Input
@@ -109,6 +124,7 @@ export default function Opciones() {
 					className="mb-5"
 					value={usuario.nombreUsuario ?? ''}
 					onChange={ChangeInput}
+					mensajeError={errores.nombreUsuario}
 				/>
 
 				<Button className="w-full">Crear</Button>

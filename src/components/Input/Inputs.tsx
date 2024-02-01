@@ -1,7 +1,6 @@
 import { ChangeEvent } from 'react'
 import { Input as InputShadcn } from '@ui/input'
 import estilos from './estilos.module.css'
-import { Alerta } from '../Alerta/Alerta'
 
 export type tipoInput = 'text' | 'number' | 'email' | 'date' | 'year' | 'month' | 'password'
 
@@ -39,7 +38,7 @@ export default function Input({
 			return null
 		}
 
-		return <div className="bg-red-200 px-2 py-1 mt-1 rounded-md">{mensajeError}</div>
+		return <div className="bg-red-200 px-2 py-1 mt-2 rounded-md">{mensajeError}</div>
 	}
 
 	return (

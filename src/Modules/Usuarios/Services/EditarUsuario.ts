@@ -25,7 +25,9 @@ export default async function EditarUsuarioService({
 		either.setRight(usuario as Usuario)
 	} catch (error) {
 		if (error instanceof PrismaClientKnownRequestError) {
-			either.setError(new ActualizarUsuarioError({ contenido: error.meta?.target }))
+			console.log(error.meta?.target)
+
+			either.setError(new ActualizarUsuarioError({ contenido: error.meta?.target ?? [] }))
 		} else {
 			either.setError(new ServerError({}))
 		}
