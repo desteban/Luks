@@ -9,7 +9,7 @@ export default function IniciarConGoogle() {
 	return (
 		<Card
 			className={estilos.boton}
-			onClick={() => signIn('google', { callbackUrl: '/inicio' })}
+			onClick={() => signIn('google', { callbackUrl: '/inicio', redirect: true })}
 		>
 			<GoogleIcon
 				size={32}

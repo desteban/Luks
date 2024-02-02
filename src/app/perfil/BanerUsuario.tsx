@@ -42,9 +42,9 @@ export default function BanerUsuario() {
 				</div>
 			</div>
 
-			<pre>
+			{/* <pre>
 				<code>{JSON.stringify(session.data, null, 2)}</code>
-			</pre>
+			</pre> */}
 		</div>
 	)
 }

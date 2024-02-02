@@ -7,6 +7,7 @@ import Input from '@/components/Input/Inputs'
 import { Button } from '@/components/ui/button'
 import { AgruparErrores } from '@/lib/AgruparErrores'
 import { ErrorCustom } from '@/lib/Errors/ErrorCustom'
+import { useSession } from 'next-auth/react'
 import { FormEvent, useEffect, useState } from 'react'
 
 interface Errores {
@@ -18,29 +19,18 @@ interface Errores {
 }
 
 export default function Opciones() {
+	const session = useSession()
 	const [alerta, setAlerta] = useState<AlertaProps>({ tipo: 'info' })
 	const [errores, setErrores] = useState<Errores>({})
 	const [usuario, setUsuario] = useState<UsuarioActual>({
-		nombre: '',
-		correo: '',
+		nombre: session.data?.user.name ?? '',
+		correo: session.data?.user.email ?? '',
 		apellido: '',
 		correoGoogle: '',
 		nombreUsuario: '',
 	})
 
-	useEffect(() => {
-		ObtenerUsuarioActual()
-	}, [])
-
-	const ObtenerUsuarioActual = async () => {
-		const usuarioAux = await UsuarioActualPeticion()
-		if (usuarioAux instanceof Error) {
-			console.error('No se puede obtener los datos del usuario')
-			return
-		}
-
-		setUsuario(usuarioAux as UsuarioActual)
-	}
+	useEffect(() => {}, [])
 
 	const ChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.currentTarget
