@@ -11,7 +11,7 @@ import SalirIcon from '@iconos/SalirIcon'
 import { UserIcon } from '@iconos/UserIcon'
 import MenuMovil from './Menus/MenuMovil'
 import DerechaIcon from '@iconos/DerechaIcon'
-import LuksLogo from '@iconos/LuksLogo'
+import LuksLogo from '@iconos/FondoLukas'
 
 export function Nav() {
 	const { data } = useSession()

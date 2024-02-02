@@ -37,7 +37,7 @@ export async function ObtenerUsuarioMinimoService(usuario: UsuarioBusqueda): Pro
 export async function ObtenerUsuarioService(usuario: UsuarioBusqueda): Promise<Usuario | null> {
 	return await ObtenerUsuarioCustomService({
 		usuario,
-		select: { nombre: true, apellido: true, correo: true, correoGoogle: true, nombreUsuario: true },
+		select: { nombre: true, apellido: true, correo: true, correoGoogle: true, nombreUsuario: true, id: true },
 	})
 }
 

@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react'
 export default function BanerUsuario() {
 	const session = useSession()
 	const ImagenUsuario = () => {
-		if (session) {
+		if (session && session.data?.user?.image) {
 			return (
 				<img
 					src={session.data?.user?.image ?? ''}
@@ -33,12 +33,18 @@ export default function BanerUsuario() {
 	}
 
 	return (
-		<div className="flex items-center gap-2">
-			<ImagenUsuario />
-			<div>
-				<h1 className="m-0 font-semibold text-lg">{session.data?.user?.name}</h1>
-				<p className="m-0 text-sm">{session.data?.user?.email}</p>
+		<div>
+			<div className="flex items-center gap-2">
+				<ImagenUsuario />
+				<div>
+					<h1 className="m-0 font-semibold text-lg">{session.data?.user?.name}</h1>
+					<p className="m-0 text-sm">{session.data?.user?.email}</p>
+				</div>
 			</div>
+
+			<pre>
+				<code>{JSON.stringify(session.data, null, 2)}</code>
+			</pre>
 		</div>
 	)
 }
