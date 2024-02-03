@@ -23,11 +23,11 @@ export default function Opciones() {
 	const [alerta, setAlerta] = useState<AlertaProps>({ tipo: 'info' })
 	const [errores, setErrores] = useState<Errores>({})
 	const [usuario, setUsuario] = useState<UsuarioActual>({
-		nombre: session.data?.user.name ?? '',
-		correo: session.data?.user.email ?? '',
-		apellido: '',
-		correoGoogle: '',
-		nombreUsuario: '',
+		name: session.data?.user.name ?? '',
+		email: session.data?.user.email ?? '',
+		lastName: session.data?.user.lastName ?? '',
+		// correoGoogle: '',
+		// nombreUsuario: '',
 	})
 
 	useEffect(() => {}, [])
@@ -47,6 +47,10 @@ export default function Opciones() {
 		if (actualizar.errors()) {
 			const { message, contenido = [], StatusHttp, name } = actualizar.Error() as ErrorCustom
 
+			if (StatusHttp === 404) {
+				setAlerta({ tipo: 'error', mostrar: true, texto: message })
+			}
+
 			if (StatusHttp === 409 && Array.isArray(contenido)) {
 				contenido.map((key) => setErrores({ ...errores, [key]: 'No es valido' }))
 				return
@@ -56,10 +60,10 @@ export default function Opciones() {
 				const mensajesError = AgruparErrores(contenido)
 			}
 
-			// alert('Algo mal')
+			return
 		}
 
-		console.log('Sin errores')
+		await session.update({ ...session, user: usuario })
 		setAlerta({ tipo: 'success', texto: 'Se ha guardado la información correctamente.', mostrar: true })
 	}
 
@@ -75,38 +79,38 @@ export default function Opciones() {
 
 				<div className="campo-doble-adaptable">
 					<Input
-						id="nombre"
+						id="name"
 						label="Nombre"
-						name="nombre"
+						name="name"
 						placeHolder="Nombre"
 						required
-						value={usuario.nombre}
+						value={usuario.name}
 						onChange={ChangeInput}
 					/>
 
 					<Input
-						id="apellido"
+						id="lastName"
 						label="Apellido"
 						placeHolder="Apellido"
-						name="apellido"
-						value={usuario.apellido ?? ''}
+						name="lastName"
+						value={usuario.lastName ?? ''}
 						onChange={ChangeInput}
 					/>
 				</div>
 
 				<Input
-					id="correo"
-					name="correo"
+					id="email"
+					name="email"
 					label="Correo"
 					placeHolder="Correo"
 					className="mb-5"
 					required
-					value={usuario.correo}
+					value={usuario.email}
 					onChange={ChangeInput}
 					mensajeError={errores.correo}
 				/>
 
-				<Input
+				{/* <Input
 					id="nombreUsuario"
 					name="nombreUsuario"
 					label="Nombre de usuario"
@@ -115,7 +119,7 @@ export default function Opciones() {
 					value={usuario.nombreUsuario ?? ''}
 					onChange={ChangeInput}
 					mensajeError={errores.nombreUsuario}
-				/>
+				/> */}
 
 				<Button className="w-full">Crear</Button>
 			</form>

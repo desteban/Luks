@@ -9,10 +9,7 @@ export async function GET() {
 		return RespuestaJsonError(new UsuarioSinSession({}))
 	}
 
-	const usuario = await ObtenerUsuarioService({ correo: session.user.email, correoGoogle: session.user.email })
-	if (!usuario) {
-		return RespuestaJsonError(new UserNotFound({}))
-	}
+	console.log('session', session)
 
-	return RespuestaJson({ data: usuario })
+	return RespuestaJson({ data: session })
 }

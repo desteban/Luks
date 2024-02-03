@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/Prisma'
-import { Usuario } from '@prisma/client'
+import { User } from '@prisma/client'
 import { Either } from '@/lib/Either'
 import { ErroresUsuarios } from '@/lib/Errors/Usuarios/ErroresUsuarios'
 import { ActuaizarUsuarioType } from '../Schemas/ActualizarUsuario.Schema'
@@ -13,19 +13,16 @@ interface props {
 	idUsuario: string
 }
 
-export default async function EditarUsuarioService({
-	data,
-	idUsuario,
-}: props): Promise<Either<ErroresUsuarios, Usuario>> {
-	const either = new Either<ErroresUsuarios, Usuario>()
-	const datos = SelectColumnasUsuario({ nombreUsuario: true, correoGoogle: true })
+export default async function EditarUsuarioService({ data, idUsuario }: props): Promise<Either<ErroresUsuarios, User>> {
+	const either = new Either<ErroresUsuarios, User>()
+	const datos = SelectColumnasUsuario({ email: true, image: true, name: true, lastName: true })
 
 	try {
-		const usuario = await prisma.usuario.update({ where: { id: idUsuario }, data, select: datos })
-		either.setRight(usuario as Usuario)
+		const usuario = await prisma.user.update({ where: { id: idUsuario }, data, select: datos })
+		either.setRight(usuario as unknown as User)
 	} catch (error) {
 		if (error instanceof PrismaClientKnownRequestError) {
-			console.log(error.meta?.target)
+			// console.log(error.meta?.target)
 
 			either.setError(new ActualizarUsuarioError({ contenido: error.meta?.target ?? [] }))
 		} else {

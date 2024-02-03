@@ -1,6 +1,6 @@
 import { Either } from '@/lib/Either'
 import { UserDuplicated } from '@/lib/Errors/Usuarios/UserDuplicated'
-import { Usuario } from '@prisma/client'
+import { User } from '@prisma/client'
 import { ObtenerUsuarioMinimoService, UsuarioBusqueda } from './ObtenerUsuario'
 import { prisma } from '@/lib/Prisma'
 import { SelectColumnasUsuario } from '../Schemas/SelectColumnas'
@@ -10,41 +10,47 @@ import { ErroresEncriptacion } from '@/lib/Encriptacion/ErroresEncriptacion'
 
 interface props {
 	id?: string
-	nombre: string
-	apellido: string | null
-	nombreUsario?: string
-	estadoCuenta: number
-	correo: string
-	password: string
-	correoGoogle?: string
+	name: string
+	lastName: string | null
+	// nombreUsario?: string
+	// estadoCuenta: number
+	email: string
+	// password: string
+	// correoGoogle?: string
 	// createdAt: Date;
 	// updatedAt: Date;
 }
 
-export async function CrearUsuarioService(data: Usuario): Promise<Either<ErroresUsuarios, Usuario>> {
-	let either = new Either<ErroresUsuarios, Usuario>()
+interface usuario extends User {
+	password?: string | null
+}
+
+export async function CrearUsuarioService(data: usuario): Promise<Either<ErroresUsuarios, User>> {
+	let either = new Either<ErroresUsuarios, User>()
 
 	const usuarioExiste = await ObtenerUsuarioMinimoService(data as UsuarioBusqueda)
-	let datosUsuarioCrear: props = data as props
-	datosUsuarioCrear.estadoCuenta = 1
+	let datosUsuarioCrear = usuarioExiste
+	// datosUsuarioCrear.estadoCuenta = 1
 
-	if (usuarioExiste) {
+	if (usuarioExiste && datosUsuarioCrear) {
 		if (
 			usuarioExiste.id === data.id &&
-			usuarioExiste.correo !== data.correo &&
-			usuarioExiste.nombreUsuario !== data.nombreUsuario
+			usuarioExiste.email !== data.email
+			// usuarioExiste.nombreUsuario !== data.nombreUsuario
 		) {
-			delete datosUsuarioCrear.id
+			const usuarioCrear = { ...usuarioExiste, ...datosUsuarioCrear } as any
+			delete usuarioCrear.id
 			return await CrearUsuarioService({
-				...datosUsuarioCrear,
-			} as Usuario)
+				...usuarioCrear,
+			} as User)
 		}
 
 		either.setError(
 			new UserDuplicated({
 				mensaje: 'Datos no validos para crear una cuenta',
 				contenido: {
-					nombreUsuario: data.nombreUsuario === usuarioExiste.nombreUsuario,
+					// nombreUsuario: data.nombreUsuario === usuarioExiste.nombreUsuario,
+					email: data.email === usuarioExiste.email,
 				},
 			}),
 		)
@@ -57,11 +63,11 @@ export async function CrearUsuarioService(data: Usuario): Promise<Either<Errores
 		return either
 	}
 	data.password = encriptacion.Right()
-	const user = await prisma.usuario.create({
+	const user = await prisma.user.create({
 		data,
 		select: SelectColumnasUsuario(),
 	})
-	either.setRight(user as Usuario)
+	either.setRight(user as unknown as User)
 	return either
 }
 

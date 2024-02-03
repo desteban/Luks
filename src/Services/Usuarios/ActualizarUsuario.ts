@@ -16,11 +16,11 @@ export type UsuarioActualizado = {
 }
 
 type Usuario = {
-	nombre: string
-	apellido: any
-	correo: string
-	nombreUsuario: string
-	correoGoogle: string
+	name: string
+	lastName: any
+	email: string
+	// nombreUsuario: string
+	// correoGoogle: string
 }
 
 export type ErrorActuaizar = {
@@ -53,7 +53,7 @@ export default async function ActualizarUsuarioPeticion({
 	return either
 }
 
-type CodigosHttp = 400 | 403 | 404 | 409
+type CodigosHttpError = 400 | 403 | 404 | 409
 
 function MatchError(status: number, json: { mensaje: string; data: string[] }): ErroresUsuarios {
 	const datos = { mensaje: json.mensaje, contenido: json.data }
@@ -64,5 +64,5 @@ function MatchError(status: number, json: { mensaje: string; data: string[] }): 
 		409: new ActualizarUsuarioError(datos),
 	}
 
-	return errores[status as CodigosHttp] ?? new ServerError({})
+	return errores[status as CodigosHttpError] ?? new ServerError({})
 }

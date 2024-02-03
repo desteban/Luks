@@ -3,11 +3,11 @@ import { ErroresUsuarios } from '@/lib/Errors/Usuarios/ErroresUsuarios'
 import { RutasAPI, UrlApi } from '@/lib/Globales'
 
 export interface UsuarioActual {
-	nombre: string
-	apellido: any | null
-	correo: string
-	correoGoogle: string | null
-	nombreUsuario: string | null
+	name: string
+	lastName: any | null
+	email: string
+	// correoGoogle: string | null
+	// nombreUsuario: string | null
 }
 
 export default async function UsuarioActualPeticion(): Promise<UsuarioActual | ErroresUsuarios> {

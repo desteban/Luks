@@ -26,6 +26,15 @@ const config = NextAuth({
 
 	callbacks: {
 		async jwt({ account, token, user, profile, session, trigger }) {
+			if (trigger === 'update') {
+				//token la infomacion sin actuaizar de usuario
+				if (token) {
+					const usuario = await ObtenerUsuarioService({ id: token.id })
+					token = { ...token, ...usuario }
+					return { ...token, ...(usuario ?? user) }
+				}
+			}
+
 			return { ...token, ...user }
 		},
 		async session({ newSession, session, token, trigger, user }) {

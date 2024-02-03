@@ -1,20 +1,21 @@
 export interface ColumnasUsuario {
 	id?: boolean
-	nombre?: boolean
-	apellido?: boolean
-	nombreUsuario?: boolean
-	correo?: boolean
-	correoGoogle?: boolean
+	name?: boolean
+	lastName?: boolean
+	// nombreUsuario?: boolean
+	email?: boolean
+	// correoGoogle?: boolean
+	image?: boolean
 	password?: boolean
-	createdAt?: boolean
-	updatedAt?: boolean
+	// createdAt?: boolean
+	// updatedAt?: boolean
 }
 
 export function SelectColumnasUsuario(columnas?: ColumnasUsuario): ColumnasUsuario {
 	return {
-		nombre: true,
-		apellido: true,
-		correo: true,
+		name: true,
+		lastName: true,
+		email: true,
 
 		...columnas,
 	}

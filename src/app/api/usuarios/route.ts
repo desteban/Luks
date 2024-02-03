@@ -63,7 +63,7 @@ export async function PUT(req: Request) {
 		return RespuestaJsonError(data.Error() as ErrorCustom)
 	}
 
-	let usuario = await ObtenerUsuarioFullService({ correo: session.user.email })
+	let usuario = await ObtenerUsuarioFullService({ email: session.user.email })
 	if (!usuario) {
 		return RespuestaJsonError(new UserNotFound({}))
 	}
@@ -72,6 +72,8 @@ export async function PUT(req: Request) {
 	if (usuarioActualizado.errors()) {
 		return RespuestaJsonError(usuarioActualizado.Error() as ErrorCustom)
 	}
+
+	//refrescar la session para actualizar los datos
 
 	return RespuestaJson({
 		data: { mensaje: 'Usuario editado', usuario: usuarioActualizado.Right() },

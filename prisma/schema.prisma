@@ -40,11 +40,15 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   name          String?
+  lastName      String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  password      String?     @ignore
   accounts      Account[]
   sessions      Session[]
+  // createdAt     DateTime      @default(now())
+  // updatedAt     DateTime      @updatedAt
 }
 
 model VerificationToken {

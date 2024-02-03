@@ -1,16 +1,16 @@
-import { Prisma, Usuario } from '@prisma/client'
+import { Prisma, User } from '@prisma/client'
 import { prisma } from '@/lib/Prisma'
 
 interface props {
 	usuario: UsuarioBusqueda
-	select?: Prisma.UsuarioSelect
+	select?: Prisma.UserSelect
 }
 
 export interface UsuarioBusqueda {
 	id?: string
-	correo?: string
-	nombreUsuario?: string
-	correoGoogle?: string
+	email?: string
+	// nombreUsuario?: string
+	// correoGoogle?: string
 }
 
 /**
@@ -18,7 +18,7 @@ export interface UsuarioBusqueda {
  * @param usuario Datos con los que buscar el usuario
  * @returns Usuario o null
  */
-export async function ObtenerUsuarioFullService(usuario: UsuarioBusqueda): Promise<Usuario | null> {
+export async function ObtenerUsuarioFullService(usuario: UsuarioBusqueda): Promise<User | null> {
 	return await ObtenerUsuarioCustomService({ usuario })
 }
 
@@ -27,17 +27,17 @@ export async function ObtenerUsuarioFullService(usuario: UsuarioBusqueda): Promi
  * @param usuario objeto usuario con los datos a buscar
  * @returns Retorna {id, correo, nombreUsuario}
  */
-export async function ObtenerUsuarioMinimoService(usuario: UsuarioBusqueda): Promise<Usuario | null> {
+export async function ObtenerUsuarioMinimoService(usuario: UsuarioBusqueda): Promise<User | null> {
 	return ObtenerUsuarioCustomService({
 		usuario,
-		select: { id: true, correo: true, nombreUsuario: true, correoGoogle: true },
+		select: { id: true, email: true },
 	})
 }
 
-export async function ObtenerUsuarioService(usuario: UsuarioBusqueda): Promise<Usuario | null> {
+export async function ObtenerUsuarioService(usuario: UsuarioBusqueda): Promise<User | null> {
 	return await ObtenerUsuarioCustomService({
 		usuario,
-		select: { nombre: true, apellido: true, correo: true, correoGoogle: true, nombreUsuario: true, id: true },
+		select: { name: true, lastName: true, email: true, id: true },
 	})
 }
 
@@ -48,13 +48,10 @@ export async function ObtenerUsuarioService(usuario: UsuarioBusqueda): Promise<U
  * * select: Datos a obtener desde la db
  * @returns El usuario o un null
  */
-export async function ObtenerUsuarioCustomService({
-	usuario: { correo, id, nombreUsuario, correoGoogle },
-	select,
-}: props): Promise<Usuario | null> {
+export async function ObtenerUsuarioCustomService({ usuario: { email, id }, select }: props): Promise<User | null> {
 	return (
-		(await prisma?.usuario.findFirst({
-			where: { OR: [{ id }, { correo }, { nombreUsuario }, { correoGoogle }] },
+		(await prisma?.user.findFirst({
+			where: { OR: [{ id }, { email }] },
 			select,
 		})) ?? null
 	)
