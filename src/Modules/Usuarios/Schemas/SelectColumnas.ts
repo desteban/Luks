@@ -2,9 +2,8 @@ export interface ColumnasUsuario {
 	id?: boolean
 	name?: boolean
 	lastName?: boolean
-	// nombreUsuario?: boolean
+	// username?: boolean
 	email?: boolean
-	// correoGoogle?: boolean
 	image?: boolean
 	password?: boolean
 	// createdAt?: boolean

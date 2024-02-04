@@ -3,46 +3,23 @@ import { UserDuplicated } from '@/lib/Errors/Usuarios/UserDuplicated'
 import { User } from '@prisma/client'
 import { ObtenerUsuarioMinimoService, UsuarioBusqueda } from './ObtenerUsuario'
 import { prisma } from '@/lib/Prisma'
-import { SelectColumnasUsuario } from '../Schemas/SelectColumnas'
 import { ErroresUsuarios } from '@/lib/Errors/Usuarios/ErroresUsuarios'
 import { Encriptar } from '@/lib/Encriptacion'
 import { ErroresEncriptacion } from '@/lib/Encriptacion/ErroresEncriptacion'
+import { CrearUsuarioTipo } from '../Schemas/CrearUsuario.Schema'
 
-interface props {
-	id?: string
-	name: string
-	lastName: string | null
-	// nombreUsario?: string
-	// estadoCuenta: number
-	email: string
-	// password: string
-	// correoGoogle?: string
-	// createdAt: Date;
-	// updatedAt: Date;
-}
-
-interface usuario extends User {
-	password?: string | null
-}
-
-export async function CrearUsuarioService(data: usuario): Promise<Either<ErroresUsuarios, User>> {
+export async function CrearUsuarioService(data: CrearUsuarioTipo): Promise<Either<ErroresUsuarios, User>> {
 	let either = new Either<ErroresUsuarios, User>()
 
 	const usuarioExiste = await ObtenerUsuarioMinimoService(data as UsuarioBusqueda)
-	let datosUsuarioCrear = usuarioExiste
-	// datosUsuarioCrear.estadoCuenta = 1
 
-	if (usuarioExiste && datosUsuarioCrear) {
-		if (
-			usuarioExiste.id === data.id &&
-			usuarioExiste.email !== data.email
-			// usuarioExiste.nombreUsuario !== data.nombreUsuario
-		) {
+	if (usuarioExiste) {
+		//validar si el id ya fue registrado, si es el caso se genera otro id en
+		if (usuarioExiste.id === data.id && usuarioExiste.email !== data.email) {
+			let datosUsuarioCrear = usuarioExiste
 			const usuarioCrear = { ...usuarioExiste, ...datosUsuarioCrear } as any
 			delete usuarioCrear.id
-			return await CrearUsuarioService({
-				...usuarioCrear,
-			} as User)
+			return await CrearUsuarioService(usuarioCrear)
 		}
 
 		either.setError(
@@ -62,11 +39,11 @@ export async function CrearUsuarioService(data: usuario): Promise<Either<Errores
 		either.setError(encriptacion.Error() as ErroresUsuarios)
 		return either
 	}
+
 	data.password = encriptacion.Right()
-	const user = await prisma.user.create({
-		data,
-		select: SelectColumnasUsuario(),
-	})
+
+	//crear el registro
+	const user = await prisma.user.create({ data, select: { email: true, name: true, lastName: true } })
 	either.setRight(user as unknown as User)
 	return either
 }
@@ -79,6 +56,5 @@ async function EncriptarPassword(password: string | null | undefined) {
 	}
 
 	let encriptado = await Encriptar(password)
-	console.log('hash creado: ', encriptado.Right())
 	return encriptado
 }

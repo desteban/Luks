@@ -16,6 +16,42 @@ const config = NextAuth({
 	adapter: PrismaAdapter(prisma) as Adapter,
 
 	providers: [
+		CredentialsProvider({
+			name: 'Ingresar',
+			credentials: {
+				email: {
+					label: 'Correo',
+					type: 'email',
+					placeholder: 'Correo',
+				},
+				password: {
+					label: 'Contraseña',
+					type: 'password',
+					placeholder: 'Contraseña',
+				},
+			},
+			async authorize(credentials, req) {
+				if (!credentials || !credentials.email || !credentials.password) {
+					return null
+				}
+
+				const usuario = await prisma.user.findFirst({
+					where: { email: credentials.email },
+				})
+
+				if (!usuario) {
+					return null
+				}
+
+				let hashValido = await CompararHashUsuarioService(usuario, credentials.password)
+				if (!hashValido) {
+					return null
+				}
+
+				usuario.password = null
+				return usuario
+			},
+		}),
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID as string,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
@@ -29,7 +65,12 @@ const config = NextAuth({
 			if (trigger === 'update') {
 				//token la infomacion sin actuaizar de usuario
 				if (token) {
-					const usuario = await ObtenerUsuarioService({ id: token.id })
+					let usuario = await ObtenerUsuarioService({ id: token.id })
+
+					if (usuario) {
+						usuario.password = null
+					}
+
 					token = { ...token, ...usuario }
 					return { ...token, ...(usuario ?? user) }
 				}

@@ -5,8 +5,8 @@ const e = z.setErrorMap((error) => ({
 }))
 
 export const CrearUsuarioSchema = z.object({
-	id: z.string().uuid('El id debe ser un uuid'),
-	name: z.string(),
+	id: z.string().uuid('El id debe ser un uuid').optional(),
+	name: z.string().min(1, 'Debe contener por lo menos un carácter'),
 	lastName: z.string().optional(),
 	email: z.string({ errorMap: z.getErrorMap() }).email('El correo es necesario'),
 	password: z
@@ -15,3 +15,5 @@ export const CrearUsuarioSchema = z.object({
 		.max(25, { message: 'La contraseña debe tener como máximo 25 caracteres' }),
 	// nombreUsuario: z.string({ errorMap: z.getErrorMap() }).optional(),
 })
+
+export type CrearUsuarioTipo = z.infer<typeof CrearUsuarioSchema>

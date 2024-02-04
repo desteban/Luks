@@ -38,7 +38,7 @@ export default function Input({
 			return null
 		}
 
-		return <div className="bg-red-200 px-2 py-1 mt-2 rounded-md">{mensajeError}</div>
+		return <div className="text-red-200 px-1 py-1 mt-2 rounded-md">{mensajeError}</div>
 	}
 
 	return (
