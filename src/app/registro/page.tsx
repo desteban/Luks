@@ -17,8 +17,6 @@ import { ErrorParseSchema, UserDuplicated } from '@/lib/Errors'
 import { ServerError } from '@/lib/Errors/ServerError'
 import { AgruparErrores } from '@/lib/AgruparErrores'
 
-// h-screen w-screen flex-md items-md-center justify-md-center
-
 const contenidoDefault = { email: '', name: '', password: '', lastName: '' }
 
 export default function Page() {
