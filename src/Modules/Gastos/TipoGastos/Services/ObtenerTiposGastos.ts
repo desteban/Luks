@@ -1,5 +1,5 @@
 import { Either } from '@/lib/Either'
-import { ErroresTiposGastos } from '@/lib/Errors/Schemas/TiposGastos/ErroresTiposGastos'
+import { ErroresTiposGastos } from '@/lib/Errors/TiposGastos/ErroresTiposGastos'
 import { ServerError } from '@/lib/Errors/ServerError'
 import prisma from '@/lib/Prisma'
 import { TiposGastos } from '@prisma/client'

@@ -66,7 +66,7 @@ model Actividades {
   nombre    String   @db.VarChar(50)
   userId    String
   createdAt DateTime @default(now())
-  gastos    Gastos[]
+  // gastos    Gastos[]
 
   usuario User @relation(fields: [userId], references: [id])
 }
@@ -85,10 +85,10 @@ model Gastos {
   userId      String
   valor       Decimal  @db.Decimal(10, 2)
   tipoGastoId Int
-  actividadId String
+  // actividadId String?
   createdAt   DateTime @default(now())
 
-  usuario   User        @relation(fields: [userId], references: [id])
-  tipo      TiposGastos @relation(fields: [tipoGastoId], references: [id])
-  actividad Actividades @relation(fields: [actividadId], references: [id])
+  usuario User        @relation(fields: [userId], references: [id])
+  tipo    TiposGastos @relation(fields: [tipoGastoId], references: [id])
+  // actividad Actividades @relation(fields: [actividadId], references: [id])
 }

@@ -1,4 +1,4 @@
-import { ErrorCustom, PropsError } from '../../ErrorCustom'
+import { ErrorCustom, PropsError } from '../ErrorCustom'
 
 export default class TipoGastoNoEncontrado extends Error implements ErrorCustom {
 	StatusHttp: number = 404
