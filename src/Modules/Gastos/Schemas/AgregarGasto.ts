@@ -6,7 +6,7 @@ const e = z.setErrorMap((error) => ({
 
 export const AgregarGastoSchema = z.object({
 	valor: z.number().min(1, 'El valor mínimo es de 1'),
-	nombre: z.string().optional(),
+	nombre: z.string().max(30, 'El nombre debe tener como máximo 30 caracteres').optional(),
 	tipo: z.number(),
 })
 

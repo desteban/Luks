@@ -36,7 +36,7 @@ export async function GastosUsuario(
 				tipoGastoId: true,
 				createdAt: true,
 				nombre: true,
-				tipo: { select: { id: true, imagen: true } },
+				tipo: { select: { id: true, imagen: true, nombre: true } },
 			},
 			where: { userId: userId },
 			take: porPagina,
