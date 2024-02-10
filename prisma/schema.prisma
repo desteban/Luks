@@ -84,6 +84,7 @@ model Gastos {
   id          String   @id @default(uuid())
   userId      String
   valor       Decimal  @db.Decimal(10, 2)
+  nombre      String?  @db.VarChar(30)
   tipoGastoId Int
   // actividadId String?
   createdAt   DateTime @default(now())

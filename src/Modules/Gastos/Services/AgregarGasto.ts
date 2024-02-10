@@ -10,12 +10,14 @@ interface props {
 	tipoGasto: TiposGastos
 	usuario: User
 	valor: number
+	nombre?: string | null
 }
 
 export default async function AgregarGasto({
 	tipoGasto,
 	usuario,
 	valor,
+	nombre = null,
 }: props): Promise<Either<GastosTipoError, Gastos>> {
 	let either = new Either<GastosTipoError, Gastos>()
 
@@ -25,6 +27,7 @@ export default async function AgregarGasto({
 				valor,
 				userId: usuario.id,
 				tipoGastoId: tipoGasto.id,
+				nombre,
 			},
 		})
 		either.setRight(gasto)
