@@ -5,7 +5,8 @@ import { ServerError } from '@/lib/Errors/ServerError'
 import prisma from '@/lib/Prisma'
 import { Decimal, PrismaClientInitializationError } from '@prisma/client/runtime/library'
 
-interface GastoUsuario {
+export interface GastoUsuario {
+	id?: string
 	valor: Decimal
 	nombre?: string | null
 	tipoGastoId: number
@@ -33,6 +34,7 @@ export async function GastosUsuario(
 	try {
 		const listadoGastos = await prisma.gastos.findMany({
 			select: {
+				id: true,
 				valor: true,
 				tipoGastoId: true,
 				createdAt: true,
