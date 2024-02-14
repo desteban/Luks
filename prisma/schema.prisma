@@ -49,6 +49,7 @@ model User {
   sessions      Session[]
   actividades   Actividades[]
   gastos        Gastos[]
+  ingresos      Ingresos[]
   // createdAt     DateTime      @default(now())
   // updatedAt     DateTime      @updatedAt
 }
@@ -91,5 +92,28 @@ model Gastos {
 
   usuario User        @relation(fields: [userId], references: [id])
   tipo    TiposGastos @relation(fields: [tipoGastoId], references: [id])
+  // actividad Actividades @relation(fields: [actividadId], references: [id])
+}
+
+model TiposIngresos {
+  id      Int     @id @default(autoincrement())
+  nombre  String  @unique @db.VarChar(30)
+  descrip String?
+  imagen  String
+
+  gastos Ingresos[]
+}
+
+model Ingresos {
+  id            String   @id @default(uuid())
+  userId        String
+  valor         Decimal  @db.Decimal(10, 2)
+  nombre        String?  @db.VarChar(30)
+  tipoIngresoId Int
+  // actividadId String?
+  createdAt     DateTime @default(now())
+
+  usuario User          @relation(fields: [userId], references: [id])
+  tipo    TiposIngresos @relation(fields: [tipoIngresoId], references: [id])
   // actividad Actividades @relation(fields: [actividadId], references: [id])
 }
