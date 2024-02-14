@@ -1,4 +1,5 @@
 import { ErrorParseSchema, UserNotFound, UsuarioSinSession } from '..'
+import { ErroresPrisma } from '../Prisma/ErroresPrisma'
 import { ServerError } from '../ServerError'
 import { ErroresTiposGastos } from '../TiposGastos/ErroresTiposGastos'
 import { CrearActualizarGastoError } from './CrearActualizarGastoError'
@@ -12,3 +13,4 @@ export type GastosTipoError =
 	| CrearActualizarGastoError
 	| UserNotFound
 	| ErroresTiposGastos
+	| ErroresPrisma

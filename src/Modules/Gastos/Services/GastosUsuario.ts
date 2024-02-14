@@ -1,8 +1,9 @@
 import { Either } from '@/lib/Either'
 import { GastosTipoError } from '@/lib/Errors/Gastos/GastosTipoError'
+import { ConexionDbError } from '@/lib/Errors/Prisma/ConexionDbError'
 import { ServerError } from '@/lib/Errors/ServerError'
 import prisma from '@/lib/Prisma'
-import { Decimal } from '@prisma/client/runtime/library'
+import { Decimal, PrismaClientInitializationError } from '@prisma/client/runtime/library'
 
 interface GastoUsuario {
 	valor: Decimal
@@ -45,6 +46,10 @@ export async function GastosUsuario(
 		either.setRight(listadoGastos)
 	} catch (error) {
 		either.setError(new ServerError({}))
+
+		if (error instanceof PrismaClientInitializationError) {
+			either.setError(new ConexionDbError({}))
+		}
 	}
 
 	return either
