@@ -45,7 +45,7 @@ export async function PUT(request: NextRequest, { params: { id } }: Slug) {
 	const gastoEditado = await EditarGasto(id, usuario.id, valor, tipo, nombre)
 	if (gastoEditado.errors()) return RespuestaJsonError(gastoEditado.Error() as ErrorCustom)
 
-	return RespuestaJson({ data: { mensaje: 'Gasto editado con éxito', gasto: gastoEditado.Right() } })
+	return RespuestaJson({ data: gastoEditado.Right() })
 }
 
 async function ValidarSesionUsuario(): Promise<Either<ErrorCustom, User>> {

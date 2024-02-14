@@ -18,6 +18,10 @@ declare module 'next-auth/jwt' {
 	type JWT = User
 }
 
+// Uso del enum
+const statusCode: HTTPStatusCode = HTTPStatusCode.OK
+console.log(statusCode) // Output: 200
+
 // type Usuario = {
 //   id?: string;
 //   nombre: string;
