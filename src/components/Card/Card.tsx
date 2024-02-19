@@ -10,7 +10,7 @@ interface props {
 export default function Card({ children, className, onClick }: props) {
 	return (
 		<div
-			className={`${estilos.sombra} ${estilos.card} ${className ?? ''}`}
+			className={`${estilos.sombra} ${estilos.card} ${className}`}
 			onClick={onClick}
 		>
 			{children}

@@ -1,11 +1,12 @@
 import AjustarTexto from '@/lib/AjustarTexto'
 import estilos from './Estilos.module.css'
+import { Decimal } from '@prisma/client/runtime/library'
 
 interface props {
 	fecha: Date
 	icono?: string
 	nombre?: string
-	valor: number | string
+	valor: Decimal
 }
 
 function ObtenerDia(fecha: Date): string {
@@ -62,6 +63,11 @@ export default function ItemIngresoGasto({ fecha, icono, nombre, valor }: props)
 		)
 	}
 
+	const Valor = () => {
+		let numero = +valor.toString()
+		return '$ ' + numero.toLocaleString()
+	}
+
 	return (
 		<div className={estilos.item}>
 			<div className={estilos['item-icono']}>
@@ -74,7 +80,9 @@ export default function ItemIngresoGasto({ fecha, icono, nombre, valor }: props)
 					<FechaItem />
 				</div>
 
-				<p className={estilos['item-contenido-valor']}>${valor.toLocaleString()}</p>
+				<p className={estilos['item-contenido-valor']}>
+					<Valor />
+				</p>
 			</div>
 		</div>
 	)

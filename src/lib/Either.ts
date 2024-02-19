@@ -1,13 +1,8 @@
 import { ErrorCustom } from './Errors/ErrorCustom'
 
 export class Either<Left, Right> {
-	private right: undefined | Right
-	private error: undefined | Left
-
-	constructor() {
-		this.error = undefined
-		this.right = undefined
-	}
+	private right!: Right
+	private error!: Left
 
 	public Error(): Left | undefined {
 		return this.error ?? undefined
@@ -41,7 +36,7 @@ export class Either<Left, Right> {
 		this.right = data
 	}
 
-	public Right(): any | null {
-		return this.right ?? null
+	public Right(): Right {
+		return this.right
 	}
 }

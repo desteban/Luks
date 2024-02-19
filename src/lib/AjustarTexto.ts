@@ -13,11 +13,10 @@ export default function AjustarTexto(texto: string, tamanioMaximo: number): stri
 	}
 
 	//cortar texto 3 caracteres antes del manaño maximo
-	const posicionCorte = tamanioMaximo
-	console.log('largo del texto', tamanioTexto, 'corte:', posicionCorte)
+	const corte = tamanioMaximo
 
-	const parteIzquierda = texto.slice(0, posicionCorte)
-	const parteDerecha = texto.slice(posicionCorte)
+	const parteIzquierda = texto.slice(0, corte)
+	const parteDerecha = texto.slice(corte)
 
 	return `${parteIzquierda}...`
 }

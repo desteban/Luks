@@ -1,10 +1,10 @@
-import Card from '@/components/Card/Card'
-import CardBody from '@/components/Card/CardBody'
 import Container from '@/components/Container/Container'
-import ItemIngresoGasto from '@/components/ItemsListas/ItemIngresoGasto'
 import { Nav } from '@/components/nav/Nav'
 import FlechaIzquierda from '@iconos/FlechaIzquierda'
 import Link from 'next/link'
+import Listado from './Listado'
+import Card from '@/components/Card/Card'
+import estilos from './Estilos.module.css'
 
 export default async function Page() {
 	return (
@@ -12,29 +12,19 @@ export default async function Page() {
 			<Nav />
 
 			<Container>
-				<Link
-					href="/inicio"
-					className="text-black"
-				>
-					<FlechaIzquierda />
-				</Link>
+				<p className="mb-3 w-6">
+					<Link
+						href="/inicio"
+						className="text-black"
+						title="Inicio"
+					>
+						<FlechaIzquierda />
+					</Link>
+				</p>
 
 				<h1>Tus gastos</h1>
-				<Card>
-					<CardBody>
-						<ItemIngresoGasto
-							nombre="Nombre"
-							fecha={new Date()}
-							icono="/app.ico"
-							valor={1000000}
-						/>
-						<ItemIngresoGasto
-							nombre="Nombre muy pero que muy largo"
-							fecha={new Date()}
-							icono="/app.ico"
-							valor={1000000}
-						/>
-					</CardBody>
+				<Card className={estilos.listado}>
+					<Listado />
 				</Card>
 			</Container>
 		</main>
