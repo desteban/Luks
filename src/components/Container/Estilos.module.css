@@ -1,0 +1,11 @@
+.container-app {
+	box-sizing: initial;
+	width: calc(100% - (var(--page-container-padding-x) * 2));
+	max-width: var(--tamanio-pantalla);
+	padding-top: var(--padding-top-main);
+	padding-right: var(--page-container-padding-x);
+	padding-bottom: var(--padding-bottom-main);
+	padding-left: var(--page-container-padding-x);
+	margin: 0px auto;
+	overflow: hidden;
+}
