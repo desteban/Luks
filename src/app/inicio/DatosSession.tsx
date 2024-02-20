@@ -12,7 +12,7 @@ export default function DatosSession() {
 
 	return (
 		<div>
-			<h1>¡Hola!</h1>
+			<h1 className="mb-2">¡Hola!</h1>
 			<h3>{session.data?.user?.name}</h3>
 		</div>
 	)

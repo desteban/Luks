@@ -1,0 +1,39 @@
+.dual {
+	margin: 8px 10px;
+	display: grid;
+	gap: 10px;
+	justify-content: center;
+	grid-template-columns: repeat(2, minmax(130px, 1fr));
+	/* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
+	/* grid-template-columns: repeat(2, minmax(6em, 1fr)); */
+	grid-template-rows: repeat(1, minmax(130px, 1fr));
+}
+
+.dual-item {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.dual-item-card {
+	padding: 0.5rem 1.25rem;
+	height: 100%;
+}
+
+.dual-item-texto {
+	margin: 0px;
+	text-align: center;
+	font-weight: 600;
+}
+
+@media (width >= 768px) {
+	.dual-item {
+		justify-content: space-around;
+	}
+
+	.dual-item > * {
+		display: flex;
+		gap: 8px;
+	}
+}
