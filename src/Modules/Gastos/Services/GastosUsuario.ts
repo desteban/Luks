@@ -43,7 +43,7 @@ export async function GastosUsuario(
 			},
 			where: { userId: userId },
 			take: porPagina,
-			skip: pagina,
+			skip: pagina > 0 ? pagina * porPagina : pagina,
 		})
 		either.setRight(listadoGastos)
 	} catch (error) {

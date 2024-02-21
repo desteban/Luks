@@ -1,5 +1,5 @@
+import InicioSesion from '@/components/Links/InicioSesion'
 import NoData from '@public/ilustraciones/NoData'
-import Link from 'next/link'
 
 export default function Page() {
 	return (
@@ -11,13 +11,7 @@ export default function Page() {
 				</div>
 
 				<p className="mt-2 mx-6">
-					Parece que no encontramos la pagina que estas buscando, te podemos llevar al{' '}
-					<Link
-						href="/"
-						title="Inicio"
-					>
-						inicio
-					</Link>
+					Parece que no encontramos la pagina que estas buscando, te podemos llevar al <InicioSesion />
 				</p>
 			</div>
 		</div>
