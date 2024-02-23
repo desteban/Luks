@@ -45,7 +45,6 @@
  *  }
  *
  * @apiError UsuarioSinSession El usuario no cuenta con una sesión activa
- * HTTP/1.1 403 Forbidden
  *
  */
 
@@ -71,8 +70,7 @@
  *  }
  *
  * @apiError ErrorParseSchema Error en el body  del request
- * HTTP/1.1 400 Bad Request
- *
+ * @apiError UsuarioSinSession El usuario no cuenta con una sesión activa
  */
 
 /**
