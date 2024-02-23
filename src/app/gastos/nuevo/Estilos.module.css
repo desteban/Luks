@@ -1,0 +1,53 @@
+.opciones {
+	margin: 8px 10px;
+	display: grid;
+	gap: 10px;
+	grid-auto-flow: dense;
+	grid-auto-rows: minmax(6em, 1fr);
+	grid-template-columns: repeat(2, minmax(min(100%, 6em), 1fr));
+	/* grid-template-columns: repeat(auto-fill, minmax(min(100%, 6em), 1fr)); */
+	/* grid-template-columns: repeat(auto-fit, minmax(min(100%, 6em), 1fr)); */
+}
+
+.optiones-item {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.formulario,
+.rel {
+	position: relative;
+}
+
+.boton {
+	width: 100%;
+}
+
+.peg {
+	width: 100%;
+	/* width: 330px; */
+	left: 0;
+	padding: 0px 2rem;
+	position: fixed;
+	bottom: 5px;
+}
+
+@media (width >= 768px) {
+	.opciones {
+		padding: 10px;
+
+		/* grid-template-columns: repeat(auto-fill, minmax(min(100%, 7em), 1fr)); */
+		grid-template-columns: repeat(5, minmax(min(100%, 7em), 1fr));
+
+		/* 
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap; */
+	}
+
+	.peg {
+		position: relative;
+	}
+}

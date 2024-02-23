@@ -8,25 +8,21 @@ import estilos from './Estilos.module.css'
 
 export default async function Page() {
 	return (
-		<main>
-			<Nav />
+		<>
+			<p className="mb-3 w-6">
+				<Link
+					href="/inicio"
+					className="text-black"
+					title="Inicio"
+				>
+					<FlechaIzquierda />
+				</Link>
+			</p>
 
-			<Container>
-				<p className="mb-3 w-6">
-					<Link
-						href="/inicio"
-						className="text-black"
-						title="Inicio"
-					>
-						<FlechaIzquierda />
-					</Link>
-				</p>
-
-				<h1>Tus gastos</h1>
-				<Card className={estilos.listado}>
-					<Listado />
-				</Card>
-			</Container>
-		</main>
+			<h1>Tus gastos</h1>
+			<Card className={estilos.listado}>
+				<Listado />
+			</Card>
+		</>
 	)
 }

@@ -103,7 +103,6 @@ export default function Listado({}: props) {
 
 	return (
 		<section aria-label="Listado de gastos">
-			<h2>{page}</h2>
 			<Gastos />
 			<Button
 				className="w-full mt-4"

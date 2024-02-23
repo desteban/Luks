@@ -1,11 +1,18 @@
 import { Metadata } from 'next'
 import { ReactNode } from 'react'
+import Contenedor from './Contenedor'
 
 export const metadata: Metadata = {
 	title: 'Gastos',
-	description: 'Registra aquí tus gastos para saber en donde está tu dinero',
+	description: 'Aquí puedes saber cuales son tus gastos',
 }
 
 export default function Layout({ children }: { children: ReactNode }) {
-	return <main>{children}</main>
+	return (
+		<main>
+			<Contenedor>
+				<>{children}</>
+			</Contenedor>
+		</main>
+	)
 }

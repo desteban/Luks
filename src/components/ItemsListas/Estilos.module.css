@@ -58,3 +58,16 @@
 	/* width: 100%; */
 	font-weight: 700;
 }
+
+.tipo-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.tipo-item img,
+.tipo-item-imagen {
+	margin: auto;
+	height: 48px;
+	width: 48px;
+}
