@@ -57,7 +57,7 @@ async function ValidarSesionUsuario(): Promise<Either<ErrorCustom, User>> {
 		return either
 	}
 
-	const usuario = await ObtenerUsuarioMinimoService({ email: session.user.email ?? '' })
+	const usuario = await ObtenerUsuarioMinimoService({ email: session.email ?? '' })
 	if (!usuario) {
 		either.setError(new UserNotFound({}))
 		return either

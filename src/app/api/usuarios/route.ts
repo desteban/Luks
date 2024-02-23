@@ -47,7 +47,8 @@ export async function POST(req: Request) {
 		return RespuestaJsonError(usuarioNuevo.Error() as ErrorCustom)
 	}
 
-	delete usuarioNuevo.Right().id
+	// delete usuarioNuevo.Right().id
+	const { email, emailVerified, image, lastName, name } = usuarioNuevo.Right()
 	return RespuestaJson({ data: usuarioNuevo.Right(), config: { status: 201 } })
 }
 

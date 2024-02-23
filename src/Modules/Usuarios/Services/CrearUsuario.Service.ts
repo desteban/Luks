@@ -48,12 +48,12 @@ export async function CrearUsuarioService(data: CrearUsuarioTipo): Promise<Eithe
 	return either
 }
 
-async function EncriptarPassword(password: string | null | undefined) {
-	if (!password) {
-		let either = new Either<ErroresEncriptacion, string | null>()
-		either.setRight(null)
-		return either
-	}
+async function EncriptarPassword(password: string) {
+	// if (!password) {
+	// 	let either = new Either<ErroresEncriptacion, string | null>()
+	// 	either.setRight(null)
+	// 	return either
+	// }
 
 	let encriptado = await Encriptar(password)
 	return encriptado

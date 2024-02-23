@@ -66,7 +66,3 @@ export enum HTTPStatusCode {
 	NotExtended = 510,
 	NetworkAuthenticationRequired = 511,
 }
-
-// Uso del enum
-const statusCode: HTTPStatusCode = HTTPStatusCode.OK
-console.log(statusCode) // Output: 200

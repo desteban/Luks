@@ -18,12 +18,12 @@ export async function GET(req: NextRequest) {
 	if (!session) return RespuestaJsonError(new UsuarioSinSession({}))
 
 	const datosPaginacion = ObtenerParamsPaginacion(req)
-	const gastos = await GastosUsuario(session.user.id, datosPaginacion.pagina, datosPaginacion.porPagina)
+	const gastos = await GastosUsuario(session.id, datosPaginacion.pagina, datosPaginacion.porPagina)
 	if (gastos.errors()) {
 		return RespuestaJsonError(gastos.Error() as ErrorCustom)
 	}
 
-	const datosDePaginacion = await PaginacionGastos(session.user.id, datosPaginacion.pagina, datosPaginacion.porPagina)
+	const datosDePaginacion = await PaginacionGastos(session.id, datosPaginacion.pagina, datosPaginacion.porPagina)
 
 	return RespuestaJson({
 		data: {
@@ -41,16 +41,13 @@ export async function POST(req: NextRequest) {
 	const datos = EjecutarSchema(AgregarGastoSchema, body)
 	if (datos.errors()) return RespuestaJsonError(datos.Error() as ErrorCustom)
 
-	const usuario = await ObtenerUsuarioService({ email: session.user.email ?? '' })
-	if (!usuario) return RespuestaJsonError(new UserNotFound({}))
-
 	const { tipo, valor, nombre } = datos.Right() as AgregarGastoTipo
 	const tipoGasto = await ObtenerTipoGasto(tipo)
 	if (tipoGasto.errors()) return RespuestaJsonError(tipoGasto.Error() as ErrorCustom)
 
 	const gasto = await AgregarGasto({
 		tipoGasto: tipoGasto.Right(),
-		usuario: usuario,
+		usuario: session,
 		valor: valor,
 		nombre,
 	})

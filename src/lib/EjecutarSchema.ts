@@ -8,7 +8,7 @@ import { ZodError, z } from 'zod'
  * @param data datos a validar por el schema
  * Este método ejecuta cualquier esquema de zod
  */
-export function EjecutarSchema(schema: z.Schema, data: object): Either<ErrorParseSchema, any> {
+export function EjecutarSchema(schema: z.Schema, data: object): Either<ErrorParseSchema, z.infer<typeof schema>> {
 	const either = new Either<ErrorParseSchema, any>()
 
 	try {

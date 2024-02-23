@@ -13,9 +13,10 @@ async function PedirGastos(
 	pagina: number,
 	setGastos: (gastos: GastoUsuario[]) => void,
 	setTotal: (total: number) => void,
+	abortSignal?: AbortSignal,
 	// setPage: (page: number) => void,
 ) {
-	const listado = await ListadoGastos({ pagina: pagina, resultados: 1 })
+	const listado = await ListadoGastos({ pagina: pagina, abortSignal })
 
 	if (listado.errors()) {
 		let err = listado.Error()
@@ -36,9 +37,29 @@ export default function Listado({}: props) {
 	const [total, setTotal] = useState<number>(1)
 
 	useEffect(() => {
+		let abort = new AbortController()
+		let ignorar = false
+
+		async function Activar() {
+			const signal = abort.signal
+
+			if (!ignorar) {
+				try {
+					await PedirGastos(page, setGastos, setTotal, signal)
+				} catch {
+					console.log('abort')
+				}
+			}
+		}
+
 		setLoad(true)
-		PedirGastos(page, setGastos, setTotal)
+		Activar()
 		setLoad(false)
+
+		return () => {
+			ignorar = true
+			abort.abort()
+		}
 	}, [page])
 
 	const Esqueleto = () => (
@@ -82,6 +103,7 @@ export default function Listado({}: props) {
 
 	return (
 		<section aria-label="Listado de gastos">
+			<h2>{page}</h2>
 			<Gastos />
 			<Button
 				className="w-full mt-4"

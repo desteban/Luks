@@ -14,6 +14,7 @@ export interface GastoUsuario {
 	tipo: {
 		id: number
 		imagen: string
+		nombre: string
 	}
 }
 

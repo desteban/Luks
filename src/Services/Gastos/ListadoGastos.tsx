@@ -13,6 +13,7 @@ import { RutasAPI, UrlApi } from '@/lib/Globales'
 interface props {
 	pagina: number
 	resultados?: number
+	abortSignal?: AbortSignal
 }
 
 interface PaginacionListadoGastos {
@@ -36,7 +37,7 @@ export default async function ListadoGastos(data: props): Promise<Either<GastosT
 	let either = new Either<GastosTipoError, PaginacionListadoGastos>()
 	const params = ObtenerParams(data)
 
-	const respuesta = await fetch(`${UrlApi}${RutasAPI.gastos}${params}`)
+	const respuesta = await fetch(`${UrlApi}${RutasAPI.gastos}${params}`, { signal: data.abortSignal })
 	const json = await respuesta.json()
 
 	if (respuesta.status !== 200) {

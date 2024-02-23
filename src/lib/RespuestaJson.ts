@@ -6,8 +6,8 @@ interface props {
 	data?: any
 }
 
-export function RespuestaJson({ config = { status: 200 }, data }: props) {
-	return NextResponse.json(data, config)
+export function RespuestaJson({ config, data }: props) {
+	return NextResponse.json(data, { ...config })
 }
 
 interface propsError {
