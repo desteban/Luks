@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
 	if (!session) return RespuestaJsonError(new UsuarioSinSession({}))
 
 	const datosDePaginacion = ObtenerParamsPaginacion(req)
-	const ingresos = await IngresosUsuario(session.id, datosDePaginacion.pagina, datosDePaginacion.porPagina)
+	const ingresos = await IngresosUsuario(session.id, datosDePaginacion.pagina ?? 1, datosDePaginacion.porPagina ?? 30)
 
 	if (ingresos.errors()) {
 		return RespuestaJsonError(ingresos.Error() as ErrorCustom)

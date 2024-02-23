@@ -14,7 +14,7 @@ type Paginacion = {
 	ingresos: IngresosUsuario[]
 }
 
-interface IngresosUsuario {
+export interface IngresosUsuario {
 	id: string
 	valor: Decimal
 	nombre: string | null
