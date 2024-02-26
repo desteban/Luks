@@ -63,6 +63,8 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	position: relative;
+	cursor: pointer;
 }
 
 .tipo-item img,
@@ -70,4 +72,18 @@
 	margin: auto;
 	height: 48px;
 	width: 48px;
+}
+
+.tipo-item-circulo {
+	width: 13px;
+	height: 13px;
+	border-radius: 100%;
+	border: 1px lightgray solid;
+	position: absolute;
+	top: 8px;
+	left: 8px;
+}
+
+.tipo-item-circulo-activo {
+	background-color: hsl(var(--primary));
 }

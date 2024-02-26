@@ -2,16 +2,23 @@
 
 import estilos from './Estilos.module.css'
 import Card from '@/components/Card/Card'
+import InputMoneda from '@/components/Input/InputMoneda'
 import Input from '@/components/Input/Inputs'
 import ItemTipoIngresoGasto from '@/components/ItemsListas/ItemTipoIngresoGasto'
 import { Button } from '@/components/ui/button'
 import FlechaIzquierda from '@iconos/FlechaIzquierda'
+import { Decimal } from '@prisma/client/runtime/library'
 import Link from 'next/link'
-import { FormEvent } from 'react'
+import { FormEvent, useState } from 'react'
 
 async function AgregarIngreso() {}
 
 export default function Page() {
+	const [valorGasto, setValorGasto] = useState<string>('')
+	const [idTipo, setIdTipo] = useState<number | null>(null)
+
+	const formato = () => {}
+
 	const Submit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 		await AgregarIngreso()
@@ -23,42 +30,33 @@ export default function Page() {
 				<ItemTipoIngresoGasto
 					nombre="Nombre"
 					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
+					id={1}
+					setIdActivo={setIdTipo}
+					idActivo={idTipo}
 				/>
+
 				<ItemTipoIngresoGasto
 					nombre="Nombre"
 					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
+					id={2}
+					setIdActivo={setIdTipo}
+					idActivo={idTipo}
 				/>
+
 				<ItemTipoIngresoGasto
 					nombre="Nombre"
 					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
+					id={3}
+					setIdActivo={setIdTipo}
+					idActivo={idTipo}
 				/>
+
 				<ItemTipoIngresoGasto
 					nombre="Nombre"
 					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
-				/>
-				<ItemTipoIngresoGasto
-					nombre="Nombre"
-					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
-				/>
-				<ItemTipoIngresoGasto
-					nombre="Nombre"
-					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
-				/>
-				<ItemTipoIngresoGasto
-					nombre="Nombre"
-					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
-				/>
-				<ItemTipoIngresoGasto
-					nombre="Nombre"
-					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
-				/>
-				<ItemTipoIngresoGasto
-					nombre="Nombre"
-					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
-				/>
-				<ItemTipoIngresoGasto
-					nombre="Nombre"
-					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
+					id={4}
+					setIdActivo={setIdTipo}
+					idActivo={idTipo}
 				/>
 			</div>
 		)
@@ -89,17 +87,15 @@ export default function Page() {
 						id="nombre"
 						label="Nombre"
 						name="nombre"
-						placeHolder="Nombre del gasto"
 						className="mb-5"
 					/>
 
-					<Input
-						id="valor"
-						name="valor"
+					<InputMoneda
+						id="moneda"
 						label="Valor"
-						placeHolder="10.000"
-						required
-						className="mb-5"
+						name="moneda"
+						value={valorGasto}
+						onChange={setValorGasto}
 					/>
 
 					<div aria-label="Listado de tipo de gastos">

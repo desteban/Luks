@@ -8,31 +8,22 @@ interface props {
 	autoComplete?: 'on' | 'off'
 	className?: string
 	disabled?: boolean
-	mensajeError?: string
 	id: string
 	label: string
+	mensajeError?: string
 	name: string
 	onChange?: (event: ChangeEvent<HTMLInputElement>) => void
+	pattern?: string
 	placeHolder?: string
 	required?: boolean
 	type?: tipoInput
 	value?: string
+	title?: string
 }
 
-export default function Input({
-	autoComplete = 'on',
-	className = '',
-	disabled = false,
-	id,
-	label,
-	name,
-	onChange,
-	placeHolder,
-	required = false,
-	type = 'text',
-	value,
-	mensajeError,
-}: props) {
+export default function Input(props: props) {
+	const { mensajeError, className, required, label } = props
+
 	const MensajeError = () => {
 		if (!mensajeError) {
 			return null
@@ -53,15 +44,8 @@ export default function Input({
 				</div>
 
 				<InputShadcn
-					id={id}
-					name={name}
-					type={type}
-					placeholder={placeHolder}
-					required={required}
-					value={value}
-					disabled={disabled}
-					autoComplete={autoComplete}
-					onChange={onChange}
+					{...props}
+					className=""
 				/>
 			</label>
 			<MensajeError />
