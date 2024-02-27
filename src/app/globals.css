@@ -109,6 +109,13 @@
 		color: var(--color-link);
 	}
 
+	.is-required:before {
+		content: '*';
+		margin-right: 3px;
+		color: red;
+		font-weight: bold;
+	}
+
 	/* input {
     display: flex;
     width: 100%;

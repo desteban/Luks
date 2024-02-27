@@ -1,63 +1,16 @@
-'use client'
-
-import estilos from './Estilos.module.css'
+import TiposGastosService from '@/Services/Gastos/TiposGastosService'
 import Card from '@/components/Card/Card'
-import InputMoneda from '@/components/Input/InputMoneda'
-import Input from '@/components/Input/Inputs'
-import ItemTipoIngresoGasto from '@/components/ItemsListas/ItemTipoIngresoGasto'
-import { Button } from '@/components/ui/button'
 import FlechaIzquierda from '@iconos/FlechaIzquierda'
-import { Decimal } from '@prisma/client/runtime/library'
 import Link from 'next/link'
-import { FormEvent, useState } from 'react'
+import Formulario from './Formulario'
 
-async function AgregarIngreso() {}
+export default async function Page() {
+	const tiposGastos = await TiposGastosService()
 
-export default function Page() {
-	const [valorGasto, setValorGasto] = useState<string>('')
-	const [idTipo, setIdTipo] = useState<number | null>(null)
-
-	const formato = () => {}
-
-	const Submit = async (event: FormEvent<HTMLFormElement>) => {
-		event.preventDefault()
-		await AgregarIngreso()
-	}
-
-	const Tipos = () => {
+	if (tiposGastos.errors()) {
 		return (
-			<div className={estilos.opciones}>
-				<ItemTipoIngresoGasto
-					nombre="Nombre"
-					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
-					id={1}
-					setIdActivo={setIdTipo}
-					idActivo={idTipo}
-				/>
-
-				<ItemTipoIngresoGasto
-					nombre="Nombre"
-					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
-					id={2}
-					setIdActivo={setIdTipo}
-					idActivo={idTipo}
-				/>
-
-				<ItemTipoIngresoGasto
-					nombre="Nombre"
-					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
-					id={3}
-					setIdActivo={setIdTipo}
-					idActivo={idTipo}
-				/>
-
-				<ItemTipoIngresoGasto
-					nombre="Nombre"
-					src={'https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png'}
-					id={4}
-					setIdActivo={setIdTipo}
-					idActivo={idTipo}
-				/>
+			<div>
+				<p>Hemos tenido algunos problemas, inténtalo mas tarde</p>
 			</div>
 		)
 	}
@@ -71,7 +24,7 @@ export default function Page() {
 						className="text-black"
 						title="Inicio"
 					>
-						<FlechaIzquierda />
+						<FlechaIzquierda size={24} />
 					</Link>
 				</p>
 
@@ -79,33 +32,10 @@ export default function Page() {
 			</div>
 
 			<Card>
-				<form
-					onSubmit={Submit}
-					className={estilos.formulario}
-				>
-					<Input
-						id="nombre"
-						label="Nombre"
-						name="nombre"
-						className="mb-5"
-					/>
-
-					<InputMoneda
-						id="moneda"
-						label="Valor"
-						name="moneda"
-						value={valorGasto}
-						onChange={setValorGasto}
-					/>
-
-					<div aria-label="Listado de tipo de gastos">
-						<h3>Seleccione un tipo de gasto</h3>
-						<Tipos />
-					</div>
-					<div className={estilos.peg}>
-						<Button className={estilos.boton}>Guardar</Button>
-					</div>
-				</form>
+				<Formulario
+					tiposGastos={tiposGastos.Right() ?? []}
+					mensajeErro={tiposGastos.Error()?.message}
+				/>
 			</Card>
 		</div>
 	)

@@ -74,7 +74,7 @@ export default function Page() {
 									id="name"
 									label="Nombre"
 									name="name"
-									placeHolder="Nombre"
+									placeholder="Nombre"
 									required
 									value={estado.name}
 									onChange={changeInput}
@@ -84,7 +84,7 @@ export default function Page() {
 								<Input
 									id="lastName"
 									label="Apellido"
-									placeHolder="Apellido"
+									placeholder="Apellido"
 									name="lastName"
 									value={estado.lastName}
 									onChange={changeInput}
@@ -96,7 +96,7 @@ export default function Page() {
 								id="email"
 								name="email"
 								label="Correo"
-								placeHolder="Correo"
+								placeholder="Correo"
 								className="mb-5"
 								required
 								value={estado.email}
@@ -108,7 +108,7 @@ export default function Page() {
 								id="usuario"
 								name="usuario"
 								label="Nombre de usuario"
-								placeHolder="Nombre de usuario"
+								placeholder="Nombre de usuario"
 								className="mb-5"
 							/> */}
 
@@ -116,7 +116,7 @@ export default function Page() {
 								id="password"
 								label="Contraseña"
 								name="password"
-								placeHolder="Contraseña"
+								placeholder="Contraseña"
 								className="mb-2"
 								required
 								value={estado.password}

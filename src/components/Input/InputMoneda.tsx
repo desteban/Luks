@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react'
 import { Input as InputShadcn } from '@ui/input'
 import estilos from './estilos.module.css'
-import { Decimal } from '@prisma/client/runtime/library'
+import ErrorSimple from '../Errores/ErrorSimple'
 
 export type tipoInput = 'text' | 'number' | 'email' | 'date' | 'year' | 'month' | 'password'
 
@@ -15,7 +15,7 @@ interface props {
 	name: string
 	onChange: (valor: string) => void
 	pattern?: string
-	placeHolder?: string
+	placeholder?: string
 	required?: boolean
 	type?: tipoInput
 	value?: string
@@ -23,7 +23,6 @@ interface props {
 }
 
 function formatearComoMoneda(numero: number): string {
-	console.log('recibe', numero)
 	const partes = numero.toFixed(2).split('.')
 	const monto = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 	// const decimales = partes[1] === '00' ? '' : '.' + partes[1]
@@ -32,19 +31,23 @@ function formatearComoMoneda(numero: number): string {
 	return monto.toString()
 }
 
-export default function InputMoneda(props: props) {
-	const { mensajeError, className, required, label, value, onChange } = props
-
+export default function InputMoneda({ mensajeError, label, className, required, onChange, value, ...props }: props) {
 	const MensajeError = () => {
 		if (!mensajeError) {
 			return null
 		}
 
-		return <div className="text-red-200 px-1 py-1 mt-2 rounded-md">{mensajeError}</div>
+		return <ErrorSimple mensaje={mensajeError} />
 	}
 
 	const Change = (event: ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.currentTarget
+
+		if (value === '') {
+			onChange(value)
+			return
+		}
+
 		const valueSinPuntos = value.replaceAll('.', '')
 		const valor: number = parseFloat(valueSinPuntos)
 
@@ -53,7 +56,6 @@ export default function InputMoneda(props: props) {
 		}
 
 		const valorConFormato: string = formatearComoMoneda(valor)
-		console.log('formateado', valorConFormato)
 		onChange(valorConFormato)
 	}
 
@@ -77,10 +79,13 @@ export default function InputMoneda(props: props) {
 						type="text"
 						onChange={Change}
 						value={value}
-						pattern="^-?\d+(\.\d+)?$"
+						pattern="^\d{1,3}(.\d{3})*$"
 						title="1.000"
 						inputMode="numeric"
 					/>
+					{/* ^-?\d+(\.\d+)?$ numeros negativos */}
+					{/* ^\d+(\.\d+)?$  solo numeros positivos */}
+					{/* ^\d{1,3}(.\d{3})*$ */}
 				</div>
 			</label>
 			<MensajeError />

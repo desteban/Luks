@@ -6,4 +6,7 @@ export const RutasAPI = {
 	usuarios: 'usuarios',
 	UsuarioActual: 'usuarios/actual',
 	gastos: 'gastos',
+	tipos: {
+		gastos: 'tipos/gastos',
+	},
 }

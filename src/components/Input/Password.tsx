@@ -6,6 +6,7 @@ import estilos from './estilos.module.css'
 import OjoIcon from '../../../public/iconos/OjosIcon'
 import { tipoInput } from './Inputs'
 import { OjoCerrado } from '../../../public/iconos/OjoCerrado'
+import ErrorSimple from '../Errores/ErrorSimple'
 
 interface props {
 	className?: string
@@ -15,7 +16,7 @@ interface props {
 	label: string
 	name: string
 	onChange?: (event: ChangeEvent<HTMLInputElement>) => void
-	placeHolder?: string
+	placeholder?: string
 	required?: boolean
 	value?: string
 }
@@ -28,7 +29,7 @@ export default function Password({
 	label,
 	name,
 	onChange,
-	placeHolder,
+	placeholder,
 	required = false,
 	value,
 }: props) {
@@ -44,7 +45,7 @@ export default function Password({
 			return null
 		}
 
-		return <div className="text-red-200 px-1 py-1 mt-2 rounded-md">{mensajeError}</div>
+		return <ErrorSimple mensaje={mensajeError} />
 	}
 
 	return (
@@ -59,7 +60,7 @@ export default function Password({
 						id={id}
 						name={name}
 						type={tipoInput ? 'password' : 'text'}
-						placeholder={placeHolder}
+						placeholder={placeholder}
 						required={required}
 						value={value}
 						disabled={disabled}

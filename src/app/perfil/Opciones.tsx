@@ -82,7 +82,7 @@ export default function Opciones() {
 						id="name"
 						label="Nombre"
 						name="name"
-						placeHolder="Nombre"
+						placeholder="Nombre"
 						required
 						value={usuario.name}
 						onChange={ChangeInput}
@@ -91,7 +91,7 @@ export default function Opciones() {
 					<Input
 						id="lastName"
 						label="Apellido"
-						placeHolder="Apellido"
+						placeholder="Apellido"
 						name="lastName"
 						value={usuario.lastName ?? ''}
 						onChange={ChangeInput}
@@ -102,7 +102,7 @@ export default function Opciones() {
 					id="email"
 					name="email"
 					label="Correo"
-					placeHolder="Correo"
+					placeholder="Correo"
 					className="mb-5"
 					required
 					value={usuario.email}

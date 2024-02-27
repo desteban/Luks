@@ -54,7 +54,7 @@ export default function Page(props: props) {
 								id="email"
 								name="email"
 								label="Correo"
-								placeHolder="Correo"
+								placeholder="Correo"
 								className="mb-5"
 								value={email}
 								onChange={(e) => setEmail(e.currentTarget.value)}
@@ -64,7 +64,7 @@ export default function Page(props: props) {
 								id="password"
 								label="Contraseña"
 								name="password"
-								placeHolder="Contraseña"
+								placeholder="Contraseña"
 								className="mb-2"
 								value={password}
 								onChange={(e) => setPassword(e.currentTarget.value)}

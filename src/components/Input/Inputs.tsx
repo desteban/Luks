@@ -1,6 +1,7 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, InputHTMLAttributes } from 'react'
 import { Input as InputShadcn } from '@ui/input'
 import estilos from './estilos.module.css'
+import ErrorSimple from '../Errores/ErrorSimple'
 
 export type tipoInput = 'text' | 'number' | 'email' | 'date' | 'year' | 'month' | 'password'
 
@@ -14,22 +15,26 @@ interface props {
 	name: string
 	onChange?: (event: ChangeEvent<HTMLInputElement>) => void
 	pattern?: string
-	placeHolder?: string
+	placeholder?: string
 	required?: boolean
 	type?: tipoInput
 	value?: string
 	title?: string
 }
 
-export default function Input(props: props) {
-	const { mensajeError, className, required, label } = props
+// export interface props extends React.InputHTMLAttributes<HTMLInputElement> {
+// 	placeHolder?: string
+// 	label: string
+// 	mensajeError: string
+// }
 
+export default function Input({ mensajeError, label, className, required, ...props }: props) {
 	const MensajeError = () => {
 		if (!mensajeError) {
 			return null
 		}
 
-		return <div className="text-red-200 px-1 py-1 mt-2 rounded-md">{mensajeError}</div>
+		return <ErrorSimple mensaje={mensajeError} />
 	}
 
 	return (
