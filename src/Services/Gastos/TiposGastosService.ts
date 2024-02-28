@@ -1,4 +1,5 @@
 import { Either } from '@/lib/Either'
+import ErrorConexionServidor from '@/lib/ErrorConexionServidor'
 import { UsuarioSinSession } from '@/lib/Errors'
 import { ConexionDbError } from '@/lib/Errors/Prisma/ConexionDbError'
 import { ServerError } from '@/lib/Errors/ServerError'
@@ -31,8 +32,7 @@ export default async function TiposGastosService(): Promise<Either<ErroresTiposG
 		const listado: TiposGastosFront[] = json
 		either.setRight(listado)
 	} catch (error) {
-		if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
-			console.error('Error de red: no se pudo conectar al servidor.')
+		if (ErrorConexionServidor(error)) {
 			either.setError(new ServicioNoDisponible({}))
 		} else either.setError(new ServerError({}))
 	} finally {

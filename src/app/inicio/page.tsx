@@ -32,7 +32,7 @@ export default async function Page() {
 						</div>
 					</BotonAcordion>
 
-					<BotonAcordion href="/ingresos">
+					<BotonAcordion href="/ingreso">
 						<div>
 							<div className="flex justify-center">
 								<BuscarListaIcon />

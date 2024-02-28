@@ -2,7 +2,7 @@ import { AgregarGastoSchema, AgregarGastoTipo } from '@/Modules/Gastos/Schemas/A
 import AgregarGasto from '@/Modules/Gastos/Services/AgregarGasto'
 import { GastosUsuario } from '@/Modules/Gastos/Services/GastosUsuario'
 import PaginacionGastos from '@/Modules/Gastos/Services/PaginacionGastos'
-import ObtenerTipoGasto from '@/Modules/Gastos/TipoGastos/Services/ObtenerTipoGasto'
+import ObtenerTipoGasto from '@/Modules/Tipos/TipoGastos/Services/ObtenerTipoGasto'
 import { ObtenerUsuarioService } from '@/Modules/Usuarios/Services/ObtenerUsuario'
 import { EjecutarSchema } from '@/lib/EjecutarSchema'
 import { UserNotFound, UsuarioSinSession } from '@/lib/Errors'

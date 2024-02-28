@@ -1,7 +1,7 @@
 import {
 	ObtenerOtrosTiposGastos,
 	ObtenerPrimerosTiposGastos,
-} from '@/Modules/Gastos/TipoGastos/Services/ObtenerTiposGastos'
+} from '@/Modules/Tipos/TipoGastos/Services/ObtenerTiposGastos'
 import { ErrorCustom } from '@/lib/Errors/ErrorCustom'
 import { RespuestaJson, RespuestaJsonError } from '@/lib/RespuestaJson'
 import { NextRequest } from 'next/server'
