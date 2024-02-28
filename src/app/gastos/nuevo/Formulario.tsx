@@ -11,6 +11,8 @@ import ErrorSimple from '@/components/Errores/ErrorSimple'
 import { EjecutarSchema } from '@/lib/EjecutarSchema'
 import { AgregarGastoSchema } from '@/Modules/Gastos/Schemas/AgregarGasto'
 import { AgruparErrores } from '@/lib/AgruparErrores'
+import AgregarGastoService from '@/Services/Gastos/AgregarGastoService'
+import { Alerta, AlertaProps } from '@/components/Alerta/Alerta'
 
 interface props {
 	mensajeErro?: string
@@ -41,16 +43,39 @@ function Validar(valor: string, tipo: number | null, nombre: string): null | Err
 	return null
 }
 
-async function AgregarIngreso(nombre: string | null, valor: string, idTipoGasto: number) {}
+async function AgregarIngreso(nombre: string | null, valor: string, tipo: number): Promise<string | true> {
+	let valorSinPuntos = valor.replaceAll(/\./g, '')
+	const valorGasto = parseFloat(valorSinPuntos)
+	const data = {
+		nombre: nombre?.length === 0 ? null : nombre,
+		valor: isNaN(valorGasto) ? '' : valorGasto,
+		tipo,
+	}
+
+	const respuesta = await AgregarGastoService({
+		nombre: nombre?.length === 0 ? null : nombre,
+		valor: isNaN(valorGasto) ? 0 : valorGasto,
+		tipo,
+	})
+
+	if (respuesta.errors()) {
+		console.error('Error', respuesta.Error())
+		return respuesta.Error()?.message ?? 'Algo ha salido mal.'
+	}
+
+	return true
+}
 
 export default function Formulario({ tiposGastos, mensajeErro }: props) {
 	const [nombre, setNombre] = useState<string>('')
 	const [valorGasto, setValorGasto] = useState<string>('')
 	const [tipo, setIdTipo] = useState<number | null>(null)
 	const [erroresInput, setErrroresInput] = useState<Errores>({})
+	const [mensajeAlerta, setMensajeAlerta] = useState<AlertaProps>({ tipo: 'info' })
 
 	const Submit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
+		setMensajeAlerta({ tipo: 'info', mostrar: true, texto: 'Guardando...' })
 
 		let error = Validar(valorGasto, tipo, nombre)
 		if (error) {
@@ -59,6 +84,13 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 		}
 
 		setErrroresInput({})
+		const resultado = await AgregarIngreso(nombre, valorGasto, tipo!)
+		if (resultado !== true) {
+			setMensajeAlerta({ tipo: 'error', texto: resultado, mostrar: true })
+			return
+		}
+
+		setMensajeAlerta({ tipo: 'success', texto: 'Gasto registrado con éxito', mostrar: true })
 	}
 
 	const Tipos = () => {
@@ -96,6 +128,8 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 			className={estilos.formulario}
 			aria-label="Agregar gasto"
 		>
+			<Alerta {...mensajeAlerta} />
+
 			<Input
 				id="nombre"
 				label="Nombre"
