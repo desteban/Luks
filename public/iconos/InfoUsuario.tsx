@@ -1,3 +1,5 @@
+import { porpsIcons } from '../..'
+
 export function InfoUsuario({ className, onClick, size = 24 }: porpsIcons) {
 	return (
 		<svg

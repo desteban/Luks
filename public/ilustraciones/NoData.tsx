@@ -1,3 +1,5 @@
+import { porpsIcons } from '../..'
+
 export default function NoData({ className, onClick, size }: porpsIcons) {
 	return (
 		<svg

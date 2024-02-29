@@ -1,3 +1,5 @@
+import { porpsIcons } from '../..'
+
 export default function EscudoCandado({ className, onClick, size = 24 }: porpsIcons) {
 	return (
 		<svg

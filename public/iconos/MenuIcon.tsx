@@ -1,3 +1,5 @@
+import { porpsIcons } from '../..'
+
 export default function MenuIcon({ className, onClick, size = 32 }: porpsIcons) {
 	return (
 		<svg

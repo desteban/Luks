@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
 	let session = await SessionEnServidor()
-	if (!session || !session.user?.email) {
+	if (!session || !session.email) {
 		return RespuestaJsonError(new UsuarioSinSession({}))
 	}
 
@@ -64,7 +64,7 @@ export async function PUT(req: Request) {
 		return RespuestaJsonError(data.Error() as ErrorCustom)
 	}
 
-	let usuario = await ObtenerUsuarioFullService({ email: session.user.email })
+	let usuario = await ObtenerUsuarioFullService({ email: session.email })
 	if (!usuario) {
 		return RespuestaJsonError(new UserNotFound({}))
 	}

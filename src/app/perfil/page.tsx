@@ -53,7 +53,7 @@ export default async function Page() {
 										id="oldPassword"
 										name="oldPassword"
 										label="Contraseña antigua"
-										placeHolder="Contraseña antigua"
+										placeholder="Contraseña antigua"
 										required
 										className="mb-7"
 									/>
@@ -62,7 +62,7 @@ export default async function Page() {
 										id="password"
 										name="password"
 										label="Contraseña nueva"
-										placeHolder="Contraseña nueva"
+										placeholder="Contraseña nueva"
 										required
 										className="mb-7"
 									/>
@@ -71,7 +71,7 @@ export default async function Page() {
 										id="confirmPassword"
 										name="confirmPassword"
 										label="Confirmar contraseña"
-										placeHolder="Confirmar contraseña"
+										placeholder="Confirmar contraseña"
 										required
 										className="mb-7"
 									/>

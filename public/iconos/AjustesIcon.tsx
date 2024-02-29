@@ -1,3 +1,5 @@
+import { porpsIcons } from '../..'
+
 export default function AjustesIcon({ className, onClick, size = 24 }: porpsIcons) {
 	return (
 		<svg

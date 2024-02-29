@@ -5,7 +5,7 @@ import SessionEnServidor from '@/lib/utils/SessionEnServidor'
 
 export async function GET() {
 	const session = await SessionEnServidor()
-	if (!session || !session.user?.email) {
+	if (!session || !session.email) {
 		return RespuestaJsonError(new UsuarioSinSession({}))
 	}
 

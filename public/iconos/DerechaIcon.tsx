@@ -1,3 +1,5 @@
+import { porpsIcons } from '../..'
+
 export default function DerechaIcon({ className, onClick, size = 24 }: porpsIcons) {
 	return (
 		<svg

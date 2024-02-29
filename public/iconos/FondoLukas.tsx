@@ -1,3 +1,5 @@
+import { porpsIcons } from '../..'
+
 export default function LuksLogo({ size = 30, className, onClick }: porpsIcons) {
 	return (
 		<svg
