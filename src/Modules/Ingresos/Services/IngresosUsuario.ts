@@ -56,6 +56,9 @@ export async function IngresosUsuario(
 			where: { userId },
 			take: tomar,
 			skip: pagina > 0 ? pagina * tomar : pagina,
+			orderBy: {
+				createdAt: 'desc',
+			},
 		})
 
 		either.setRight({

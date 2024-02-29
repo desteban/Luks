@@ -33,7 +33,7 @@ export default async function EditarGasto(
 			return either
 		}
 
-		const gastoDb = gasto.Right() as GastoUsuario
+		const gastoDb = gasto.Right()
 		const gastoEditado = await prisma.gastos.update({
 			where: { id: GastoId, userId },
 			data: {

@@ -7,7 +7,7 @@ import { Decimal, PrismaClientInitializationError } from '@prisma/client/runtime
 
 export interface GastoUsuario {
 	id?: string
-	valor: Decimal
+	valor: Decimal | string
 	nombre?: string | null
 	tipoGastoId: number
 	createdAt: Date
@@ -45,6 +45,9 @@ export async function GastosUsuario(
 			where: { userId: userId },
 			take: porPagina,
 			skip: pagina > 0 ? pagina * porPagina : pagina,
+			orderBy: {
+				createdAt: 'desc',
+			},
 		})
 		either.setRight(listadoGastos)
 	} catch (error) {
