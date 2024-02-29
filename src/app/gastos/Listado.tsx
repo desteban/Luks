@@ -107,9 +107,9 @@ export default function Listado({}: props) {
 					<Link
 						href={'/gastos/' + id}
 						className="text-black"
+						key={id ?? i}
 					>
 						<ItemIngresoGasto
-							key={id ?? i}
 							fecha={new Date(createdAt)}
 							valor={valor}
 							nombre={nombre ?? undefined}
