@@ -1,11 +1,11 @@
-import TiposGastosService from '@/Services/Gastos/TiposGastosService'
 import Card from '@/components/Card/Card'
 import FlechaIzquierda from '@iconos/FlechaIzquierda'
 import Link from 'next/link'
 import Formulario from './Formulario'
+import TiposIngresosService from '@/Services/Ingresos/TiposIngresosService'
 
 export default async function Page() {
-	const tiposGastos = await TiposGastosService()
+	const tiposGastos = await TiposIngresosService()
 
 	if (tiposGastos.errors()) {
 		return (
@@ -28,7 +28,7 @@ export default async function Page() {
 					</Link>
 				</p>
 
-				<h1>Ingresa tu gasto</h1>
+				<h1>Registra tus</h1>
 			</div>
 
 			<Card>

@@ -52,7 +52,7 @@ export default function ItemTipoIngresoGasto({
 					className={`${estilos['tipo-item-circulo']} ${id === idActivo ? estilos['tipo-item-circulo-activo'] : ''}`}
 				></div>
 				<Imagen />
-				<p className="m-0 mt-2 font-semibold">{nombre}</p>
+				<p className="m-0 mt-2 font-semibold text-center">{nombre}</p>
 			</div>
 		</Card>
 	)

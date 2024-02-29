@@ -1,8 +1,6 @@
 'use client'
 
-import { GastoUsuario } from '@/Modules/Gastos/Services/GastosUsuario'
 import { IngresosUsuario } from '@/Modules/Ingresos/Services/IngresosUsuario'
-import ListadoGastos from '@/Services/Gastos/ListadoGastos'
 import ListadoIngresosService from '@/Services/Ingresos/ListadoIngresosService'
 import ItemIngresoGasto from '@/components/ItemsListas/ItemIngresoGasto'
 import { SkeletonLite } from '@/components/skeletons/SkeletonLite'
@@ -90,9 +88,20 @@ export default function Listado({}: props) {
 	}
 
 	const Gastos = () => {
+		if (load) {
+			return (
+				<div>
+					<Esqueleto />
+					<Esqueleto />
+					<Esqueleto />
+					<Esqueleto />
+				</div>
+			)
+		}
+
 		if (!ingresos || !ingresos.length) return null
 
-		return ingresos.map(({ createdAt, tipo, tipoIngresoId, valor, id, nombre }, i) => (
+		return ingresos.map(({ createdAt, tipo, valor, id, nombre }, i) => (
 			<ItemIngresoGasto
 				key={id ?? i}
 				fecha={new Date(createdAt)}

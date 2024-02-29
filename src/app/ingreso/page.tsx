@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Listado from './Listado'
 import Card from '@/components/Card/Card'
 import estilos from './Estilos.module.css'
+import { Suspense } from 'react'
 
 export default async function Page() {
 	return (

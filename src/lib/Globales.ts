@@ -9,5 +9,6 @@ export const RutasAPI = {
 	ingresos: 'ingresos',
 	tipos: {
 		gastos: 'tipos/gastos',
+		ingresos: 'tipos/ingresos',
 	},
 }

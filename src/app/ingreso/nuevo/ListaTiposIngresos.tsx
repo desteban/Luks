@@ -8,11 +8,11 @@ interface props {
 	setIdTipo: (id: number) => void
 }
 
-export function ListaTiposGastos({ idTipo, listado, setIdTipo }: props) {
+export function ListaTiposIngresos({ idTipo, listado, setIdTipo }: props) {
 	return (
 		<div
 			className={estilos.opciones}
-			aria-label="Listado de tipos de gastos"
+			aria-label="Listado de tipos de ingresos"
 		>
 			{listado.map(({ descrip, id, imagen, nombre }) => {
 				return (

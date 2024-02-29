@@ -5,14 +5,14 @@ import InputMoneda from '@/components/Input/InputMoneda'
 import Input from '@/components/Input/Inputs'
 import { Button } from '@/components/ui/button'
 import { FormEvent, useState } from 'react'
-import { ListaTiposGastos } from './ListaTiposGastos'
 import { TiposGastosFront } from '@/Services/Gastos/TiposGastosService'
 import ErrorSimple from '@/components/Errores/ErrorSimple'
 import { EjecutarSchema } from '@/lib/EjecutarSchema'
-import { AgregarGastoSchema } from '@/Modules/Gastos/Schemas/AgregarGasto'
 import { AgruparErrores } from '@/lib/AgruparErrores'
-import AgregarGastoService from '@/Services/Gastos/AgregarGastoService'
 import { Alerta, AlertaProps } from '@/components/Alerta/Alerta'
+import { ListaTiposIngresos } from './ListaTiposIngresos'
+import AgregarIngresoService from '@/Services/Ingresos/AgregarIngreso'
+import { AgregarIngresoSchema } from '@/Modules/Ingresos/Schemas/AgregarIngresos'
 
 interface props {
 	mensajeErro?: string
@@ -27,14 +27,14 @@ interface Errores {
 
 function Validar(valor: string, tipo: number | null, nombre: string): null | Errores {
 	let valorSinPuntos = valor.replaceAll(/\./g, '')
-	const valorGasto = parseFloat(valorSinPuntos)
+	const valorIngreso = parseFloat(valorSinPuntos)
 	const data = {
 		nombre,
-		valor: isNaN(valorGasto) ? '' : valorGasto,
+		valor: isNaN(valorIngreso) ? '' : valorIngreso,
 		tipo,
 	}
 
-	const datos = EjecutarSchema(AgregarGastoSchema, data)
+	const datos = EjecutarSchema(AgregarIngresoSchema, data)
 	if (datos.errors()) {
 		let erroresAgrupados = AgruparErrores(datos.Error()?.contenido)
 		return erroresAgrupados as Errores
@@ -45,16 +45,11 @@ function Validar(valor: string, tipo: number | null, nombre: string): null | Err
 
 async function AgregarIngreso(nombre: string | null, valor: string, tipo: number): Promise<string | true> {
 	let valorSinPuntos = valor.replaceAll(/\./g, '')
-	const valorGasto = parseFloat(valorSinPuntos)
-	const data = {
-		nombre: nombre?.length === 0 ? null : nombre,
-		valor: isNaN(valorGasto) ? '' : valorGasto,
-		tipo,
-	}
+	const valorIngreso = parseFloat(valorSinPuntos)
 
-	const respuesta = await AgregarGastoService({
-		nombre: nombre?.length === 0 ? null : nombre,
-		valor: isNaN(valorGasto) ? 0 : valorGasto,
+	const respuesta = await AgregarIngresoService({
+		nombre: nombre?.length === 0 ? undefined : nombre,
+		valor: isNaN(valorIngreso) ? 0 : valorIngreso,
 		tipo,
 	})
 
@@ -68,7 +63,7 @@ async function AgregarIngreso(nombre: string | null, valor: string, tipo: number
 
 export default function Formulario({ tiposGastos, mensajeErro }: props) {
 	const [nombre, setNombre] = useState<string>('')
-	const [valorGasto, setValorGasto] = useState<string>('')
+	const [valorIngreso, setValorIngreso] = useState<string>('')
 	const [tipo, setIdTipo] = useState<number | null>(null)
 	const [erroresInput, setErrroresInput] = useState<Errores>({})
 	const [mensajeAlerta, setMensajeAlerta] = useState<AlertaProps>({ tipo: 'info' })
@@ -77,20 +72,21 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 		event.preventDefault()
 		setMensajeAlerta({ tipo: 'info', mostrar: true, texto: 'Guardando...' })
 
-		let error = Validar(valorGasto, tipo, nombre)
+		let error = Validar(valorIngreso, tipo, nombre)
 		if (error) {
 			setErrroresInput(error)
 			return
 		}
 
 		setErrroresInput({})
-		const resultado = await AgregarIngreso(nombre, valorGasto, tipo!)
+		const resultado = await AgregarIngreso(nombre, valorIngreso, tipo!)
 		if (resultado !== true) {
 			setMensajeAlerta({ tipo: 'error', texto: resultado, mostrar: true })
 			return
 		}
 
-		setMensajeAlerta({ tipo: 'success', texto: 'Gasto registrado con éxito', mostrar: true })
+		setMensajeAlerta({ tipo: 'success', texto: 'Ingreso registrado con éxito', mostrar: true })
+		LimpiarFormulario()
 	}
 
 	const Tipos = () => {
@@ -106,7 +102,7 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 			// <pre>
 			// 	<code>{JSON.stringify(tiposGastos, null, 2)}</code>
 			// </pre>
-			<ListaTiposGastos
+			<ListaTiposIngresos
 				idTipo={tipo}
 				listado={tiposGastos}
 				setIdTipo={setIdTipo}
@@ -122,11 +118,17 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 		return <ErrorSimple mensaje={erroresInput.tipo} />
 	}
 
+	const LimpiarFormulario = () => {
+		setNombre('')
+		setValorIngreso('')
+		setIdTipo(null)
+	}
+
 	return (
 		<form
 			onSubmit={Submit}
 			className={estilos.formulario}
-			aria-label="Agregar gasto"
+			aria-label="registro de ingresos"
 		>
 			<Alerta {...mensajeAlerta} />
 
@@ -137,7 +139,7 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 				className="mb-5"
 				value={nombre}
 				onChange={(e) => setNombre(e.currentTarget.value)}
-				placeholder="Nombre del gasto"
+				placeholder="Nombre del ingreso"
 				mensajeError={erroresInput?.nombre}
 			/>
 
@@ -146,15 +148,15 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 				label="Valor"
 				name="moneda"
 				className="mb-6"
-				value={valorGasto}
-				onChange={setValorGasto}
+				value={valorIngreso}
+				onChange={setValorIngreso}
 				required
 				placeholder="1.000"
 				mensajeError={erroresInput.valor}
 			/>
 
 			<div aria-label="Listado de tipo de gastos">
-				<h3 className="is-required">Seleccione un tipo de gasto:</h3>
+				<h3 className="is-required">Seleccione un tipo de ingreso:</h3>
 				<ErrorTipoGasto />
 				<Tipos />
 			</div>
