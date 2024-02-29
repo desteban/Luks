@@ -1,6 +1,6 @@
 'use client'
 
-import { GastoUsuario } from '@/Modules/Gastos/Services/GastosUsuario'
+import { GastoUsuario, GastosUsuario } from '@/Modules/Gastos/Services/GastosUsuario'
 import ListadoGastos from '@/Services/Gastos/ListadoGastos'
 import ItemIngresoGasto from '@/components/ItemsListas/ItemIngresoGasto'
 import { SkeletonLite } from '@/components/skeletons/SkeletonLite'
@@ -25,8 +25,9 @@ async function PedirGastos(
 	}
 
 	const data = listado.Right()
-	setGastos(data.gastos)
+
 	setTotal(data.totalPaginas)
+	setGastos(data.gastos)
 	// setPage(data.pagina)
 }
 
@@ -45,7 +46,7 @@ export default function Listado({}: props) {
 
 			if (!ignorar) {
 				try {
-					await PedirGastos(page, setGastos, setTotal, signal)
+					await PedirGastos(page, ConcatenarGastos, setTotal, signal)
 				} catch {
 					console.log('abort')
 				}
@@ -53,8 +54,9 @@ export default function Listado({}: props) {
 		}
 
 		setLoad(true)
-		Activar()
-		setLoad(false)
+		Activar().finally(() => {
+			setLoad(false)
+		})
 
 		return () => {
 			ignorar = true
@@ -62,11 +64,28 @@ export default function Listado({}: props) {
 		}
 	}, [page])
 
+	const ConcatenarGastos = (gastos: GastoUsuario[]) => {
+		setGastos((gastosAntiuos) => gastosAntiuos.concat(gastos))
+	}
+
 	const Esqueleto = () => (
 		<div className="pt-2">
 			<SkeletonLite />
 		</div>
 	)
+
+	const Loader = () => {
+		if (load === false) {
+			return null
+		}
+
+		return (
+			<div>
+				<Esqueleto />
+				<Esqueleto />
+			</div>
+		)
+	}
 
 	const Buscar = async () => {
 		const pagina = page + 1
@@ -78,32 +97,30 @@ export default function Listado({}: props) {
 		setPage(pagina)
 	}
 
-	if (load) {
-		return (
-			<section aria-label="Listado de gastos">
-				<Esqueleto />
-				<Esqueleto />
-			</section>
-		)
-	}
-
 	const Gastos = () => {
 		if (!gastos || !gastos.length) return null
 
-		return gastos.map(({ createdAt, tipo, tipoGastoId, valor, id, nombre }, i) => (
-			<ItemIngresoGasto
-				key={id ?? i}
-				fecha={new Date(createdAt)}
-				valor={valor}
-				nombre={nombre ?? undefined}
-				icono={tipo.imagen}
-			/>
-		))
+		return (
+			<>
+				{gastos.map(({ createdAt, tipo, tipoGastoId, valor, id, nombre }, i) => (
+					<ItemIngresoGasto
+						key={id ?? i}
+						fecha={new Date(createdAt)}
+						valor={valor}
+						nombre={nombre ?? undefined}
+						icono={tipo.imagen}
+					/>
+				))}
+			</>
+		)
 	}
 
 	return (
 		<section aria-label="Listado de gastos">
 			<Gastos />
+
+			<Loader />
+
 			<Button
 				className="w-full mt-4"
 				onClick={Buscar}

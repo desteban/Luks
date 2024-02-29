@@ -16,7 +16,7 @@ async function PedirIngresos(
 	abortSignal?: AbortSignal,
 	// setPage: (page: number) => void,
 ) {
-	const listado = await ListadoIngresosService({ pagina: pagina, abortSignal })
+	const listado = await ListadoIngresosService({ pagina: pagina, abortSignal, resultados: 1 })
 
 	if (listado.errors()) {
 		let err = listado.Error()
@@ -45,7 +45,7 @@ export default function Listado({}: props) {
 
 			if (!ignorar) {
 				try {
-					await PedirIngresos(page, setIngresos, setTotal, signal)
+					await PedirIngresos(page, ConcatenarIngresos, setTotal, signal)
 				} catch {
 					console.log('abort')
 				}
@@ -53,8 +53,9 @@ export default function Listado({}: props) {
 		}
 
 		setLoad(true)
-		Activar()
-		setLoad(false)
+		Activar().finally(() => {
+			setLoad(false)
+		})
 
 		return () => {
 			ignorar = true
@@ -62,11 +63,28 @@ export default function Listado({}: props) {
 		}
 	}, [page])
 
+	const ConcatenarIngresos = (ingresos: IngresosUsuario[]) => {
+		setIngresos((ingresosAntiguos) => ingresosAntiguos.concat(ingresos))
+	}
+
 	const Esqueleto = () => (
 		<div className="pt-2">
 			<SkeletonLite />
 		</div>
 	)
+
+	const Loader = () => {
+		if (load === false) {
+			return null
+		}
+
+		return (
+			<div>
+				<Esqueleto />
+				<Esqueleto />
+			</div>
+		)
+	}
 
 	const Buscar = async () => {
 		const pagina = page + 1
@@ -78,27 +96,7 @@ export default function Listado({}: props) {
 		setPage(pagina)
 	}
 
-	if (load) {
-		return (
-			<section aria-label="Listado de gastos">
-				<Esqueleto />
-				<Esqueleto />
-			</section>
-		)
-	}
-
-	const Gastos = () => {
-		if (load) {
-			return (
-				<div>
-					<Esqueleto />
-					<Esqueleto />
-					<Esqueleto />
-					<Esqueleto />
-				</div>
-			)
-		}
-
+	const Ingresos = () => {
 		if (!ingresos || !ingresos.length) return null
 
 		return ingresos.map(({ createdAt, tipo, valor, id, nombre }, i) => (
@@ -114,7 +112,10 @@ export default function Listado({}: props) {
 
 	return (
 		<section aria-label="Listado de gastos">
-			<Gastos />
+			<Ingresos />
+
+			<Loader />
+
 			<Button
 				className="w-full mt-4"
 				onClick={Buscar}
