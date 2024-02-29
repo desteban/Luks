@@ -14,11 +14,12 @@ interface props {
 	mensajeError?: string
 	name: string
 	onChange: (valor: string) => void
+	// onChange: (Event: ChangeEvent<HTMLInputElement>) => void
 	pattern?: string
 	placeholder?: string
 	required?: boolean
 	type?: tipoInput
-	value?: string
+	value: string
 	title?: string
 }
 
@@ -29,6 +30,22 @@ function formatearComoMoneda(numero: number): string {
 
 	// console.log(monto + decimales)
 	return monto.toString()
+}
+
+function Formatear(valor: string) {
+	if (valor === '') {
+		return ''
+	}
+
+	const valueSinPuntos = valor.replaceAll('.', '')
+	const numero: number = parseFloat(valueSinPuntos)
+
+	if (isNaN(numero)) {
+		console.error(`Error al formatear el valor del campo.`)
+		return valor
+	}
+
+	return formatearComoMoneda(numero)
 }
 
 export default function InputMoneda({ mensajeError, label, className, required, onChange, value, ...props }: props) {
@@ -55,8 +72,10 @@ export default function InputMoneda({ mensajeError, label, className, required, 
 			return
 		}
 
-		const valorConFormato: string = formatearComoMoneda(valor)
-		onChange(valorConFormato)
+		onChange(valueSinPuntos)
+
+		// const valorConFormato: string = formatearComoMoneda(valor)
+		// onChange(valorConFormato)
 	}
 
 	return (
@@ -78,7 +97,7 @@ export default function InputMoneda({ mensajeError, label, className, required, 
 						className="pl-4 tracking-wide"
 						type="text"
 						onChange={Change}
-						value={value}
+						value={Formatear(value)}
 						pattern="^\d{1,3}(.\d{3})*$"
 						title="1.000"
 						inputMode="numeric"

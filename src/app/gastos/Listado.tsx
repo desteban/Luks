@@ -5,6 +5,7 @@ import ListadoGastos from '@/Services/Gastos/ListadoGastos'
 import ItemIngresoGasto from '@/components/ItemsListas/ItemIngresoGasto'
 import { SkeletonLite } from '@/components/skeletons/SkeletonLite'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 interface props {}
@@ -103,13 +104,18 @@ export default function Listado({}: props) {
 		return (
 			<>
 				{gastos.map(({ createdAt, tipo, tipoGastoId, valor, id, nombre }, i) => (
-					<ItemIngresoGasto
-						key={id ?? i}
-						fecha={new Date(createdAt)}
-						valor={valor}
-						nombre={nombre ?? undefined}
-						icono={tipo.imagen}
-					/>
+					<Link
+						href={'/gastos/' + id}
+						className="text-black"
+					>
+						<ItemIngresoGasto
+							key={id ?? i}
+							fecha={new Date(createdAt)}
+							valor={valor}
+							nombre={nombre ?? undefined}
+							icono={tipo.imagen}
+						/>
+					</Link>
 				))}
 			</>
 		)

@@ -6,7 +6,7 @@ interface props {
 	fecha: Date
 	icono?: string
 	nombre?: string
-	valor: Decimal
+	valor: Decimal | string
 }
 
 function ObtenerDia(fecha: Date): string {

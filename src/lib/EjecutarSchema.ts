@@ -23,7 +23,7 @@ export function EjecutarSchema(schema: z.Schema, data: object): Either<ErrorPars
 
 			either.setError(
 				new ErrorParseSchema({
-					mensaje: 'Error al validar los datos para registrar el usuario',
+					mensaje: 'Error al validar los datos, por favor valide la información enviada.',
 					contenido: errores,
 				}),
 			)

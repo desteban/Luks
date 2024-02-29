@@ -7,7 +7,7 @@ import { ServicioNoDisponible } from '@/lib/Errors/ServicioNoDisponible'
 import { RutasAPI, UrlApi } from '@/lib/Globales'
 
 interface props {
-	nombre: string | null
+	nombre?: string | null
 	valor: number
 	tipo: number
 }

@@ -53,7 +53,7 @@ async function AgregarIngreso(nombre: string | null, valor: string, tipo: number
 	}
 
 	const respuesta = await AgregarGastoService({
-		nombre: nombre?.length === 0 ? null : nombre,
+		nombre: nombre?.length === 0 ? undefined : nombre,
 		valor: isNaN(valorGasto) ? 0 : valorGasto,
 		tipo,
 	})
