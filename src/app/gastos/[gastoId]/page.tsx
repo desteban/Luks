@@ -4,6 +4,7 @@ import { AgregarGastoSchema } from '@/Modules/Gastos/Schemas/AgregarGasto'
 import { GastoUsuario } from '@/Modules/Gastos/Services/GastosUsuario'
 import EditarGasto from '@/Services/Gastos/EditarGasto'
 import { ObtenerGasto } from '@/Services/Gastos/ObtenerGasto'
+import AlertaToast from '@/components/Alerta/AlertaToast'
 import InputMoneda from '@/components/Input/InputMoneda'
 import Input from '@/components/Input/Inputs'
 import { LoaderCircular } from '@/components/Loader/LoaderCircular'
@@ -13,6 +14,7 @@ import { EjecutarSchema } from '@/lib/EjecutarSchema'
 import { ErrorParseSchema } from '@/lib/Errors'
 import Link from 'next/link'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 interface props {
 	params: { gastoId: string }
@@ -100,7 +102,6 @@ export default function Page({ params: { gastoId } }: props) {
 			return
 		}
 
-		console.log(gasto)
 		setLoad(true)
 		const valor = parseFloat(gasto.valor.toString())
 		const nombre = gasto.nombre ?? undefined
@@ -111,7 +112,13 @@ export default function Page({ params: { gastoId } }: props) {
 				return
 			}
 
-			console.error('Error:', respuesta.Error())
+			console.error('La tarea tiene un error: ', respuesta.Error())
+			const mensaje: string = respuesta.Error()?.message ?? 'Algo ha salido mal.'
+			AlertaToast({ mensaje, tipo: 'error' })
+		}
+
+		if (respuesta.Right()) {
+			AlertaToast({ mensaje: 'Gasto actualizado con éxito.', tipo: 'success' })
 		}
 
 		setLoad(false)
