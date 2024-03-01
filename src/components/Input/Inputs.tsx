@@ -38,7 +38,7 @@ export default function Input({ mensajeError, label, className, required, ...pro
 	}
 
 	return (
-		<div className={className}>
+		<div className={`mb-3 ${className ?? ''}`}>
 			<label className={`flex flex-col form-control gap-1`}>
 				<div className="label cursor-pointer">
 					<span

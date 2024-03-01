@@ -104,7 +104,7 @@
  *
  * @apiBody {number} valor Valor del gasto a registrar
  * @apiBody  {string} [nombre] Nombre o descripción del gasto
- * @apiBody {number}  tipoGastoId Identificador del tipo de gasto (ver /tipogastos)
+ * @apiBody {number}  tipo Identificador del tipo de gasto (ver /tipogastos)
  *
  * @apiSuccessExample Succes-Response:
  * HTTP/1.1 200 OK

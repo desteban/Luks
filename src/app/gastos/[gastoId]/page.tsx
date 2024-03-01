@@ -1,21 +1,50 @@
 'use client'
 
+import { AgregarGastoSchema } from '@/Modules/Gastos/Schemas/AgregarGasto'
 import { GastoUsuario } from '@/Modules/Gastos/Services/GastosUsuario'
+import EditarGasto from '@/Services/Gastos/EditarGasto'
 import { ObtenerGasto } from '@/Services/Gastos/ObtenerGasto'
 import InputMoneda from '@/components/Input/InputMoneda'
 import Input from '@/components/Input/Inputs'
 import { LoaderCircular } from '@/components/Loader/LoaderCircular'
 import { Button } from '@/components/ui/button'
+import { AgruparErrores } from '@/lib/AgruparErrores'
+import { EjecutarSchema } from '@/lib/EjecutarSchema'
+import { ErrorParseSchema } from '@/lib/Errors'
 import Link from 'next/link'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 interface props {
 	params: { gastoId: string }
 }
+interface Errores {
+	nombre?: string
+	valor?: string
+	tipo?: string
+}
+
+function Validar(valor: string, tipo: number | null, nombre?: string): null | Errores {
+	let valorSinPuntos = valor.replaceAll(/\./g, '')
+	const valorGasto = parseFloat(valorSinPuntos)
+	const data = {
+		nombre: nombre ?? undefined,
+		valor: isNaN(valorGasto) ? '' : valorGasto,
+		tipo,
+	}
+
+	const datos = EjecutarSchema(AgregarGastoSchema, data)
+	if (datos.errors()) {
+		let erroresAgrupados = AgruparErrores(datos.Error()?.contenido)
+		return erroresAgrupados as Errores
+	}
+
+	return null
+}
 
 export default function Page({ params: { gastoId } }: props) {
 	const [load, setLoad] = useState<boolean>(true)
 	const [gasto, setGasto] = useState<GastoUsuario | null>(null)
+	const [errores, setErrores] = useState<Errores>({})
 
 	useEffect(() => {
 		const getData = async () => {
@@ -47,13 +76,48 @@ export default function Page({ params: { gastoId } }: props) {
 		}
 	}
 
+	const ValidarFormulario = (): boolean => {
+		if (gasto === null) {
+			return false
+		}
+
+		const ErroresValidacion = Validar(gasto.valor.toString(), gasto.tipoGastoId, gasto.nombre ?? undefined)
+		if (ErroresValidacion !== null) {
+			console.error('Error al validar la información', ErroresValidacion)
+			setErrores(ErroresValidacion)
+			return false
+		}
+
+		setErrores({})
+		return true
+	}
+
 	const Submit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 
+		const formularioValidado = ValidarFormulario()
+		if (!formularioValidado || gasto === null) {
+			return
+		}
+
 		console.log(gasto)
+		setLoad(true)
+		const valor = parseFloat(gasto.valor.toString())
+		const nombre = gasto.nombre ?? undefined
+		const respuesta = await EditarGasto({ id: gastoId, tipo: gasto?.tipoGastoId, valor, nombre })
+		if (respuesta.errors()) {
+			if (respuesta.Error() instanceof ErrorParseSchema) {
+				setErrores(AgruparErrores(respuesta.Error()?.contenido))
+				return
+			}
+
+			console.error('Error:', respuesta.Error())
+		}
+
+		setLoad(false)
 	}
 
-	if (load) {
+	if (load && gasto === null) {
 		return <LoaderCircular />
 	}
 
@@ -80,6 +144,8 @@ export default function Page({ params: { gastoId } }: props) {
 			<h1>Información del gasto</h1>
 
 			<form onSubmit={Submit}>
+				{load ? <LoaderCircular /> : null}
+
 				<Input
 					id="nombre"
 					name="nombre"
@@ -87,6 +153,7 @@ export default function Page({ params: { gastoId } }: props) {
 					autoComplete="off"
 					value={gasto.nombre ?? ''}
 					onChange={Change}
+					mensajeError={errores.nombre}
 				/>
 
 				<InputMoneda
@@ -96,6 +163,8 @@ export default function Page({ params: { gastoId } }: props) {
 					autoComplete="off"
 					value={gasto.valor?.toString() ?? ''}
 					onChange={ChangeValor}
+					required
+					mensajeError={errores.valor}
 				/>
 
 				<Input
@@ -106,10 +175,11 @@ export default function Page({ params: { gastoId } }: props) {
 						new Date(gasto.createdAt),
 					)}
 					disabled
+					required
 				/>
 
 				<Button
-					className="w-full"
+					className="w-full mt-5"
 					type="submit"
 				>
 					Actualizar

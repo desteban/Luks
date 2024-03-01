@@ -6,7 +6,6 @@ import { ErroresTiposGastos } from '@/lib/Errors/TiposGastos/ErroresTiposGastos'
 import prisma from '@/lib/Prisma'
 import { Gastos } from '@prisma/client'
 import { PrismaClientInitializationError } from '@prisma/client/runtime/library'
-import { GastoUsuario } from './GastosUsuario'
 
 /**
  *
@@ -46,8 +45,6 @@ export default async function EditarGasto(
 		either.setRight(gastoEditado)
 	} catch (error) {
 		//mostrar error por consola
-		console.log('[ERROR] EditarGasto > try', error)
-
 		either.setError(new ServerError({}))
 
 		if (error instanceof PrismaClientInitializationError) {

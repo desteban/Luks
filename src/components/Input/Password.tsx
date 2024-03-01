@@ -50,7 +50,7 @@ export default function Password({
 
 	return (
 		<div>
-			<label className={`flex flex-col form-control gap-1 ${className}`}>
+			<label className={`flex flex-col form-control gap-1 mb-3 ${className ?? ''}`}>
 				<div className="label cursor-pointer">
 					<span className={`label-text ${required ? estilos['is-required'] : ''}`}>{label}</span>
 				</div>

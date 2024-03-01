@@ -79,7 +79,7 @@ export default function InputMoneda({ mensajeError, label, className, required, 
 	}
 
 	return (
-		<div className={className}>
+		<div className={`mb-3 ${className ?? ''}`}>
 			<label className={`flex flex-col form-control gap-1 relative`}>
 				<div className="label cursor-pointer">
 					<span
