@@ -16,7 +16,7 @@ type Paginacion = {
 
 export interface IngresosUsuario {
 	id: string
-	valor: Decimal
+	valor: Decimal | string
 	nombre: string | null
 	tipoIngresoId: number
 	createdAt: Date

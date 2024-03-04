@@ -91,6 +91,13 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 		}
 
 		setMensajeAlerta({ tipo: 'success', texto: 'Gasto registrado con éxito', mostrar: true })
+		Limpiar()
+	}
+
+	const Limpiar = () => {
+		setNombre('')
+		setValorGasto('')
+		setIdTipo(null)
 	}
 
 	const Tipos = () => {

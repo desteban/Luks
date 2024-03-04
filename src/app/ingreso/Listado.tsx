@@ -5,6 +5,7 @@ import ListadoIngresosService from '@/Services/Ingresos/ListadoIngresosService'
 import ItemIngresoGasto from '@/components/ItemsListas/ItemIngresoGasto'
 import { SkeletonLite } from '@/components/skeletons/SkeletonLite'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 interface props {}
@@ -100,13 +101,17 @@ export default function Listado({}: props) {
 		if (!ingresos || !ingresos.length) return null
 
 		return ingresos.map(({ createdAt, tipo, valor, id, nombre }, i) => (
-			<ItemIngresoGasto
+			<Link
+				href={`/ingreso/${id}`}
 				key={id ?? i}
-				fecha={new Date(createdAt)}
-				valor={valor}
-				nombre={nombre ?? undefined}
-				icono={tipo.imagen}
-			/>
+			>
+				<ItemIngresoGasto
+					fecha={new Date(createdAt)}
+					valor={valor}
+					nombre={nombre ?? undefined}
+					icono={tipo.imagen}
+				/>
+			</Link>
 		))
 	}
 
