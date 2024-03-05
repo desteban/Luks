@@ -51,6 +51,7 @@ export default function Page(props: props) {
 			callbackUrl: '/inicio',
 		})
 		setLoad(false)
+		router.push('/inicio')
 	}
 
 	return (

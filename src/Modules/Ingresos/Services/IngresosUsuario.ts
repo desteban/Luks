@@ -34,7 +34,7 @@ export interface IngresosUsuario {
  * @param tomar Cantidad de registros a tomar
  * @returns
  */
-export async function IngresosUsuario(
+export async function IngresosDelUsuario(
 	userId: string,
 	pagina: number,
 	tomar: number,

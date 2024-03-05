@@ -102,8 +102,9 @@ export default function Listado({}: props) {
 
 		return ingresos.map(({ createdAt, tipo, valor, id, nombre }, i) => (
 			<Link
-				href={`/ingreso/${id}`}
 				key={id ?? i}
+				href={`/ingreso/${id}`}
+				className="text-black"
 			>
 				<ItemIngresoGasto
 					fecha={new Date(createdAt)}

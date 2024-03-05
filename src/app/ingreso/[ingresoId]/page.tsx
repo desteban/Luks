@@ -2,6 +2,7 @@
 
 import { AgregarGastoSchema } from '@/Modules/Gastos/Schemas/AgregarGasto'
 import { IngresosUsuario } from '@/Modules/Ingresos/Services/IngresosUsuario'
+import EditarIngreso from '@/Services/Ingresos/EditarIngreso'
 import ObtenerIngreso from '@/Services/Ingresos/ObtenerIngreso'
 import AlertaToast from '@/components/Alerta/AlertaToast'
 import InputMoneda from '@/components/Input/InputMoneda'
@@ -40,6 +41,24 @@ function Validar(valor: string, tipo: number | null, nombre?: string): null | Er
 	}
 
 	return null
+}
+
+async function Editar(id: string, valor: number, tipo: number, nombre?: string | null) {
+	const data = {
+		id,
+		valor,
+		nombre: nombre ?? undefined,
+		tipo,
+	}
+
+	const ingresoEditado = await EditarIngreso(data)
+	if (ingresoEditado.errors()) {
+		AlertaToast({ mensaje: ingresoEditado.Error()?.message || 'Algo ha salido mal', tipo: 'error' })
+		return false
+	}
+
+	AlertaToast({ mensaje: 'Ingreso actualizado con éxito', tipo: 'success' })
+	return true
 }
 
 export default function Page({ params: { ingresoId } }: props) {
@@ -105,21 +124,7 @@ export default function Page({ params: { ingresoId } }: props) {
 		setLoad(true)
 		const valor = parseFloat(ingreso.valor.toString())
 		const nombre = ingreso.nombre ?? undefined
-		// const respuesta = await EditarGasto({ id: gastoId, tipo: gasto?.tipoGastoId, valor, nombre })
-		// if (respuesta.errors()) {
-		// 	if (respuesta.Error() instanceof ErrorParseSchema) {
-		// 		setErrores(AgruparErrores(respuesta.Error()?.contenido))
-		// 		return
-		// 	}
-
-		// 	console.error('La tarea tiene un error: ', respuesta.Error())
-		// 	const mensaje: string = respuesta.Error()?.message ?? 'Algo ha salido mal.'
-		// 	AlertaToast({ mensaje, tipo: 'error' })
-		// }
-
-		// if (respuesta.Right()) {
-		// 	AlertaToast({ mensaje: 'Gasto actualizado con éxito.', tipo: 'success' })
-		// }
+		const editar = Editar(ingresoId, valor, ingreso.tipoIngresoId, nombre)
 
 		setLoad(false)
 	}

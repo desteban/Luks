@@ -1,6 +1,6 @@
 import { AgregarIngresoSchema } from '@/Modules/Ingresos/Schemas/AgregarIngresos'
 import AgregarIngreso from '@/Modules/Ingresos/Services/AgregarIngreso'
-import { IngresosUsuario } from '@/Modules/Ingresos/Services/IngresosUsuario'
+import { IngresosDelUsuario } from '@/Modules/Ingresos/Services/IngresosUsuario'
 import { EjecutarSchema } from '@/lib/EjecutarSchema'
 import { UsuarioSinSession } from '@/lib/Errors'
 import { ErrorCustom } from '@/lib/Errors/ErrorCustom'
@@ -34,7 +34,11 @@ export async function GET(req: NextRequest) {
 	if (!session) return RespuestaJsonError(new UsuarioSinSession({}))
 
 	const datosDePaginacion = ObtenerParamsPaginacion(req)
-	const ingresos = await IngresosUsuario(session.id, datosDePaginacion.pagina ?? 1, datosDePaginacion.porPagina ?? 30)
+	const ingresos = await IngresosDelUsuario(
+		session.id,
+		datosDePaginacion.pagina ?? 1,
+		datosDePaginacion.porPagina ?? 30,
+	)
 
 	if (ingresos.errors()) {
 		return RespuestaJsonError(ingresos.Error() as ErrorCustom)
