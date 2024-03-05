@@ -17,6 +17,7 @@ import { ErrorParseSchema, UserDuplicated } from '@/lib/Errors'
 import { ServerError } from '@/lib/Errors/ServerError'
 import { AgruparErrores } from '@/lib/AgruparErrores'
 import { useSession } from 'next-auth/react'
+import { LoaderCircular } from '@/components/Loader/LoaderCircular'
 
 const contenidoDefault = { email: '', name: '', password: '', lastName: '' }
 
@@ -26,9 +27,22 @@ export default function Page() {
 	const [errores, seterrores] = useState<CrearUsuarioTipo>(contenidoDefault)
 	const [alerta, setAlerta] = useState<AlertaProps>({ tipo: 'info' })
 	const session = useSession()
+	const [load, setLoad] = useState<boolean>(false)
 
 	if (session.data?.user) {
 		router.push('/inicio')
+	}
+
+	const Loader = () => {
+		if (load) {
+			return (
+				<div>
+					<LoaderCircular />
+				</div>
+			)
+		}
+
+		return null
 	}
 
 	const changeInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -37,8 +51,10 @@ export default function Page() {
 
 	const Submit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
+		setLoad(true)
 		setAlerta({ tipo: 'info' })
 		const crear = await RegistrarNuevoUsuario(estado)
+		setLoad(false)
 
 		if (crear.errors()) {
 			const error = crear.Error()
@@ -73,6 +89,7 @@ export default function Page() {
 							className="mb-3"
 							onSubmit={Submit}
 						>
+							<Loader />
 							<Alerta {...alerta} />
 
 							<div className="campo-doble-adaptable">

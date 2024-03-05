@@ -12,6 +12,7 @@ import { FormEvent, useState } from 'react'
 import { signIn, useSession } from 'next-auth/react'
 import { Alerta } from '@/components/Alerta/Alerta'
 import { useRouter } from 'next/navigation'
+import { LoaderCircular } from '@/components/Loader/LoaderCircular'
 
 type props = {
 	searchParams?: Record<'callbackUrl' | 'error', string>
@@ -20,6 +21,7 @@ type props = {
 export default function Page(props: props) {
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
+	const [load, setLoad] = useState<boolean>(false)
 	const session = useSession()
 	const router = useRouter()
 
@@ -27,14 +29,28 @@ export default function Page(props: props) {
 		router.push('/inicio')
 	}
 
+	const Loader = () => {
+		if (load) {
+			return (
+				<div>
+					<LoaderCircular />
+				</div>
+			)
+		}
+
+		return null
+	}
+
 	const Submit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
+		setLoad(true)
 		let respuesta = await signIn('credentials', {
 			email: email,
 			password: password,
 			redirect: true,
 			callbackUrl: '/inicio',
 		})
+		setLoad(false)
 	}
 
 	return (
@@ -57,6 +73,8 @@ export default function Page(props: props) {
 							className="mb-3"
 							onSubmit={Submit}
 						>
+							<Loader />
+
 							<Input
 								id="email"
 								name="email"
@@ -81,7 +99,7 @@ export default function Page(props: props) {
 								className="mt-4 w-full"
 								type="submit"
 							>
-								Crear
+								Ingresar
 							</Button>
 						</form>
 
