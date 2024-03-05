@@ -141,6 +141,7 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 				onChange={(e) => setNombre(e.currentTarget.value)}
 				placeholder="Nombre del ingreso"
 				mensajeError={erroresInput?.nombre}
+				autoComplete="off"
 			/>
 
 			<InputMoneda
@@ -153,6 +154,7 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 				required
 				placeholder="1.000"
 				mensajeError={erroresInput.valor}
+				autoComplete="off"
 			/>
 
 			<div aria-label="Listado de tipo de gastos">
