@@ -56,7 +56,7 @@
  *
  * @apiBody {number} valor Valor del ingreso a registrar
  * @apiBody  {string} [nombre] Nombre o descripción del ingreso
- * @apiBody {number}  tipoIngresoId Identificador del tipo de ingreso (ver /TiposIngresos)
+ * @apiBody {number}  tipo Identificador del tipo de ingreso (ver /TiposIngresos)
  *
  * @apiSuccessExample Succes-Response:
  * HTTP/1.1 201 Created
@@ -92,6 +92,35 @@
  *  @apiSuccess (200) {string} tipo.nombre Nombre del tipo de ingreso
  *
  *
+ * @apiSuccessExample Success-Response:
+ *  HTTP/1.1 200 OK
+ *  {
+ *      "id": "2046b0bc-094a-47c8-983d-750a48a47ea4",
+ *      "nombre": "Pago tel",
+ *      "tipoIngresoId": 1,
+ *      "valor": "350000",
+ *      "createdAt": "2024-02-23T17:23:29.396Z",
+ *      "tipo": {
+ *          "id": 1,
+ *          "imagen": "",
+ *          "nombre": "Otros"
+ *      }
+ *  }
+ *
+ * @apiError UsuarioSinSession El usuario no cuenta con una sesión activa
+ * @apiError IngresoNoEncontrado No de encontró un ingreso con el <code>ingresoId</code> en la lista de ingresos del usuario
+ */
+
+/**
+ * @api {PUT} ingreso/:ingresoId Editar ingreso
+ * @apiName EditarIngreso
+ * @apiGroup Ingresos
+ *
+ * @apiBody {number} valor Valor del ingreso a registrar
+ * @apiBody  {string} [nombre] Nombre o descripción del ingreso
+ * @apiBody {number}  tipo Identificador del tipo de ingreso (ver /TiposIngresos)
+ *
+ * @apiDescription En  este endpoint podrás editar un ingreso existente. Para hacerlo debes enviar los datos del ingreso que desea editar
  * @apiSuccessExample Success-Response:
  *  HTTP/1.1 200 OK
  *  {

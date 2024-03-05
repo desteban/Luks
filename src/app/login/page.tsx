@@ -9,8 +9,9 @@ import Password from '@/components/Input/Password'
 import Link from 'next/link'
 import IniciarConGoogle from '@/components/Botones/IniciarConGoogle'
 import { FormEvent, useState } from 'react'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { Alerta } from '@/components/Alerta/Alerta'
+import { useRouter } from 'next/navigation'
 
 type props = {
 	searchParams?: Record<'callbackUrl' | 'error', string>
@@ -19,10 +20,16 @@ type props = {
 export default function Page(props: props) {
 	const [email, setEmail] = useState<string>('')
 	const [password, setPassword] = useState<string>('')
+	const session = useSession()
+	const router = useRouter()
+
+	if (session.data?.user) {
+		router.push('/inicio')
+	}
 
 	const Submit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		await signIn('credentials', {
+		let respuesta = await signIn('credentials', {
 			email: email,
 			password: password,
 			redirect: true,

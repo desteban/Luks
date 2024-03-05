@@ -83,15 +83,13 @@ export function Nav() {
 						Ingresar
 					</Button>
 
-					<Button className="mt-4 w-full bg-gray-400 text-black">
-						<Link
-							className="text-black"
-							href={'/registro'}
-							title="Registro"
-						>
-							Crear cuenta
-						</Link>
-					</Button>
+					<Link
+						className="text-black w-full "
+						href={'/registro'}
+						title="Registro"
+					>
+						<Button className="mt-4 w-full bg-gray-400 text-black">Crear cuenta</Button>
+					</Link>
 				</div>
 			</div>
 		)

@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation'
 import { ErrorParseSchema, UserDuplicated } from '@/lib/Errors'
 import { ServerError } from '@/lib/Errors/ServerError'
 import { AgruparErrores } from '@/lib/AgruparErrores'
+import { useSession } from 'next-auth/react'
 
 const contenidoDefault = { email: '', name: '', password: '', lastName: '' }
 
@@ -24,6 +25,11 @@ export default function Page() {
 	const [estado, setEStado] = useState<CrearUsuarioTipo>(contenidoDefault)
 	const [errores, seterrores] = useState<CrearUsuarioTipo>(contenidoDefault)
 	const [alerta, setAlerta] = useState<AlertaProps>({ tipo: 'info' })
+	const session = useSession()
+
+	if (session.data?.user) {
+		router.push('/inicio')
+	}
 
 	const changeInput = (event: ChangeEvent<HTMLInputElement>) => {
 		setEStado((prevEstado) => ({ ...prevEstado, [event.target.name]: event.target.value }))

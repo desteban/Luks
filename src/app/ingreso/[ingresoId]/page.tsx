@@ -148,7 +148,7 @@ export default function Page({ params: { ingresoId } }: props) {
 
 	return (
 		<div>
-			<h1>Información del gasto</h1>
+			<h1>Información del Ingreso</h1>
 
 			<form onSubmit={Submit}>
 				{load ? <LoaderCircular /> : null}
@@ -156,7 +156,7 @@ export default function Page({ params: { ingresoId } }: props) {
 				<Input
 					id="nombre"
 					name="nombre"
-					label="Nombre del gasto"
+					label="Nombre del ingreso"
 					autoComplete="off"
 					value={ingreso.nombre ?? ''}
 					onChange={Change}

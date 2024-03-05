@@ -82,6 +82,9 @@ const config = NextAuth({
 			session.user = token
 			return session
 		},
+		// async redirect({ url, baseUrl }) {
+		// 	return baseUrl
+		// },
 	},
 })
 
