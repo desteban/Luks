@@ -44,14 +44,31 @@ export default function Page(props: props) {
 	const Submit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
 		setLoad(true)
-		let respuesta = await signIn('credentials', {
+		// await signIn('credentials', {
+		// 	email: email,
+		// 	password: password,
+		// 	// redirect: true,
+		// 	callbackUrl: '/inicio',
+		// })
+
+		signIn('credentials', {
 			email: email,
 			password: password,
-			redirect: true,
+			// redirect: true,
 			callbackUrl: '/inicio',
 		})
+			.then((result) => {
+				console.log('bien', result)
+				router.push('/inicio')
+			})
+			.catch((error) => {
+				console.error('Error', error)
+				alert(error)
+			})
+
 		setLoad(false)
-		router.push('/inicio')
+
+		// router.push('/inicio')
 	}
 
 	return (

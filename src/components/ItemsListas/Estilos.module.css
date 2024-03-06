@@ -24,6 +24,8 @@
 .item-icono-img {
 	height: 32px;
 	width: 32px;
+	-o-object-fit: cover;
+	object-fit: cover;
 }
 
 .item-contenido {

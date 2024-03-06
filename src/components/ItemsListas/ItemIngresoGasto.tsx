@@ -41,6 +41,8 @@ export default function ItemIngresoGasto({ fecha, icono, nombre, valor }: props)
 					className={estilos['item-icono-img']}
 					src={icono}
 					alt="Icono"
+					height={32}
+					width={32}
 				/>
 			</figure>
 		)
