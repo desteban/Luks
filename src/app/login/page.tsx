@@ -13,6 +13,7 @@ import { signIn, useSession } from 'next-auth/react'
 import { Alerta } from '@/components/Alerta/Alerta'
 import { useRouter } from 'next/navigation'
 import { LoaderCircular } from '@/components/Loader/LoaderCircular'
+import AlertaToast from '@/components/Alerta/AlertaToast'
 
 type props = {
 	searchParams?: Record<'callbackUrl' | 'error', string>
@@ -63,10 +64,11 @@ export default function Page(props: props) {
 			})
 			.catch((error) => {
 				console.error('Error', error)
-				alert(error)
+				AlertaToast({ mensaje: 'Credenciales invalidas', tipo: 'error' })
 			})
-
-		setLoad(false)
+			.finally(() => {
+				setLoad(false)
+			})
 
 		// router.push('/inicio')
 	}

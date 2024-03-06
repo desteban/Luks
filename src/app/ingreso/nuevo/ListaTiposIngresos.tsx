@@ -1,10 +1,10 @@
 import ItemTipoIngresoGasto from '@/components/ItemsListas/ItemTipoIngresoGasto'
 import estilos from './Estilos.module.css'
-import { TiposGastos } from '@prisma/client'
+import { TiposIngresos } from '@prisma/client'
 
 interface props {
 	idTipo: number | null
-	listado: TiposGastos[]
+	listado: TiposIngresos[]
 	setIdTipo: (id: number) => void
 }
 

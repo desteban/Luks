@@ -28,7 +28,7 @@ export default async function Page() {
 					</Link>
 				</p>
 
-				<h1>Registra tus</h1>
+				<h1>Registra tus ingresos</h1>
 			</div>
 
 			<Card>
