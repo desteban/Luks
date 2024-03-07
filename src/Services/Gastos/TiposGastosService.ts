@@ -14,9 +14,13 @@ export interface TiposGastosFront {
 	imagen: string
 }
 
-export default async function TiposGastosService(): Promise<Either<ErroresTiposGastos, TiposGastosFront[]>> {
+export default async function TiposGastosService(
+	otros: boolean = false,
+): Promise<Either<ErroresTiposGastos, TiposGastosFront[]>> {
 	let either = new Either<ErroresTiposGastos, TiposGastosFront[]>()
-	const url = UrlApi + RutasAPI.tipos.gastos
+	let params = '?'
+	if (otros) params += 'otros=true'
+	const url = UrlApi + RutasAPI.tipos.gastos + params
 
 	try {
 		const respuesta = await fetch(url)

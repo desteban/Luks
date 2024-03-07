@@ -6,13 +6,17 @@ import Input from '@/components/Input/Inputs'
 import { Button } from '@/components/ui/button'
 import { FormEvent, useState } from 'react'
 import { ListaTiposGastos } from './ListaTiposGastos'
-import { TiposGastosFront } from '@/Services/Gastos/TiposGastosService'
+import TiposGastosService, { TiposGastosFront } from '@/Services/Gastos/TiposGastosService'
 import ErrorSimple from '@/components/Errores/ErrorSimple'
 import { EjecutarSchema } from '@/lib/EjecutarSchema'
 import { AgregarGastoSchema } from '@/Modules/Gastos/Schemas/AgregarGasto'
 import { AgruparErrores } from '@/lib/AgruparErrores'
 import AgregarGastoService from '@/Services/Gastos/AgregarGastoService'
 import { Alerta, AlertaProps } from '@/components/Alerta/Alerta'
+import AlertaToast from '@/components/Alerta/AlertaToast'
+import FlechaIzquierda from '@iconos/FlechaIzquierda'
+import { Skeleton } from '@/components/ui/skeleton'
+import { LoaderCircular } from '@/components/Loader/LoaderCircular'
 
 interface props {
 	mensajeErro?: string
@@ -66,12 +70,49 @@ async function AgregarIngreso(nombre: string | null, valor: string, tipo: number
 	return true
 }
 
+async function PedirMasCategorias(setCategorias: (categorias: TiposGastosFront[]) => void) {
+	const tipos = await TiposGastosService(true)
+
+	if (tipos.errors()) {
+		AlertaToast({ mensaje: 'No pudimos obtener mas categorías', tipo: 'error' })
+		return false
+	}
+
+	setCategorias(tipos.Right())
+	return true
+}
+
 export default function Formulario({ tiposGastos, mensajeErro }: props) {
 	const [nombre, setNombre] = useState<string>('')
 	const [valorGasto, setValorGasto] = useState<string>('')
 	const [tipo, setIdTipo] = useState<number | null>(null)
 	const [erroresInput, setErrroresInput] = useState<Errores>({})
 	const [mensajeAlerta, setMensajeAlerta] = useState<AlertaProps>({ tipo: 'info' })
+
+	const [otrosCategoriasGastos, setOtrosCategoriasGastos] = useState<TiposGastosFront[]>([])
+	const [cargando, setCargando] = useState<boolean>(false)
+	const [verOtros, setVerOtros] = useState<boolean>(false)
+
+	const MasCategorias = () => {
+		setCargando(true)
+		PedirMasCategorias(setOtrosCategoriasGastos).finally(() => {
+			setCargando(false)
+		})
+	}
+
+	const seleccionarTipo = (tipoId: number) => {
+		if (tipoId === 1) {
+			setVerOtros(true)
+			setIdTipo(null)
+
+			if (otrosCategoriasGastos.length === 0) {
+				MasCategorias()
+			}
+			return
+		}
+
+		setIdTipo(tipoId)
+	}
 
 	const Submit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
@@ -100,6 +141,12 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 		setIdTipo(null)
 	}
 
+	const SkeletonCard = () => (
+		<div className="flex flex-col space-y-3">
+			<Skeleton className="h-[125px] w-[150px] rounded-xl" />
+		</div>
+	)
+
 	const Tipos = () => {
 		if (tiposGastos.length === 0 && mensajeErro) {
 			return (
@@ -109,14 +156,54 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 			)
 		}
 
+		if (cargando) {
+			return (
+				<div>
+					<p>Cargando mas categorías...</p>
+					<div
+						className={estilos.opciones}
+						aria-label="Listado de tipos de gastos"
+					>
+						<SkeletonCard />
+						<SkeletonCard />
+						<SkeletonCard />
+						<SkeletonCard />
+					</div>
+				</div>
+			)
+		}
+
+		if (otrosCategoriasGastos.length !== 0 && verOtros) {
+			return (
+				<div>
+					<div>
+						{/* <FlechaIzquierda className="text-primary" /> */}
+						<Button
+							variant={'link'}
+							type="button"
+							onClick={() => {
+								setVerOtros(false)
+								setIdTipo(1)
+							}}
+						>
+							<FlechaIzquierda />
+							Atrás
+						</Button>
+					</div>
+					<ListaTiposGastos
+						idTipo={tipo}
+						listado={otrosCategoriasGastos}
+						setIdTipo={seleccionarTipo}
+					/>
+				</div>
+			)
+		}
+
 		return (
-			// <pre>
-			// 	<code>{JSON.stringify(tiposGastos, null, 2)}</code>
-			// </pre>
 			<ListaTiposGastos
 				idTipo={tipo}
 				listado={tiposGastos}
-				setIdTipo={setIdTipo}
+				setIdTipo={seleccionarTipo}
 			/>
 		)
 	}
@@ -168,7 +255,12 @@ export default function Formulario({ tiposGastos, mensajeErro }: props) {
 				<Tipos />
 			</div>
 			<div className={estilos.peg}>
-				<Button className={estilos.boton}>Guardar</Button>
+				<Button
+					className={estilos.boton}
+					type="submit"
+				>
+					Guardar
+				</Button>
 			</div>
 		</form>
 	)
