@@ -1,8 +1,7 @@
-import GastosDashboard from '@/Modules/Dashboard/Services/GastosDashboard'
 import GastosLineaDashboad from '@/Modules/Dashboard/Services/GastosLineaDashboad'
-import IngresosDashboard from '@/Modules/Dashboard/Services/IngresosDashboard'
 import IngresosLineaDashboard from '@/Modules/Dashboard/Services/IngresosLineaDashboard'
 import TotalGastosUsuarioDashboard from '@/Modules/Dashboard/Services/TotalGastosUsuarioDashboard'
+import TotalIngresosUsuarioDashboard from '@/Modules/Dashboard/Services/TotalIngresosUsuarioDashboard'
 import { UsuarioSinSession } from '@/lib/Errors'
 import { RespuestaJson, RespuestaJsonError } from '@/lib/RespuestaJson'
 import SessionEnServidor from '@/lib/utils/SessionEnServidor'
@@ -14,15 +13,15 @@ export async function GET(req: NextRequest) {
 		return RespuestaJsonError(new UsuarioSinSession({}))
 	}
 
-	let desde = new Date()
-	desde.setMonth(desde.getMonth() - 4)
-	let ingresos = await IngresosDashboard(usuario.id)
-	let gastos = await GastosDashboard(usuario.id, desde)
+	const meses = 5
 
-	//grafico de lineas
-	let gastoslineas = await GastosLineaDashboad(usuario.id, 3)
-	let ingresosLinea = await IngresosLineaDashboard(usuario.id, 3)
-	let total = await TotalGastosUsuarioDashboard(usuario.id)
+	//Gráfico de lineas
+	const gastoslineas = await GastosLineaDashboad(usuario.id, meses)
+	const ingresosLinea = await IngresosLineaDashboard(usuario.id, meses)
+
+	// Gráfico de sectores
+	const totalGastos = await TotalGastosUsuarioDashboard(usuario.id)
+	const totalIngresos = await TotalIngresosUsuarioDashboard(usuario.id)
 
 	return RespuestaJson({
 		data: {
@@ -31,11 +30,10 @@ export async function GET(req: NextRequest) {
 				gastos: gastoslineas.Right() || [],
 				ingresos: ingresosLinea.Right() || [],
 			},
-			total,
-			// sectores: {
-			// 	ingresos: ingresos.Right() || [],
-			// 	gastos: gastos.Right() || [],
-			// },
+			totalMes: {
+				gastos: totalGastos.Right() || null,
+				ingresos: totalIngresos.Right() || null,
+			},
 		},
 	})
 }

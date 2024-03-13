@@ -1,3 +1,4 @@
+import { ErroresIngreso } from '@/Modules/Ingresos/Errors/ErroresIngreso'
 import { Either } from '@/lib/Either'
 import { GastosTipoError } from '@/lib/Errors/Gastos/GastosTipoError'
 import { ServerError } from '@/lib/Errors/ServerError'
@@ -7,11 +8,11 @@ import prisma from '@/lib/Prisma'
 interface data {}
 
 /**
- *Obtener el total de los gastos del usuario en el mes actual
+ * Obtener el total de los ingresos del usuario en el mes actual
  * @param userId Id del usuario para buscar los gastos
  * @returns Either<GastosTipoError, number>
  */
-export default async function TotalGastosUsuarioDashboard(userId: string): Promise<Either<GastosTipoError, number>> {
+export default async function TotalIngresosUsuarioDashboard(userId: string): Promise<Either<ErroresIngreso, number>> {
 	let either = new Either<GastosTipoError, any>()
 
 	const fechaActual = new Date()
@@ -19,7 +20,7 @@ export default async function TotalGastosUsuarioDashboard(userId: string): Promi
 	const ultimoDiaMesAnterior = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 0)
 
 	try {
-		const total = await prisma.gastos.groupBy({
+		const total = await prisma.ingresos.groupBy({
 			by: 'userId',
 			_sum: { valor: true },
 			where: {
