@@ -4,6 +4,7 @@ import ErrorConexionServidor from '@/lib/ErrorConexionServidor'
 import { ServerError } from '@/lib/Errors/ServerError'
 import { ServicioNoDisponible } from '@/lib/Errors/ServicioNoDisponible'
 import { RutasAPI, UrlApi } from '@/lib/Globales'
+import { RegistroGraficaRadar } from '../../..'
 
 export interface GraficasDashboardTipo {
 	mensaje: string
@@ -12,22 +13,12 @@ export interface GraficasDashboardTipo {
 }
 
 interface Linea {
-	gastos: Gastos
-	ingresos: Ingresos
-}
-
-interface Gastos {
-	'2024-2': string
-	'2023-12': string
-}
-
-interface Ingresos {
-	'2024-2': string
+	gastos: Object
+	ingresos: Object
 }
 
 interface TotalMes {
-	gastos: string
-	ingresos: string
+	gastos: RegistroGraficaRadar[]
 }
 
 export default async function GraficasDashboard(): Promise<Either<DashboardError, GraficasDashboardTipo>> {

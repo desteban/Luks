@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
 			},
 			totalMes: {
 				gastos: totalGastos.Right() || null,
-				ingresos: totalIngresos.Right() || null,
+				// ingresos: totalIngresos.Right() || null,
 			},
 		},
 	})

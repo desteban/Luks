@@ -106,7 +106,7 @@ export default function Page() {
 			<div className="flex items-center justify-center h-svh">
 				<div>
 					<LoaderCircular />
-					<p>Estamos comprobando los datos de la sesión, por favor espera un momento</p>
+					<p className="px-6">Estamos comprobando los datos de la sesión, por favor espera un momento</p>
 				</div>
 			</div>
 		)

@@ -3,8 +3,23 @@
 import estilos from './Estilos.module.css'
 import GraficasDashboard from '@/Services/Dashboard/GraficasDashboard'
 import AlertaToast from '@/components/Alerta/AlertaToast'
-import { useEffect, useState } from 'react'
-import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts'
+import SkeletonCard from '@/components/skeletons/SkeletonCard'
+import { ReactNode, useEffect, useState } from 'react'
+import {
+	AreaChart,
+	Area,
+	XAxis,
+	YAxis,
+	Tooltip,
+	ResponsiveContainer,
+	Legend,
+	PieChart,
+	RadarChart,
+	PolarGrid,
+	PolarAngleAxis,
+	Radar,
+} from 'recharts'
+import { RegistroGraficaRadar } from '../../..'
 
 interface Registro {
 	name: string
@@ -45,6 +60,7 @@ function ParseData(datos: any) {
 export default function Dasboard() {
 	const [load, setLoad] = useState<boolean>(true)
 	const [IngresosVsGastos, setIngresosVsGastos] = useState<Registro[]>([])
+	const [RadarGastos, setRadarGastos] = useState<RegistroGraficaRadar[]>([])
 
 	useEffect(() => {
 		GraficasDashboard()
@@ -56,69 +72,106 @@ export default function Dasboard() {
 				}
 
 				setIngresosVsGastos(ParseData(either.Right()))
+				setRadarGastos(either.Right().totalMes.gastos)
 			})
 			.finally(() => {
 				setLoad(false)
 			})
 	}, [])
 
-	const IngresosVsGastosGrafico = () => (
-		<div className={estilos['graficos-item']}>
-			<h3 className="font-semibold">Ingresos vs Gastos</h3>
+	const Grafico = ({ children, titulo }: { children: ReactNode; titulo?: string }) => {
+		return (
+			<div className={estilos['graficos-item']}>
+				<h3 className="font-semibold">{titulo}</h3>
 
-			<div className={estilos['graficos-item-container']}>
-				<ResponsiveContainer
-					className={'max-h-72'}
-					width={'100%'}
-					aspect={16 / 9}
-				>
-					<AreaChart
-						className=""
-						height={300}
-						data={IngresosVsGastos}
-						margin={{
-							top: 0,
-							right: 35,
-							left: 38,
-							bottom: 0,
-						}}
-					>
-						{/* <CartesianGrid strokeDasharray="3 3" /> */}
-						<XAxis
-							dataKey="name"
-							angle={0}
-							padding={{ left: 8, right: 8 }}
-						/>
-						<YAxis
-							hide
-							fontSize={8}
-						/>
-						<Tooltip />
-						<Legend />
-						<Area
-							type="monotone"
-							dataKey="ingresos"
-							stroke={StrokeIngresos}
-							fill={StrokeIngresos}
-							fillOpacity={0.3}
-						/>
-						<Area
-							type="monotone"
-							dataKey="gastos"
-							stroke={StrokeGastos}
-							fill={StrokeGastos}
-							fillOpacity={0.3}
-						/>
-					</AreaChart>
-				</ResponsiveContainer>
+				<div className={estilos['graficos-item-container']}>{children}</div>
 			</div>
-		</div>
+		)
+	}
+
+	const IngresosVsGastosGrafico = () => (
+		<Grafico titulo="Ingresos Vs Gastos">
+			<ResponsiveContainer
+				className={'max-h-72'}
+				width={'100%'}
+				aspect={16 / 9}
+			>
+				<AreaChart
+					className=""
+					height={300}
+					data={IngresosVsGastos}
+					margin={{
+						top: 0,
+						right: 35,
+						left: 38,
+						bottom: 0,
+					}}
+				>
+					{/* <CartesianGrid strokeDasharray="3 3" /> */}
+					<XAxis
+						dataKey="name"
+						angle={0}
+						padding={{ left: 8, right: 8 }}
+					/>
+					<YAxis
+						hide
+						fontSize={8}
+					/>
+					<Tooltip />
+					<Legend />
+					<Area
+						type="monotone"
+						dataKey="ingresos"
+						stroke={StrokeIngresos}
+						fill={StrokeIngresos}
+						fillOpacity={0.3}
+					/>
+					<Area
+						type="monotone"
+						dataKey="gastos"
+						stroke={StrokeGastos}
+						fill={StrokeGastos}
+						fillOpacity={0.3}
+					/>
+				</AreaChart>
+			</ResponsiveContainer>
+		</Grafico>
+	)
+
+	const RadarGastoGrafica = () => (
+		<Grafico titulo="Tus gastos este mes">
+			<ResponsiveContainer
+				className={'max-h-72'}
+				width={'100%'}
+				aspect={16 / 9}
+			>
+				<RadarChart
+					cx="50%"
+					cy="50%"
+					outerRadius="80%"
+					data={RadarGastos}
+				>
+					<PolarGrid />
+					<PolarAngleAxis
+						dataKey={'tema'}
+						fontSize={12}
+					/>
+					<Tooltip />
+					<Radar
+						dataKey={'valor'}
+						stroke={StrokeGastos}
+						fill={StrokeGastos}
+					/>
+				</RadarChart>
+			</ResponsiveContainer>
+		</Grafico>
 	)
 
 	if (load) {
 		return (
-			<div>
-				<p>Generando gráficas...</p>
+			<div className={estilos.graficos}>
+				<SkeletonCard />
+				<SkeletonCard />
 			</div>
 		)
 	}
@@ -126,6 +179,7 @@ export default function Dasboard() {
 	return (
 		<div className={estilos.graficos}>
 			<IngresosVsGastosGrafico />
+			<RadarGastoGrafica />
 		</div>
 	)
 }
