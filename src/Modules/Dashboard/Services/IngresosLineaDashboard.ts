@@ -32,6 +32,7 @@ export default async function IngresosLineaDashboard(
 				by: ['userId'],
 				_sum: { valor: true },
 				where: {
+					userId,
 					createdAt: {
 						gte: desde,
 						lte: hasta,
@@ -39,7 +40,7 @@ export default async function IngresosLineaDashboard(
 				},
 			})
 
-			gastos[key] = data[0]?._sum.valor
+			gastos[key] = data[0]?._sum.valor || 0
 		}
 
 		either.setRight(gastos)

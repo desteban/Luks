@@ -27,6 +27,34 @@
 	font-weight: 600;
 }
 
+/* --------------------------------------------- GRAFICAS -------------------------------------------- */
+.graficos {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 5px;
+	margin-bottom: 50px;
+}
+
+.graficos-item {
+	max-height: 350px;
+	width: 100%;
+	position: relative;
+}
+
+.graficos-item-container {
+	height: auto;
+}
+
+@media (width < 768px) {
+	.graficos-item-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
 @media (width >= 768px) {
 	.dual-item {
 		justify-content: space-around;
@@ -35,5 +63,15 @@
 	.dual-item > * {
 		display: flex;
 		gap: 8px;
+	}
+
+	.graficos {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.graficos-item-container {
+		height: 300px;
+		max-height: 300px;
 	}
 }

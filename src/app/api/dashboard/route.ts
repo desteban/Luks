@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 		return RespuestaJsonError(new UsuarioSinSession({}))
 	}
 
-	const meses = 5
+	const meses = 4
 
 	//Gráfico de lineas
 	const gastoslineas = await GastosLineaDashboad(usuario.id, meses)

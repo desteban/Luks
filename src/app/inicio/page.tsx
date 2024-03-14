@@ -1,5 +1,6 @@
+'use client'
+
 import { Nav } from '@/components/nav/Nav'
-import DatosSession from './DatosSession'
 import Card from '@/components/Card/Card'
 import Container from '@/components/Container/Container'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
@@ -8,10 +9,22 @@ import AhorroIcons from '@iconos/AhorroIcon'
 import ReporteDoneroIcon from '@iconos/ReporteDineroIcon'
 import { ReactNode } from 'react'
 import estilos from './Estilos.module.css'
-import { PlusIcon } from 'lucide-react'
 import { BuscarListaIcon } from '@iconos/BuscarListaIcon'
+import Dasboard from './Dashboard'
+import PlusIcons from '@iconos/PlusIcon'
+import { useSession } from 'next-auth/react'
+import { LoaderCircular } from '@/components/Loader/LoaderCircular'
 
-export default async function Page() {
+export default function Page() {
+	const session = useSession()
+
+	const DatosSession = () => (
+		<div>
+			<h1 className="mb-2">¡Hola!</h1>
+			<h3>{session.data?.user?.name}</h3>
+		</div>
+	)
+
 	const ItemsIngresos = () => {
 		return (
 			<AccordionItem value="Ingresos">
@@ -26,7 +39,7 @@ export default async function Page() {
 					<BotonAcordion href="/ingreso/nuevo">
 						<div>
 							<div className="flex justify-center">
-								<PlusIcon />
+								<PlusIcons />
 							</div>
 							<p className={estilos['dual-item-texto']}>Agregar Ingreso</p>
 						</div>
@@ -59,7 +72,7 @@ export default async function Page() {
 					<BotonAcordion href="/gastos/nuevo">
 						<div>
 							<div className="flex justify-center">
-								<PlusIcon />
+								<PlusIcons />
 							</div>
 							<p className={estilos['dual-item-texto']}>Agregar Gasto</p>
 						</div>
@@ -88,6 +101,17 @@ export default async function Page() {
 		)
 	}
 
+	if (session.status === 'loading') {
+		return (
+			<div className="flex items-center justify-center h-svh">
+				<div>
+					<LoaderCircular />
+					<p>Estamos comprobando los datos de la sesión, por favor espera un momento</p>
+				</div>
+			</div>
+		)
+	}
+
 	return (
 		<main>
 			<Nav />
@@ -109,6 +133,7 @@ export default async function Page() {
 
 				<Card>
 					<h2>Tus movimientos</h2>
+					<Dasboard />
 				</Card>
 			</Container>
 		</main>

@@ -31,7 +31,7 @@ export default async function TotalGastosUsuarioDashboard(userId: string): Promi
 			},
 		})
 
-		either.setRight(total[0]._sum?.valor || 0)
+		either.setRight({ tipo: 'gasto', valor: total[0]._sum?.valor || 0 })
 	} catch (error) {
 		const errorPrisma = MatchErroresPrisma(error)
 		if (errorPrisma) {
