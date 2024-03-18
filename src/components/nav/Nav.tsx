@@ -13,7 +13,11 @@ import MenuMovil from './Menus/MenuMovil'
 import DerechaIcon from '@iconos/DerechaIcon'
 import LuksLogo from '@iconos/FondoLukas'
 
-export function Nav() {
+interface props {
+	className?: string
+}
+
+export function Nav({ className = '' }: props) {
 	const { data } = useSession()
 	const [session, setSession] = useState<Session | undefined>()
 	const [mostrarMenu, setMostrarMenu] = useState<boolean>(false)
@@ -116,7 +120,7 @@ export function Nav() {
 	}
 
 	return (
-		<>
+		<div className={className}>
 			<header className={estilos.header}>
 				<div className={estilos['header-contenido']}>
 					<LuksLogo size={40} />
@@ -138,6 +142,6 @@ export function Nav() {
 				className={`${estilos['nav-overlay']} ${mostrarMenu ? estilos['nav-overlay-open'] : ''}`}
 				onClick={handleMenu}
 			></div>
-		</>
+		</div>
 	)
 }

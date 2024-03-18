@@ -1,0 +1,37 @@
+.banner {
+	position: relative;
+	height: 100svh;
+	color: white;
+	margin-bottom: 5rem;
+	/* overflow: hidden; */
+	/* height: calc(100svh - 64px); */
+	/* margin-bottom: 4rem; */
+}
+
+.fondo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: url('/fondo.webp');
+	-o-object-fit: cover;
+	object-fit: cover;
+	background-size: cover;
+	background-position-x: -100px;
+	z-index: -1;
+	-webkit-filter: contrast(75%) brightness(90%);
+	filter: contrast(85%) brightness(90%);
+	/* -webkit-filter: blur(3px) brightness(0.9);
+	filter: blur(3px) brightness(0.9); */
+}
+
+@media screen and (width > 900px) {
+	.fondo {
+		background-position: 0;
+	}
+
+	.banner {
+		height: 500px;
+	}
+}

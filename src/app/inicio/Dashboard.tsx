@@ -13,7 +13,6 @@ import {
 	Tooltip,
 	ResponsiveContainer,
 	Legend,
-	PieChart,
 	RadarChart,
 	PolarGrid,
 	PolarAngleAxis,
@@ -138,34 +137,44 @@ export default function Dasboard() {
 		</Grafico>
 	)
 
-	const RadarGastoGrafica = () => (
-		<Grafico titulo="Tus gastos este mes">
-			<ResponsiveContainer
-				className={'max-h-72'}
-				width={'100%'}
-				aspect={16 / 9}
-			>
-				<RadarChart
-					cx="50%"
-					cy="50%"
-					outerRadius="80%"
-					data={RadarGastos}
+	const RadarGastoGrafica = () => {
+		if (RadarGastos.length < 3) {
+			return (
+				<div>
+					<p>No tienes datos suficientes para generar esta gráfica</p>
+				</div>
+			)
+		}
+
+		return (
+			<Grafico titulo="Tus gastos este mes">
+				<ResponsiveContainer
+					height={300}
+					width={'100%'}
+					aspect={16 / 9}
 				>
-					<PolarGrid />
-					<PolarAngleAxis
-						dataKey={'tema'}
-						fontSize={12}
-					/>
-					<Tooltip />
-					<Radar
-						dataKey={'valor'}
-						stroke={StrokeGastos}
-						fill={StrokeGastos}
-					/>
-				</RadarChart>
-			</ResponsiveContainer>
-		</Grafico>
-	)
+					<RadarChart
+						cx="50%"
+						cy="50%"
+						outerRadius="80%"
+						data={RadarGastos}
+					>
+						<PolarGrid />
+						<PolarAngleAxis
+							dataKey={'tema'}
+							fontSize={12}
+						/>
+						<Tooltip />
+						<Radar
+							dataKey={'valor'}
+							stroke={StrokeGastos}
+							fill={StrokeGastos}
+						/>
+					</RadarChart>
+				</ResponsiveContainer>
+			</Grafico>
+		)
+	}
 
 	if (load) {
 		return (
